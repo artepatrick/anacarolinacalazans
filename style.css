@@ -1,5 +1,48 @@
+.header {
+    background-color: #BB6BD9;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 50px;
+}
+
+.divFoto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.fotoPerfil {
+    max-width: 150px;
+    border-radius: 150px;
+}
+
+.containerGeral {
+    max-width: 950px;
+    margin: 10px auto;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 30px;
+}
+
 h1 {
     font-family: 'Roboto', sans-serif;
     text-align: center;
-    padding-right: 10px;
+    padding-top: 10px;
+    cursor: pointer;
+    color: white;
+}
+
+h2 {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    padding-top: 10px;
+    cursor: pointer;
+    color: #3a3a3a;
+}
+
+p {
+    font-family: 'Roboto', sans-serif;
+    padding-top: 10px;
+    color: #3a3a3a;
 }
