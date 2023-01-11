@@ -5,6 +5,13 @@
     padding: 50px;
 }
 
+.lottiefiles {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .divFoto {
     display: flex;
     flex-direction: column;
