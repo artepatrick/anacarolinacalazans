@@ -37,9 +37,13 @@ header {
     min-width: 250px;
 }
 
-.box {
+.box p {
     max-width: 500px;
+    color: #3a3a3a;
+    padding-top: 10px;
+    padding-top: 10px;
 }
+
 
 h1 {
     font-family: 'Roboto', sans-serif;
@@ -59,6 +63,43 @@ h2 {
 
 p {
     font-family: 'Roboto', sans-serif;
+}
+
+footer {
+    background-color: #0E0423;
+    padding: 50px 0;
+}
+
+.footerContainer {
+    margin: 0 auto;
+    max-width: 500px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    font-family: 'Roboto', sans-serif;
     padding-top: 10px;
-    color: #3a3a3a;
+    color: white;
+    padding: 0 30px;
+}
+
+.footerSide {
+    margin-top: 10px;
+    max-width: 400px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    /* background-color: #F2C94C; */
+    align-items: flex-start;
+}
+
+.iconeFooter {
+    /* background-color: #BB6BD9; */
+    width: 40px;
+    padding: 5px;
+}
+
+.footerText {
+    font-size: small;
+    padding: 5px;
 }
