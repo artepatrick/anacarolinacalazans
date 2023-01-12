@@ -20,7 +20,7 @@ header {
 
 
 .fotoPerfil {
-    max-width: 150px;
+    max-width: 100px;
     border-radius: 150px;
     border: solid 3px #F2C94C;
 }
@@ -84,7 +84,7 @@ footer {
 }
 
 .footerSide {
-    margin-top: 10px;
+    margin: 10px 0;
     max-width: 400px;
     display: flex;
     flex-direction: row;
