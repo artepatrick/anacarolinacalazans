@@ -8,6 +8,11 @@ header {
     margin: 0 auto;
 }
 
+.faixaBanner {
+    padding-top: 5px;
+    background-color: #BB6BD9;
+}
+
 .logo {
     width: 200px;
 }
