@@ -127,6 +127,18 @@ a:hover {
     padding: 5px;
 }
 
+/* footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+} */
+
+.floatingWhats {
+    width: 40px;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
 
 
 
