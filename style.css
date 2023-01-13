@@ -102,6 +102,10 @@ footer {
     padding: 0 30px;
 }
 
+a {
+    transition: 0.3s all;
+}
+
 a:hover {
     color: #F2C94C;
 }
@@ -134,10 +138,16 @@ a:hover {
 } */
 
 .floatingWhats {
-    width: 40px;
+    width: 50px;
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 30px;
+    right: 30px;
+    opacity: 70%;
+    transition: 0.3s all;
+}
+
+.floatingWhats:hover {
+    opacity: 100%;
 }
 
 
