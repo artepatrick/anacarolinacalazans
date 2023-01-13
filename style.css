@@ -58,6 +58,16 @@ header {
     padding-top: 10px;
 }
 
+.box strong {
+    color: #BB6BD9;
+    cursor: default;
+    transition: 0.3s all;
+}
+
+.box strong:hover {
+    color: #e8aaff;
+}
+
 
 h1 {
     font-family: 'Roboto', sans-serif;
@@ -142,7 +152,7 @@ a:hover {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    opacity: 70%;
+    opacity: 100%;
     transition: 0.3s all;
 }
 
@@ -150,6 +160,9 @@ a:hover {
     opacity: 100%;
 }
 
+.iconeWhats {
+    width: 50px;
+}
 
 
 /* MAPAS */
