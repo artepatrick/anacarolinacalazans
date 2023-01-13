@@ -118,11 +118,12 @@ footer {
 
 .mapouter {
     margin: 0 auto;
+    height: 500px;
+    max-width: 400px;
 }
 
 .gmap_canvas {
     overflow: hidden;
     background: none !important;
     height: 500px;
-    width: 600px;
 }
