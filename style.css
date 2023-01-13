@@ -150,8 +150,8 @@ a:hover {
 .floatingWhats {
     width: 50px;
     position: fixed;
-    bottom: 30px;
-    right: 30px;
+    bottom: 40px;
+    right: 40px;
     opacity: 100%;
     transition: 0.3s all;
 }
@@ -161,7 +161,7 @@ a:hover {
 }
 
 .iconeWhats {
-    width: 50px;
+    width: 60px;
 }
 
 
