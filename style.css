@@ -47,6 +47,8 @@ header {
     margin: 0 auto;
     font-family: 'Roboto', sans-serif;
     padding-bottom: 5px;
+    padding-left: 30px;
+    font-size: small;
 }
 
 .box p {
