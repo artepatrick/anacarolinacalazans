@@ -75,6 +75,10 @@ footer {
     padding: 20px 0;
 }
 
+.linkClaro {
+    color: white;
+}
+
 .footerContainer {
     margin: 0 auto;
     max-width: 500px;
@@ -107,4 +111,18 @@ footer {
 .footerText {
     font-size: small;
     padding: 5px;
+}
+
+
+/* MAPAS */
+
+.mapouter {
+    margin: 0 auto;
+}
+
+.gmap_canvas {
+    overflow: hidden;
+    background: none !important;
+    height: 500px;
+    width: 600px;
 }
