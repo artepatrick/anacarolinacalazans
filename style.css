@@ -9,7 +9,7 @@ header {
 
 .menu {
     font-family: 'Righteous', cursive;
-    font-size: medium;
+    font-size: small;
     padding: 0 5px;
     display: flex;
     flex-direction: row;
