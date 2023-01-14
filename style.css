@@ -7,6 +7,16 @@ header {
     z-index: 15;
 }
 
+.menu {
+    font-family: 'Roboto', sans-serif;
+    padding: 0 5px;
+    color: white;
+}
+
+.menu li {
+    padding-left: 5px;
+}
+
 body {
     display: flex;
     flex-direction: column;
