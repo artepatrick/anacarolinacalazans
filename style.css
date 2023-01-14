@@ -216,3 +216,20 @@ a:hover {
     }
 
 } */
+
+
+/* TÓPICOS PALESTRA */
+
+
+.topico {
+    background-color: rgb(243 243 243);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.topico h2 {
+    margin-bottom: 10px;
+    text-align: left;
+}
