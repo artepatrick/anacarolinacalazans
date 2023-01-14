@@ -1,13 +1,18 @@
 header {
     background-color: #0E0423;
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 15;
 }
 
-/* body {
+body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 100vh;
-} */
+}
 
 .headerContainer {
     padding: 30px;
