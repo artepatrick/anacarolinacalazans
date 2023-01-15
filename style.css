@@ -15,8 +15,20 @@ header {
     flex-direction: row;
     justify-content: center;
     color: white;
+    transition: 0.3s all;
 }
 
+.itemSelecionado {
+    color: #F2C94C;
+}
+
+.itemSelecionado::before {
+    content: "[  ";
+}
+
+.itemSelecionado::after {
+    content: "  ]";
+}
 
 .menu li {
     padding-left: 15px;
