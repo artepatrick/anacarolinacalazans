@@ -234,6 +234,16 @@ a:hover {
 
 /* TÓPICOS PALESTRA */
 
+.iconeTopico {
+    width: 20px;
+    padding-top: 16px;
+    padding-right: 10px;
+}
+
+.tituloTopico {
+    display: flex;
+    flex-direction: row;
+}
 
 .topico {
     background-color: rgb(243 243 243);
@@ -254,3 +264,7 @@ a:hover {
     text-align: left;
     cursor: default;
 }
+
+/* .topico h2::before {
+    content: "\066D    ";
+} */
