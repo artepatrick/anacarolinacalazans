@@ -1,0 +1,120 @@
+/* 
+- #9B51E0 (roxo)
+- #F2C94C
+- #2F80ED 
+- #27AE60 (verde
+*/
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Roboto', sans-serif;
+    text-decoration: none;
+    background-color: #f1f1f1;
+  }
+  
+  .container {
+    max-width: 600px;
+    width: 95%;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  }
+  
+  h1 {
+    font-family: 'Great Vibes', cursive; font-size:5em;
+    text-align: center;
+    font-size: 3em;
+    text-decoration: none;
+    color: #9B51E0;
+    line-height: 0.9;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group input[type="text"]::placeholder {
+    color: #b1b1b1;
+    font-family: 'Sono', sans-serif;
+  }
+
+  .form-group input[type="text"]:focus::placeholder {
+    color: transparent;
+  }
+
+  .form-group label {
+    pointer-events: none;
+    transition: transform 0.2s, font-size 0.2s, color 0.2s;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    color: #999;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #404040;
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    padding: 15px;
+    border:none;
+    /* border: 0.5px solid #ccc; */
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.15);
+    /* box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.15); */
+    border-radius: 5px;
+    height: 4em;
+  }
+
+  input[type="text"]:focus {
+    outline:none;
+    box-shadow: 0px 0px 4px rgba(20, 67, 39, 0.15);
+  }
+  
+  button {
+    height: 4em;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #9B51E0;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .response {
+    margin-top: 15px;
+    padding: 15px;
+    color: #7e7e7e;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    font-family: 'sono', sans-serif;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    transition: 0.5s;
+  }
+
+  
+  div#loading{
+    width: 100%;
+    transition: opacity 0.3s ease;
+    display: flex;
+    justify-content: center;
+    padding-top: 15px;
+  }
+
+  img{
+    width: 10px;
+  }
+  
