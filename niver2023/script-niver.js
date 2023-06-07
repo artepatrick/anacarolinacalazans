@@ -1,4 +1,5 @@
-document.getElementById("birthdayForm").addEventListener("submit", function(event) {
+
+document.getElementById("birthdayForm").addEventListener("submit", function (event) {
   event.preventDefault(); // Prevent the default form submission
 
   // Get the form data
