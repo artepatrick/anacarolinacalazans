@@ -1,6 +1,6 @@
 /* 
 - #9B51E0 (roxo)
-- #F2C94C
+- #F2C94C (amarelo)
 - #2F80ED (azul)
 - #27AE60 (verde)
 */
@@ -27,14 +27,24 @@
     align-items: flex-start;
   }
   #tituloPrincipal{
-    font-family: 'sono';
+    font-family: 'cabin', sans-serif;
     font-weight:lighter;
     color: #606060;
-    font-size: 2.5em;
+    font-size: 1.8em;
     line-height: 0.65;
   } 
+  
+  #festa{
+    color: #9B51E0; 
+    font-family: 'Great Vibes', cursive, sans-serif; 
+    font-size: 2em; 
+    font-weight: 900;
+    font-size: 2.5em;
+    line-height: 0.65;
+  }
 
   .apiForm{
+    padding-top: 20px;
     box-sizing: border-box;
     padding-top: 55px;
   }
@@ -46,6 +56,7 @@
   }
 
   form{
+    padding-top: 25px;
     box-sizing: border-box;
   }
 
