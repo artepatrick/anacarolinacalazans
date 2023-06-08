@@ -9,7 +9,9 @@ statusResponse.style.display = "none";
 
 apiForm.addEventListener("click", () => {
   statusResponse.textContent = "";
-  statusResponse.style.display = "block";
+  statusResponse.style.opacity = "1";
+  statusResponse.style.display = "none";
+  listContainer.style.display = "none";
 });
 
 form.addEventListener("submit", async (event) => {
@@ -17,6 +19,7 @@ form.addEventListener("submit", async (event) => {
   button.textContent = "AGUARDE...";
   button.style = "background-color: #606060";
   button.ariaDisabled = true;
+  statusResponse.style.display = "block";
 
   const name = document.getElementById("name").value;
   const email = document.getElementById("email").value;
@@ -43,9 +46,7 @@ form.addEventListener("submit", async (event) => {
   inputEmail.value = "";
   statusResponse.textContent = `Que bom que você vem, ${primeiroNome}!\nveja quem mais vai participar deste evento`;
   showResponse();
-  setTimeout(() => {
-    statusResponse.style.display = "none";
-  }, 8000);
+
   try {
     const data = await getUsers();
     console.log(`>> Puxando os registros todos...\n\n${JSON.stringify(data)}`);

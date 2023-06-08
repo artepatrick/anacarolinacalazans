@@ -128,7 +128,19 @@ button:hover {
   transition:ease-in-out 0.3;
 }
 
-.response {
+.response{
+  margin-top: 15px;
+  padding: 15px;
+  font-size: 1.5em;
+  color: #7e7e7e;
+  border: none;
+  background-color: transparent;
+  /* font-family: "sono", sans-serif; */
+  text-decoration: none;
+  font-family: 'Cabin', sans-serif;
+}
+
+.list {
   margin-top: 15px;
   padding: 15px;
   color: #7e7e7e;
@@ -137,8 +149,11 @@ button:hover {
   background-color: #f9f9f9;
   font-family: "sono", sans-serif;
   text-decoration: none;
-  transition: opacity 0.5s ease, max-height 0.5s ease;
-  transition: 0.5s;
+  opacity: 1;
+  box-sizing: content-box;
+  transition-timing-function: ease-in-out;
+  transition-duration: 2s;
+  transition-property: all;
 }
 
 /* Clockdown */
@@ -156,7 +171,6 @@ button:hover {
   margin: 0 auto;
   padding-top: 20px;
   /* font-family: righteous, sans-serif; */
-  /* font-family: 'Cabin', sans-serif; */
   /* font-family: 'Cabin', sans-serif; */
   /* font-family: 'Lilita One', cursive; */
   font-family: "Monomaniac One", sans-serif;
