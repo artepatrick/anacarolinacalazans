@@ -6,6 +6,7 @@ const statusResponse = document.getElementById("response");
 
 apiForm.addEventListener("click", () => {
   statusResponse.textContent = "";
+  statusResponse.style.display = "block";
 });
 
 form.addEventListener("submit", async (event) => {
@@ -36,7 +37,11 @@ form.addEventListener("submit", async (event) => {
   button.ariaDisabled = false;
   inputName.value = "";
   inputEmail.value = "";
-  statusResponse.textContent = `Que bom que você vem, ${primeiroNome}!\nveja quem mais vai\n`;
+  statusResponse.textContent = `Que bom que você vem, ${primeiroNome}!\nveja quem mais vai participar deste evento\n* Sabrina\n*ROberta\n*Ana Paula\n*Roberta`;
+  showResponse();
+  setTimeout(() => {
+    statusResponse.style.display = "none";
+  }, 6000);
   try {
     const data = await getUsers();
     displayUserNames(data);
@@ -192,3 +197,8 @@ function displayUserNames(data) {
     );
   }
 }
+
+function showResponse() {
+    const responseDiv.getElementById("response");
+    responseDiv.classList.add("show");
+};
