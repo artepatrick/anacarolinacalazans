@@ -111,17 +111,21 @@ button {
   height: 4em;
   display: block;
   width: 100%;
+  font-size: 1em;
   padding: 10px;
   background-color: #9b51e0;
-  color: #fff;
+  color: #ffffff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: 0.3;
+  transition:ease-in-out 0.3;
+  font-family: "Sono", sans-serif;
+
 }
 
 button:hover {
   background-color: #f2c94c;
+  transition:ease-in-out 0.3;
 }
 
 .response {
