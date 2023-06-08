@@ -1,52 +1,77 @@
 const form = document.getElementById("apiForm");
 const button = document.getElementById("button");
 const inputName = document.getElementById("name");
+const button2 = document.getElementById("button2");
 const inputEmail = document.getElementById("email");
-const statusResponse = document.getElementById("response");
 const listContainer = document.getElementById("list");
+const statusResponse = document.getElementById("response");
 listContainer.style.display = "none";
 statusResponse.style.display = "none";
 
-apiForm.addEventListener("click", () => {
-  statusResponse.textContent = "";
-  statusResponse.style.opacity = "1";
-  statusResponse.style.display = "none";
-  listContainer.style.display = "none";
-});
+if (!form) {
+  console.log("não existe form nessa página...");
+} else {
+  form.addEventListener("click", () => {
+    statusResponse.textContent = "";
+    statusResponse.style.opacity = "1";
+    statusResponse.style.display = "none";
+    listContainer.style.display = "none";
+  });
+}
 
-form.addEventListener("submit", async (event) => {
-  event.preventDefault(); // Prevent the default form submission
-  button.textContent = "AGUARDE...";
-  button.style = "background-color: #606060";
-  button.ariaDisabled = true;
-  statusResponse.style.display = "block";
+if (!form) {
+  console.log("não existe form nessa página...");
+} else {
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault(); // Prevent the default form submission
+    button.textContent = "AGUARDE...";
+    button.style = "background-color: #606060";
+    button.ariaDisabled = true;
+    statusResponse.style.display = "block";
 
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const ipAddress = await getIPAddress();
-  const region = await getRegion();
-  const time = new Date();
-  const primeiroNome = getFirstWord(name);
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const ipAddress = await getIPAddress();
+    const region = await getRegion();
+    const time = new Date();
+    const primeiroNome = getFirstWord(name);
 
-  try {
-    const envio = await gravaUser(name, email, region, ipAddress, time);
-    console.log(`Envio realizado para o banco: \n${JSON.stringify(envio)}`);
-    if (!envio) {
-      console.log('ATENÇÃO!\nA API não retornou nada no POST do "/User"...');
-    } else {
-      console.log(`(!envio) = false - ;)`);
+    try {
+      const envio = await gravaUser(name, email, region, ipAddress, time);
+      console.log(`Envio realizado para o banco: \n${JSON.stringify(envio)}`);
+      if (!envio) {
+        console.log('ATENÇÃO!\nA API não retornou nada no POST do "/User"...');
+      } else {
+        console.log(`(!envio) = false - ;)`);
+      }
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
-  }
-  button.textContent = "Eu vou!";
-  button.style = "background-color: #9B51E0";
-  button.ariaDisabled = false;
-  inputName.value = "";
-  inputEmail.value = "";
-  statusResponse.textContent = `Que bom que você vem, ${primeiroNome}!\nveja quem mais vai participar deste evento`;
-  showResponse();
+    button.textContent = "Eu vou!";
+    button.style = "background-color: #9B51E0";
+    button.ariaDisabled = false;
+    inputName.value = "";
+    inputEmail.value = "";
+    statusResponse.textContent = `Que bom que você vem, ${primeiroNome}!\nveja quem mais vai participar deste evento`;
+    showResponse();
 
+    try {
+      const data = await getUsers();
+      console.log(
+        `>> Puxando os registros todos...\n\n${JSON.stringify(data)}`
+      );
+      displayUserNames(data);
+    } catch (error) {
+      console.log(
+        `A lógica de mostrar todos os registros quebrou...\nerro: ${error}`
+      );
+    }
+  });
+}
+
+button2.addEventListener("click", async () => {
+  console.log("clique no botão...");
+  userList.innerHTML = "";
   try {
     const data = await getUsers();
     console.log(`>> Puxando os registros todos...\n\n${JSON.stringify(data)}`);
@@ -122,31 +147,35 @@ function getTimeRemaining(endTime) {
   };
 }
 
-function initializeClock(endTime) {
-  const daysSpan = document.getElementById("days");
-  const hoursSpan = document.getElementById("hours");
-  const minutesSpan = document.getElementById("minutes");
-  const secondsSpan = document.getElementById("seconds");
+if (!document.getElementById("days")) {
+  console.log("não tem countdown nessa página...");
+} else {
+  function initializeClock(endTime) {
+    const daysSpan = document.getElementById("days");
+    const hoursSpan = document.getElementById("hours");
+    const minutesSpan = document.getElementById("minutes");
+    const secondsSpan = document.getElementById("seconds");
 
-  function updateClock() {
-    const timeRemaining = getTimeRemaining(endTime);
+    function updateClock() {
+      const timeRemaining = getTimeRemaining(endTime);
 
-    daysSpan.textContent = ("0" + timeRemaining.days).slice(-2);
-    hoursSpan.textContent = ("0" + timeRemaining.hours).slice(-2);
-    minutesSpan.textContent = ("0" + timeRemaining.minutes).slice(-2);
-    secondsSpan.textContent = ("0" + timeRemaining.seconds).slice(-2);
+      daysSpan.textContent = ("0" + timeRemaining.days).slice(-2);
+      hoursSpan.textContent = ("0" + timeRemaining.hours).slice(-2);
+      minutesSpan.textContent = ("0" + timeRemaining.minutes).slice(-2);
+      secondsSpan.textContent = ("0" + timeRemaining.seconds).slice(-2);
 
-    if (timeRemaining.total <= 0) {
-      clearInterval(timeInterval);
+      if (timeRemaining.total <= 0) {
+        clearInterval(timeInterval);
+      }
     }
+
+    updateClock();
+    const timeInterval = setInterval(updateClock, 1000);
   }
 
-  updateClock();
-  const timeInterval = setInterval(updateClock, 1000);
+  const countdownDate = new Date("June 24, 2023 00:00:00");
+  initializeClock(countdownDate);
 }
-
-const countdownDate = new Date("June 24, 2023 00:00:00");
-initializeClock(countdownDate);
 
 function getFirstWord(str) {
   // Trim leading and trailing whitespace
