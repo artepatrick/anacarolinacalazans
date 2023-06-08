@@ -4,7 +4,9 @@
 - #2F80ED (azul)
 - #27AE60 (verde)
 */
-
+*{
+  box-sizing: border-box;
+}
   .containerGeral {
     max-width: 600px;
     width: 95%;
@@ -16,6 +18,7 @@
   }
 
   #containerTitulo{
+    padding-top: 20px;
     width: 60%;
     display: flex;
     margin: 0 auto;
@@ -24,6 +27,9 @@
     align-items: flex-start;
   }
   #tituloPrincipal{
+    font-family: 'sono';
+    font-weight:lighter;
+    color: #606060;
     font-size: 2.5em;
     line-height: 0.65;
   } 
@@ -124,9 +130,12 @@
   .countdown-container {
     max-width: 600px;
     margin: 0 auto;
-    padding: 20px;
+    padding-top: 20px;
     font-family: righteous, sans-serif;
     color: #2F80ED;
+  }
+  .countdown-container div{
+    padding: 0;
   }
   
   .countdown-timer {
@@ -154,14 +163,15 @@
   @media (max-width: 600px) {
     .countdown-timer {
       display: flex;
-      width: 90%;
-      font-size: 1.5em;
+      margin: 0 auto;
+      width: 60%;
+      font-size: 2em;
       flex-wrap: wrap;
       justify-content: space-evenly;
     }
     
     .timer-item {
-      margin: 10px 0;
+      margin: 5px 0;
     }
   }
   
