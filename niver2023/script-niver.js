@@ -3,6 +3,9 @@ const button = document.getElementById("button");
 const inputName = document.getElementById("name");
 const inputEmail = document.getElementById("email");
 const statusResponse = document.getElementById("response");
+const listContainer = document.getElementById("list");
+listContainer.style.display = "none";
+statusResponse.style.display = "none";
 
 apiForm.addEventListener("click", () => {
   statusResponse.textContent = "";
@@ -24,10 +27,11 @@ form.addEventListener("submit", async (event) => {
 
   try {
     const envio = await gravaUser(name, email, region, ipAddress, time);
+    console.log(`Envio realizado para o banco: \n${JSON.stringify(envio)}`);
     if (!envio) {
       console.log('ATENÇÃO!\nA API não retornou nada no POST do "/User"...');
     } else {
-      console.log(`Envio realizado para o banco: \n${JSON.stringify(envio)}`);
+      console.log(`(!envio) = false - ;)`);
     }
   } catch (error) {
     console.log(error);
@@ -41,11 +45,11 @@ form.addEventListener("submit", async (event) => {
   showResponse();
   setTimeout(() => {
     statusResponse.style.display = "none";
-  }, 6000);
+  }, 8000);
   try {
     const data = await getUsers();
+    console.log(`>> Puxando os registros todos...\n\n${JSON.stringify(data)}`);
     displayUserNames(data);
-    console.log(`Puxando os registros todos...\n${JSON.stringify(data)}`);
   } catch (error) {
     console.log(
       `A lógica de mostrar todos os registros quebrou...\nerro: ${error}`
@@ -61,6 +65,7 @@ async function gravaUser(name, email, region, ipAddress, time) {
     ipAddress,
     time,
   };
+  console.log(`Response\n${JSON.stringify(response)}`);
 
   const apiReturn = await fetch(
     "https://artepatrick-mongodb-api.herokuapp.com/niver",
@@ -70,7 +75,11 @@ async function gravaUser(name, email, region, ipAddress, time) {
       body: JSON.stringify(response),
     }
   );
-  console.log(`Response enviado via API:\n${JSON.stringify(response)}`);
+  console.log(
+    `Response enviado via API:\n${JSON.stringify(
+      response
+    )}\nretorno da api:\n${apiReturn}`
+  );
   return apiReturn;
 }
 
@@ -156,44 +165,44 @@ function getFirstWord(str) {
 }
 
 async function getUsers() {
-  const apiReturn = await fetch(
+  const response = await fetch(
     "https://artepatrick-mongodb-api.herokuapp.com/niver",
     {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     }
   );
-  return apiReturn;
+
+  if (!response.ok) {
+    console.log("ATENÇÃO!!\nnão rolou o Fetch!");
+    throw new Error("Failed to fetch user data");
+  }
+  const data = await response.json();
+  return data;
 }
 
 function displayUserNames(data) {
-  const dadoBruto = data;
   const userList = document.getElementById("userList");
-  console.log(
-    `Veja como o Fetch está trazendo o dado:\n\n${JSON.stringify(dadoBruto)}`
-  );
+  const listContainer = document.getElementById("list");
+  listContainer.style.display = "block";
 
   try {
+    console.log("Iniciando o for...");
     for (let i = 0; i < data.length; i++) {
-      const users = data[i];
-
-      // Check if the current item is an array of users
-      if (Array.isArray(users)) {
-        // Iterate over the users array
-        for (let j = 0; j < users.length; j++) {
-          const user = users[j];
-          const userName = user.userName;
-          const listItem = document.createElement("li");
-          listItem.textContent = userName;
-
-          // Append the <li> element to the user list
-          userList.appendChild(listItem);
-        }
-      }
+      const user = data[i];
+      console.log("Usuário isolado do banco de dados\n", user);
+      const userName = user.userName;
+      console.log(`\nuserName: ${userName}\n`);
+      const listItem = document.createElement("li");
+      listItem.textContent = userName;
+      console.log(listItem);
+      // Append the <li> element to the user list
+      userList.appendChild(listItem);
+      console.log(`Passando no for:\n${listItem}`);
     }
   } catch (error) {
     console.log(
-      `Não deu para tratar a lista dos convidados confirmados...\nErro\n${erro}`
+      `Não deu para tratar a lista dos convidados confirmados...\nErro\n${error}`
     );
   }
 }
