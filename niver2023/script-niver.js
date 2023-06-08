@@ -69,19 +69,24 @@ if (!form) {
   });
 }
 
-button2.addEventListener("click", async () => {
-  console.log("clique no botão...");
-  userList.innerHTML = "";
-  try {
-    const data = await getUsers();
-    console.log(`>> Puxando os registros todos...\n\n${JSON.stringify(data)}`);
-    displayUserNames(data);
-  } catch (error) {
-    console.log(
-      `A lógica de mostrar todos os registros quebrou...\nerro: ${error}`
-    );
-  }
-});
+if (!button2) {
+  console.log("Essa página não possui Button2");
+} else {
+  button2.addEventListener("click", async () => {
+    console.log("clique no botão...");
+    try {
+      const data = await getUsers();
+      console.log(
+        `>> Puxando os registros todos...\n\n${JSON.stringify(data)}`
+      );
+      displayUserNames(data);
+    } catch (error) {
+      console.log(
+        `A lógica de mostrar todos os registros quebrou...\nerro: ${error}`
+      );
+    }
+  });
+}
 
 async function gravaUser(name, email, region, ipAddress, time) {
   const response = {
@@ -214,6 +219,8 @@ async function getUsers() {
 function displayUserNames(data) {
   const userList = document.getElementById("userList");
   const listContainer = document.getElementById("list");
+  userList.innerHTML = "";
+
   listContainer.style.display = "block";
 
   try {
