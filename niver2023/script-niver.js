@@ -1,7 +1,13 @@
 const form = document.getElementById("apiForm");
+const button = document.getElementById("button");
+const inputName = document.getElementById("name");
+const statusResponse = document.getElementById("response");
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault(); // Prevent the default form submission
+  button.textContent = "AGUARDE...";
+  button.style = "background-color: #606060";
+  button.ariaDisabled = true;
 
   const name = document.getElementById("name").value;
   const email = document.getElementById("email").value;
@@ -14,11 +20,17 @@ form.addEventListener("submit", async (event) => {
     if (!envio) {
       console.log('ATENÇÃO!\nA API não retornou nada no POST do "/User"...');
     } else {
-      console.log(`Envio realizado par o banco: \n${envio}`);
+      console.log(`Envio realizado para o banco: \n${JSON.stringify(envio)}`);
     }
   } catch (error) {
     console.log(error);
   }
+  button.textContent = "Eu vou!";
+  button.style = "background-color: #9B51E0";
+  button.ariaDisabled = false;
+  inputName.value = "";
+  inputEmail.value = "";
+  statusResponse.textContent = "Que bom que você vem!";
 });
 
 async function gravaUser(name, email, region, ipAddress, time) {
