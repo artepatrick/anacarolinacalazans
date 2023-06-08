@@ -65,7 +65,7 @@ async function gravaUser(name, email, region, ipAddress, time) {
       body: JSON.stringify(response),
     }
   );
-  console.log(`Response enviado via API:\n${response}`);
+  console.log(`Response enviado via API:\n${JSON.stringify(response)}`);
   return apiReturn;
 }
 
@@ -158,12 +158,14 @@ async function getUsers() {
       headers: { "Content-Type": "application/json" },
     }
   );
+  return apiReturn;
 }
 
 function displayUserNames(data) {
+  const dadoBruto = data;
   const userList = document.getElementById("userList");
   console.log(
-    `Veja como o Fetch está trazendo o dado:\n\n${JSON.stringify(data)}`
+    `Veja como o Fetch está trazendo o dado:\n\n${JSON.stringify(dadoBruto)}`
   );
 
   try {
