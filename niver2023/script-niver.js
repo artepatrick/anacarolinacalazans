@@ -222,7 +222,7 @@ async function getUsers() {
 }
 
 function displayUserNames(data) {
-  const userList = document.getElementById("userList");
+  /* const userList = document.getElementById("userList");
   const listContainer = document.getElementById("list");
   userList.innerHTML = "";
 
@@ -246,7 +246,7 @@ function displayUserNames(data) {
     console.log(
       `Não deu para tratar a lista dos convidados confirmados...\nErro\n${error}`
     );
-  }
+  } */
 }
 
 function showResponse() {
