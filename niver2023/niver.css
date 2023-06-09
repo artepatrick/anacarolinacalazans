@@ -3,6 +3,7 @@
  /* #F2C94C (amarelo) */
  /* #2F80ED (azul) */
  /* #27AE60 (verde) */
+ /* #FDB2AD (rosa claro) */
 
    /* font-family: righteous, sans-serif;  */
    /* font-family: 'Cabin', sans-serif;  */
@@ -17,8 +18,49 @@ body {
   background-color: #f1f1f1;
 }
 
+p{
+  padding: 8px 0;
+}
+
+h1 {
+  font-family: "roboto", cursive;
+  text-align: center;
+  text-decoration: none;
+  color: #606060;
+  line-height: 0.9;
+  padding: 15px 0;
+}
+
+h2{
+  font-family: "roboto", cursive;
+  text-decoration: none;
+  line-height: 0.9;
+}
+
+.boxInternoIntroduz{
+  max-width: 600px;
+  width: 95%;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-size: 1.2em;
+  font-family: 'Cabin', sans-serif;
+}
+
+.faixaIntroduz{
+  background-color: #ffffff;
+}
+
+div.boxInternoIntroduz{
+  padding: 30x 15px;
+  color: #808080;
+}
+
+.containerBox p{
+  padding: 5px 0;
+  font-size: 1em;
+}
+
 .faixaContainerBox{
-  background-color: #f1f1f1;
   padding: 15px 0;
 }
 
@@ -68,23 +110,6 @@ body {
 #apiForm {
   padding: 10px 0;
   box-sizing: border-box;
-}
-
-
-
-h1 {
-  font-family: "roboto", cursive;
-  text-align: center;
-  text-decoration: none;
-  color: #606060;
-  line-height: 0.9;
-  padding: 15px 0;
-}
-
-h2{
-  font-family: "roboto", cursive;
-  text-decoration: none;
-  line-height: 0.9;
 }
 
 .form-group {
@@ -280,7 +305,6 @@ button:hover {
 }
 .addressBox{
   max-width: 600px;
-  background-color: #0E0423;
   padding: 20px 0;
   margin: 0 auto;
 }

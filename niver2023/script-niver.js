@@ -55,7 +55,7 @@ if (!form) {
     inputName.value = "";
     inputEmail.value = "";
     confirmaPresenca.style.display = "block";
-    statusResponse.textContent = `Que bom que você vem, ${primeiroNome}!\nveja quem mais vai participar deste evento`;
+    statusResponse.textContent = `Que bom que você virá, ${primeiroNome}!`;
     showResponse();
 
     try {
