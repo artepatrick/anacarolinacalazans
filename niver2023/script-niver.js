@@ -183,7 +183,7 @@ if (!document.getElementById("days")) {
     const timeInterval = setInterval(updateClock, 1000);
   }
 
-  const countdownDate = new Date("June 24, 2023 00:00:00");
+  const countdownDate = new Date("June 24, 2023 14:00:00");
   initializeClock(countdownDate);
 }
 
