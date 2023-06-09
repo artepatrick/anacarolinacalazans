@@ -5,8 +5,10 @@ const button2 = document.getElementById("button2");
 const inputEmail = document.getElementById("email");
 const listContainer = document.getElementById("list");
 const statusResponse = document.getElementById("response");
+const confirmaPresenca = document.getElementById("presencaConfirmadaBox");
 listContainer.style.display = "none";
 statusResponse.style.display = "none";
+confirmaPresenca.style.display = "none";
 
 if (!form) {
   console.log("não existe form nessa página...");
@@ -52,6 +54,7 @@ if (!form) {
     button.ariaDisabled = false;
     inputName.value = "";
     inputEmail.value = "";
+    confirmaPresenca.style.display = "block";
     statusResponse.textContent = `Que bom que você vem, ${primeiroNome}!\nveja quem mais vai participar deste evento`;
     showResponse();
 

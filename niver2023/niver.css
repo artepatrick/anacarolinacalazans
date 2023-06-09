@@ -1,25 +1,44 @@
-/* 
-- #9B51E0 (roxo)
-- #F2C94C (amarelo)
-- #2F80ED (azul)
-- #27AE60 (verde)
-*/
+ 
+ /* #9B51E0 (roxo) */
+ /* #F2C94C (amarelo) */
+ /* #2F80ED (azul) */
+ /* #27AE60 (verde) */
+
+   /* font-family: righteous, sans-serif;  */
+   /* font-family: 'Cabin', sans-serif;  */
+   /* font-family: 'Lilita One', cursive; */
+
 * {
   box-sizing: border-box;
 }
 
-.containerGeral {
+body {
+  text-decoration: none;
+  background-color: white;
+}
+
+.faixaContainerBox{
+  background-color: #f1f1f1;
+  padding: 15px 0;
+}
+
+.containerBox {
   max-width: 600px;
   width: 95%;
-  margin: 40px auto;
+  margin: 15px auto;
   padding: 20px;
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
+.headerContainer {
+  padding: 20px 30px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
 #containerTitulo {
-  padding-top: 20px;
   padding-bottom: 0;
   width: 60%;
   display: flex;
@@ -30,11 +49,11 @@
 }
 
 #tituloPrincipal {
-  font-family: "cabin", sans-serif;
-  font-weight: lighter;
+  font-family: "Cabin&family=Monomaniac+One&", sans-serif;
+  font-weight:bolder;
   color: #606060;
-  font-size: 1.8em;
-  line-height: 0.65;
+  font-size: 2em;
+  line-height: 0.95;
 }
 
 #festa {
@@ -46,20 +65,12 @@
   line-height: 0.65;
 }
 
-.apiForm {
-  padding-top: 20px;
-  padding-top: 55px;
-}
-
-form {
-  padding-top: 25px;
+#apiForm {
+  padding: 10px 0;
   box-sizing: border-box;
 }
 
-body {
-  text-decoration: none;
-  background-color: #f1f1f1;
-}
+
 
 h1 {
   font-family: "roboto", cursive;
@@ -131,7 +142,6 @@ button:hover {
 }
 
 .response{
-  margin-top: 15px;
   padding: 15px;
   font-size: 1.5em;
   color: #7e7e7e;
@@ -171,14 +181,16 @@ button:hover {
 .countdown-container {
   max-width: 600px;
   margin: 0 auto;
-  padding-top: 20px;
-  /* font-family: righteous, sans-serif; */
-  /* font-family: 'Cabin', sans-serif; */
-  /* font-family: 'Lilita One', cursive; */
   font-family: "Monomaniac One", sans-serif;
   color: #2f80ed;
 }
 .countdown-container div {
+  padding-top: 0;
+}
+
+#data-niver{
+  margin-top: 20px;
+  margin-bottom: 4px;
   padding: 0;
 }
 
@@ -186,13 +198,14 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #f2c94c;
+  color: #27AE60;
 }
 
 .timer-item {
-  margin: 0 10px;
+  margin: 0 5px;
   box-sizing: border-box;
   font-size: 3em;
+  line-height: 0.9;
 }
 
 .timer-value {
@@ -215,22 +228,51 @@ button:hover {
   z-index: 12;
 }
 
+/* ÍCONE + TEXTO */
 .iconeWhats {
   width: 60px;
 }
 
+.iconMessageBox{
+  padding: 15px 0;
+}
+
+.iconMessageItems{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.iconMessageIcon img{
+  width: 33px;
+  margin: 0 15px;
+}
+
+.iconMessageText{
+  color: #9b9b9b;
+  font-size: 0.8em;
+  max-width: 150px;
+  line-height: 0.95;
+  font-family: "Sono", sans-serif;
+  font-weight: lighter;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+}
+
 @media (max-width: 600px) {
   .countdown-timer {
-    display: flex;
-    margin: 0 auto;
+    margin: 10px auto;
     width: 60%;
     font-size: 1em;
     flex-wrap: wrap;
-    justify-content: space-evenly;
   }
 
   .timer-item {
-    margin: 5px 0;
+    margin: 2px 0;
+    padding: 0 3px;
     font-size: 2em;
   }
   .timer-lable {

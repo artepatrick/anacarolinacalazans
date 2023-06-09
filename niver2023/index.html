@@ -21,12 +21,20 @@
   <link rel="stylesheet" href="./niver.css">
   <title>Niver da Carol</title>
 </head>
-
+<header>
+  <div class="headerContainer">
+    <div class="logo">
+        <img width="200px" src="https://i.postimg.cc/3w48Vytk/Logo-fundo-branco.png" alt="Logomarca da Ana Carolina Calazans, com a palavra ANA formando três arco crescentes">
+    </div>
+</div>
+</header>
 <body>
 
-  <div class="containerGeral">
+  <div class="faixaContainerBox">
+    
+  <div class="containerBox">
     <div id="containerTitulo">
-      <h1 id="tituloPrincipal">Nossa<span id="festa">festa!</span></h1>
+      <h1 id="tituloPrincipal">Confirme sua Presença</h1>
     </div>
 
     <form id="apiForm">
@@ -41,8 +49,29 @@
       <button id="button" type="submit">Eu vou!</button>
     </form>
 
+    <div id="presencaConfirmadaBox" class="iconMessageBox">
+      <div id="presencaConfirmada" class="iconMessageItems">
+        <div id="presencaConfirmadaIcone" class="iconMessageIcon">
+          <img src="https://i.postimg.cc/4yZwj9QZ/check.png" alt="Imagem de uma marcação de caixa checkbox">
+        </div>
+        <div id="presencaCOnfirmadaTexto" class="iconMessageText">
+          <h3>Parabéns!</h3>
+          <p>Sua presença</p>
+          <p>foi confirmada</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="response" class="response">...
+    </div>
+    <div id="list" class="list">
+      <ul id="userList">
+      </ul>
+    </div>
+
     <div class="countdown-container">
-      <h1>24 de Junho</h1>
+      <h1 id="data-niver">24 de Junho</h1>
       <div class="countdown-timer">
         <div id="days" class="timer-item">
           <span class="timer-value">00</span>
@@ -63,12 +92,6 @@
       </div>
     </div>
 
-    <div id="response" class="response">...
-    </div>
-    <div id="list" class="list">
-      <ul id="userList">
-      </ul>
-    </div>
     <a style="text-decoration: none;" class="floatingWhats"
     href="https://api.whatsapp.com/send/?phone=5531999455764&text=Ol%C3%A1%2C%20Ana%20Carolina%21%20Encontrei%20o%20seu%20contato%20no%20site%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%21&type=phone_number&app_absent=0"
     target="_blank">
@@ -77,6 +100,8 @@
             background="transparent" speed="1" loop autoplay>
     </div>
     </a>
+  </div>
+
   </div>
 
     <script src="./script-niver.js"></script>
