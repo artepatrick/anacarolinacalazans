@@ -70,7 +70,9 @@ if (!form) {
 }
 
 if (!button2) {
-  console.log("Essa página não possui Button2");
+  console.log(
+    "Essa página não possui Button2\nUse a rota da página de confirmados\nhttp://www.anacarolinacalazans.com.br/niver2023/confirmados.html"
+  );
 } else {
   button2.addEventListener("click", async () => {
     console.log("clique no botão...");
