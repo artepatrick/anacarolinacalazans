@@ -14,7 +14,7 @@
 
 body {
   text-decoration: none;
-  background-color: white;
+  background-color: #f1f1f1;
 }
 
 .faixaContainerBox{
@@ -52,7 +52,7 @@ body {
   font-family: "Cabin&family=Monomaniac+One&", sans-serif;
   font-weight:bolder;
   color: #606060;
-  font-size: 2em;
+  font-size: 1.5em;
   line-height: 0.95;
 }
 
@@ -142,7 +142,7 @@ button:hover {
 }
 
 .response{
-  padding: 15px;
+  padding: 10px 20px;
   font-size: 1.5em;
   color: #7e7e7e;
   border: none;
@@ -164,8 +164,13 @@ button:hover {
   opacity: 1;
   box-sizing: content-box;
   transition-timing-function: ease-in-out;
-  transition-duration: 2s;
+  transition-duration: 0.5s;
   transition-property: all;
+}
+
+.userList{
+  transition-property: all;
+  transition-duration: 0.5s;
 }
 
 /* Clockdown */
@@ -190,8 +195,9 @@ button:hover {
 
 #data-niver{
   margin-top: 20px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
   padding: 0;
+  font-size: 1.5em;
 }
 
 .countdown-timer {
@@ -246,7 +252,7 @@ button:hover {
 
 .iconMessageIcon img{
   width: 33px;
-  margin: 0 15px;
+  margin-right: 15px;
 }
 
 .iconMessageText{
@@ -264,7 +270,7 @@ button:hover {
 
 @media (max-width: 600px) {
   .countdown-timer {
-    margin: 10px auto;
+    margin: 5px auto;
     width: 60%;
     font-size: 1em;
     flex-wrap: wrap;
