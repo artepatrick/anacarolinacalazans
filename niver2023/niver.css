@@ -205,6 +205,20 @@ button:hover {
   background-color: aqua;
 }
 
+.floatingWhats {
+  width: 50px;
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  opacity: 100%;
+  transition: 0.3s all;
+  z-index: 12;
+}
+
+.iconeWhats {
+  width: 60px;
+}
+
 @media (max-width: 600px) {
   .countdown-timer {
     display: flex;
