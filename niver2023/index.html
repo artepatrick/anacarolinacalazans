@@ -32,79 +32,95 @@
 
   <div class="faixaContainerBox">
     
-  <div class="containerBox">
-    <div id="containerTitulo">
-      <h1 id="tituloPrincipal">Confirme sua Presença</h1>
-    </div>
-
-    <form id="apiForm">
-      <div class="form-group">
-        <label for="prompt">Nome:</label>
-        <input type="text" id="name" name="prompt" required placeholder="Seu nome aqui!">
+    <div class="containerBox">
+      <div id="containerTitulo">
+        <h1 id="tituloPrincipal">Confirme sua Presença</h1>
       </div>
-      <div class="form-group">
-        <label for="comment">E-mail:</label>
-        <input type="text" id="email" name="email" placeholder="Seu e-mail">
-      </div>
-      <button id="button" type="submit">Eu vou!</button>
-    </form>
 
-    <div id="presencaConfirmadaBox" class="iconMessageBox">
-      <div id="presencaConfirmada" class="iconMessageItems">
-        <div id="presencaConfirmadaIcone" class="iconMessageIcon">
-          <img src="https://i.postimg.cc/4yZwj9QZ/check.png" alt="Imagem de uma marcação de caixa checkbox">
+      <form id="apiForm">
+        <div class="form-group">
+          <label for="prompt">Nome:</label>
+          <input type="text" id="name" name="prompt" required placeholder="Seu nome aqui!">
         </div>
-        <div id="presencaCOnfirmadaTexto" class="iconMessageText">
-          <h3>Parabéns!</h3>
-          <p>Sua presença</p>
-          <p>foi confirmada</p>
+        <div class="form-group">
+          <label for="comment">E-mail:</label>
+          <input type="text" id="email" name="email" placeholder="Seu e-mail">
         </div>
+        <button id="button" type="submit">Eu vou!</button>
+      </form>
 
-      </div>
-    </div>
+      <div id="presencaConfirmadaBox" class="iconMessageBox">
+        <div id="presencaConfirmada" class="iconMessageItems">
+          <div id="presencaConfirmadaIcone" class="iconMessageIcon">
+            <img src="https://i.postimg.cc/4yZwj9QZ/check.png" alt="Imagem de uma marcação de caixa checkbox">
+          </div>
+          <div id="presencaCOnfirmadaTexto" class="iconMessageText">
+            <h3>Parabéns!</h3>
+            <p>Sua presença</p>
+            <p>foi confirmada</p>
+          </div>
 
-    <div id="response" class="response">...
-    </div>
-    <div id="list" class="list">
-      <ul id="userList" class="userList">
-      </ul>
-    </div>
-
-    <div class="countdown-container">
-      <h1 id="data-niver">24 de Junho</h1>
-      <div class="countdown-timer">
-        <div id="days" class="timer-item">
-          <span class="timer-value">00</span>
-          <span class="timer-label">Days</span>
-        </div>
-        <div id="hours" class="timer-item">
-          <span class="timer-value">00</span>
-          <span class="timer-label">Hours</span>
-        </div>
-        <div id="minutes" class="timer-item">
-          <span class="timer-value">00</span>
-          <span class="timer-label">Minutes</span>
-        </div>
-        <div id="seconds" class="timer-item">
-          <span class="timer-value">00</span>
-          <span class="timer-label">Seconds</span>
         </div>
       </div>
-    </div>
 
+      <div id="response" class="response">...
+      </div>
+      <div id="list" class="list">
+        <ul id="userList" class="userList">
+        </ul>
+      </div>
+
+      <div class="countdown-container">
+        <h1 id="data-niver">24 de Junho</h1>
+        <div class="countdown-timer">
+          <div id="days" class="timer-item">
+            <span class="timer-value">00</span>
+            <span class="timer-label">Days</span>
+          </div>
+          <div id="hours" class="timer-item">
+            <span class="timer-value">00</span>
+            <span class="timer-label">Hours</span>
+          </div>
+          <div id="minutes" class="timer-item">
+            <span class="timer-value">00</span>
+            <span class="timer-label">Minutes</span>
+          </div>
+          <div id="seconds" class="timer-item">
+            <span class="timer-value">00</span>
+            <span class="timer-label">Seconds</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="addressContainer">
+  <div id="addressBox" class="addressBox">
+    <div class="addressTittleItems">
+      <img src="https://i.postimg.cc/GtX7YxZt/map.png" id="iconeMapa" alt="ícone de ponto no mapa">
+      <div class="addressTittleText">
+        <h2>Prainha Botequim</h2>
+        <p>Rua Moisés Kalil, 209 - Buritis, Belo Horizonte - MG, 30575-819</p>
+      </div>
+    </div>
+    <div>
+    </div>
+    <div id="adressEmbed" class="addressEmbed">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14998.184838232852!2d-43.9754483!3d-19.9855776!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa6bddb4230d86d%3A0x996fab513108237!2sPrainha%20Butiquim%20Restaurante%20BH!5e0!3m2!1spt-BR!2sbr!4v1686314735467!5m2!1spt-BR!2sbr" class="mapEmbed"  style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+</div>
+
+  <div class="iconeWhats">
     <a style="text-decoration: none;" class="floatingWhats"
     href="https://api.whatsapp.com/send/?phone=5531999455764&text=Ol%C3%A1%2C%20Ana%20Carolina%21%20Encontrei%20o%20seu%20contato%20no%20site%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%21&type=phone_number&app_absent=0"
     target="_blank">
-    <div class="iconeWhats">
         <lottie-player class="lottieButton" src="https://assets3.lottiefiles.com/packages/lf20_ryosrokc.json"
             background="transparent" speed="1" loop autoplay>
-    </div>
-    </a>
+          </a>
   </div>
 
-  </div>
-
-    <script src="./script-niver.js"></script>
+  <script src="./script-niver.js"></script>
 </body>
 
 </html>

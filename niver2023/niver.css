@@ -81,6 +81,12 @@ h1 {
   padding: 15px 0;
 }
 
+h2{
+  font-family: "roboto", cursive;
+  text-decoration: none;
+  line-height: 0.9;
+}
+
 .form-group {
   box-sizing: border-box;
   margin-bottom: 20px;
@@ -266,6 +272,54 @@ button:hover {
   align-items: flex-start;
   flex-direction: column;
   justify-content: center;
+}
+
+.addressContainer{
+  background-color: #0E0423;
+
+}
+.addressBox{
+  max-width: 600px;
+  background-color: #0E0423;
+  padding: 20px 0;
+  margin: 0 auto;
+}
+
+.addressTittleItems{
+  max-width: 300px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+div.addressTittleText{
+  color: white;
+  width: 90%;
+  margin: 15px auto;
+  font-family: "Sono", sans-serif;
+}
+
+.addressTittleText p{
+  margin-top: 8px;
+}
+
+img#iconeMapa{
+  width: 30px;
+  margin-right: 20px;
+}
+
+.addressEmbed{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.mapEmbed{
+  border-radius: 5px;
+  box-sizing: border-box;
+  width: 90%;
 }
 
 @media (max-width: 600px) {
