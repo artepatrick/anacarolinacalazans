@@ -8,7 +8,9 @@ const statusResponse = document.getElementById("response");
 const confirmaPresenca = document.getElementById("presencaConfirmadaBox");
 listContainer.style.display = "none";
 statusResponse.style.display = "none";
-confirmaPresenca.style.display = "none";
+if (confirmaPresenca) {
+  confirmaPresenca.style.display = "none";
+}
 
 if (!form) {
   console.log("não existe form nessa página...");
