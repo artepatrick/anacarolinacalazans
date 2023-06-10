@@ -80,6 +80,7 @@ if (!button2) {
   );
 } else {
   button2.addEventListener("click", async () => {
+    button2.textContent = "AGUARDE...";
     console.log("clique no botão...");
     try {
       const data = await getUsers();
@@ -87,6 +88,7 @@ if (!button2) {
         `>> Puxando os registros todos...\n\n${JSON.stringify(data)}`
       );
       displayUserNames(data);
+      button2.textContent = "Atualizar Lista";
     } catch (error) {
       console.log(
         `A lógica de mostrar todos os registros quebrou...\nerro: ${error}`
