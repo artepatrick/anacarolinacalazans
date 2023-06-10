@@ -58,7 +58,7 @@ if (!form) {
     statusResponse.textContent = `Que bom que você virá, ${primeiroNome}!`;
     showResponse();
 
-    try {
+    /* try {
       const data = await getUsers();
       console.log(
         `>> Puxando os registros todos...\n\n${JSON.stringify(data)}`
@@ -68,7 +68,7 @@ if (!form) {
       console.log(
         `A lógica de mostrar todos os registros quebrou...\nerro: ${error}`
       );
-    }
+    } */
   });
 }
 
@@ -222,31 +222,35 @@ async function getUsers() {
 }
 
 function displayUserNames(data) {
-  /* const userList = document.getElementById("userList");
+  const userList = document.getElementById("userList");
   const listContainer = document.getElementById("list");
   userList.innerHTML = "";
 
-  listContainer.style.display = "block";
+  if (!userList) {
+    console.log("Não existe exibição de lista nessa página.");
+  } else {
+    listContainer.style.display = "block";
 
-  try {
-    console.log("Iniciando o for...");
-    for (let i = 0; i < data.length; i++) {
-      const user = data[i];
-      console.log("Usuário isolado do banco de dados\n", user);
-      const userName = user.userName;
-      console.log(`\nuserName: ${userName}\n`);
-      const listItem = document.createElement("li");
-      listItem.textContent = userName;
-      console.log(listItem);
-      // Append the <li> element to the user list
-      userList.appendChild(listItem);
-      console.log(`Passando no for:\n${listItem}`);
+    try {
+      console.log("Iniciando o for...");
+      for (let i = 0; i < data.length; i++) {
+        const user = data[i];
+        console.log("Usuário isolado do banco de dados\n", user);
+        const userName = user.userName;
+        console.log(`\nuserName: ${userName}\n`);
+        const listItem = document.createElement("li");
+        listItem.textContent = userName;
+        console.log(listItem);
+        // Append the <li> element to the user list
+        userList.appendChild(listItem);
+        console.log(`Passando no for:\n${listItem}`);
+      }
+    } catch (error) {
+      console.log(
+        `Não deu para tratar a lista dos convidados confirmados...\nErro\n${error}`
+      );
     }
-  } catch (error) {
-    console.log(
-      `Não deu para tratar a lista dos convidados confirmados...\nErro\n${error}`
-    );
-  } */
+  }
 }
 
 function showResponse() {
