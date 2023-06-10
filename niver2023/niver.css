@@ -318,13 +318,17 @@ button:hover {
   justify-content: center;
   align-items: center;
 }
-
+div#addressEmbed.addressTittleText{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 div.addressTittleText{
   color: white;
-  width: 90%;
-  margin: 15px auto;
+  margin: 0 auto;
   font-family: "Sono", sans-serif;
 }
+
 
 .addressTittleText p{
   margin-top: 8px;
@@ -339,11 +343,19 @@ img#iconeMapa{
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
 }
 .mapEmbed{
   border-radius: 5px;
   box-sizing: border-box;
   width: 90%;
+}
+
+.fotoBar img{
+  max-width: 100%;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  box-sizing: border-box;
 }
 
 @media (max-width: 600px) {
