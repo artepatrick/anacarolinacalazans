@@ -5,14 +5,34 @@ const button2 = document.getElementById("button2");
 const inputEmail = document.getElementById("email");
 const listContainer = document.getElementById("list");
 const statusResponse = document.getElementById("response");
+const formulario = document.getElementById("Formulario")
 const confirmaPresenca = document.getElementById("presencaConfirmadaBox");
 const mensagemInicial = document.getElementById("mensagemInicial");
-const check = triggerData(24, 6, 2023, 15);
-console.log(check);
+const inicioDaFesta = triggerData(11, 6, 2023, 5);
+console.log(`Início da festa: ${inicioDaFesta}`)
+const finalDaFesta = triggerData(11, 6, 2023, 17);
+console.log(`\nFinal da Festa: ${finalDaFesta}`)
 
-if (check) {
-  mensagemInicial.innerHTML = "<h1>Obrigado Pela presença!</p>";
+if (inicioDaFesta && !finalDaFesta) {
+  formulario.style.display = "none";
+  mensagemInicial.innerHTML = `<h1 style="color: #9B51E0">Já começou!</h1>
+  <p>Já estamos aqui... Sò vem</p>
+  <p>A festa já começou, não precisa fazer reserva. Basta comparecer no <a style="text-decoration: none;" href="#addressBox"><span style="font-weight:bolder; font-weight: bolder; color: #9B51E0;">Prainha botiquim</span></a></p>
+  <p><a style="text-decoration: none;" href="#addressBox"><span style="font-weight:bolder; font-weight: bolder; color: #9B51E0;">Clique</span></a> para ver o endereço<p/>`;
+  
 }
+
+if (finalDaFesta) {
+  formulario.style.display = "none";
+  mensagemInicial.innerHTML = `<h1 style="color: #9B51E0">Obrigado Pela presença!</h1>
+    <p>Foi muito bom porder compartilhar um início de ciclo com amigos e família.</p>
+    <p>Quem me conhece sabe a importância das pessoas para mim!</p>
+    <p>Preparamos uma pasta com as fotos tiradas no dia. FIque à vontade para baixar e compartilhar.<p/>`;
+  
+    formulario.style.display = none;
+  }
+
+
 
 listContainer.style.display = "none";
 statusResponse.style.display = "none";
@@ -278,21 +298,30 @@ function triggerData(diaTrigger, mesTrigger, anoTrigger, horaTrigger) {
   const ano = today.getFullYear();
 
   console.log(
-    `Iniciando verificação de dia...\nData Target: ${diaTrigger}/${mesTrigger}/${anoTrigger}\nData de hoje: ${dia}/${mes}/${ano}`
+    `Iniciando verificação de dia...\nData Target: ${diaTrigger}/${mesTrigger}/${anoTrigger}, às ${hora} horas\nData de hoje: ${dia}/${mes}/${ano}`
   );
 
   if (
-    dia >= diaTrigger &&
+    dia === diaTrigger &&
     ano >= anoTrigger &&
-    mes >= mesTrigger &&
-    hora >= horaTrigger
+    mes >= mesTrigger 
   ) {
-    console.log("Trigger de data atingida!");
+    console.log('Passou na primeira lógica!')
     return true;
   } else {
-    console.log(
-      `Ainda não chegou na data aguardada:\n${diaTrigger}/${mesTrigger}/${anoTrigger} às ${horaTrigger} horas`
-    );
+    if (
+      dia >= diaTrigger &&
+      ano >= anoTrigger &&
+      mes >= mesTrigger &&
+      hora >= horaTrigger
+    ) {
+      console.log("Trigger de data  do segundo if atingida!");
+      return true;
+    } else {
+      console.log(
+        `Ainda não chegou na data aguardada!`
+      );
+      return false;
+    }
   }
-  return false;
 }

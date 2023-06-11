@@ -299,6 +299,26 @@ button:hover {
   justify-content: center;
 }
 
+.faixaGDrive{
+  background-color: #ffffff;
+}
+
+.boxGDrive{
+  max-width: 600px;
+  padding: 20px 0;
+  margin: 0 auto;
+}
+
+div.imagem iframe {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+}
+
+iframe{
+  width: 100%;
+}
+
 .addressContainer{
   background-color: #0E0423;
 
