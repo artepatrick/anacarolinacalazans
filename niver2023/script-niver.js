@@ -5,37 +5,38 @@ const button2 = document.getElementById("button2");
 const inputEmail = document.getElementById("email");
 const listContainer = document.getElementById("list");
 const statusResponse = document.getElementById("response");
-const formulario = document.getElementById("Formulario")
+const formulario = document.getElementById("Formulario");
 const confirmaPresenca = document.getElementById("presencaConfirmadaBox");
 const mensagemInicial = document.getElementById("mensagemInicial");
-const GDrive = document.getElementById("GDrive")
-GDrive.style.display = "none"
+const GDrive = document.getElementById("GDrive");
 
-const inicioDaFesta = triggerData(24, 6, 2023, 13);
-console.log(`Início da festa: ${inicioDaFesta}`)
-const finalDaFesta = triggerData(24, 6, 2023, 17);
-console.log(`\nFinal da Festa: ${finalDaFesta}`)
+if (!GDrive) {
+  console.log(`Essa página não possui lógica de convidados`);
+} else {
+  GDrive.style.display = "none";
 
-if (inicioDaFesta && !finalDaFesta) {
-  formulario.style.display = "none";
-  mensagemInicial.innerHTML = `<h1 style="color: #9B51E0">Já começou!</h1>
-  <p>Já estamos aqui... Sò vem</p>
-  <p>A festa já começou, não precisa fazer reserva. Basta comparecer no <a style="text-decoration: none;" href="#addressBox"><span style="font-weight:bolder; font-weight: bolder; color: #9B51E0;">Prainha botiquim</span></a></p>
-  <p><a style="text-decoration: none;" href="#addressBox"><span style="font-weight:bolder; font-weight: bolder; color: #9B51E0;">Clique</span></a> para ver o endereço<p/>`;
-  
-}
+  const inicioDaFesta = triggerData(24, 6, 2023, 13);
+  console.log(`Início da festa: ${inicioDaFesta}`);
+  const finalDaFesta = triggerData(24, 6, 2023, 17);
+  console.log(`\nFinal da Festa: ${finalDaFesta}`);
 
-if (finalDaFesta) {
-  formulario.style.display = "none";
-  GDrive.style.display = "block"
-  mensagemInicial.innerHTML = `<h1 style="color: #9B51E0">Obrigado Pela presença!</h1>
-    <p>Foi muito bom porder compartilhar um início de ciclo com amigos e família.</p>
-    <p>Quem me conhece sabe a importância das pessoas para mim!</p>
-    <p>Preparamos uma pasta com as fotos tiradas no dia. FIque à vontade para baixar e compartilhar.<p/>`;
-  
+  if (inicioDaFesta && !finalDaFesta) {
+    formulario.style.display = "none";
+    mensagemInicial.innerHTML = `<h1 style="color: #9B51E0">Já começou!</h1>
+    <p>Já estamos aqui... Sò vem</p>
+    <p>A festa já começou, não precisa fazer reserva. Basta comparecer no <a style="text-decoration: none;" href="#addressBox"><span style="font-weight:bolder; font-weight: bolder; color: #9B51E0;">Prainha botiquim</span></a></p>
+    <p><a style="text-decoration: none;" href="#addressBox"><span style="font-weight:bolder; font-weight: bolder; color: #9B51E0;">Clique</span></a> para ver o endereço<p/>`;
   }
 
-
+  if (finalDaFesta) {
+    formulario.style.display = "none";
+    GDrive.style.display = "block";
+    mensagemInicial.innerHTML = `<h1 style="color: #9B51E0">Obrigado Pela presença!</h1>
+      <p>Foi muito bom porder compartilhar um início de ciclo com amigos e família.</p>
+      <p>Quem me conhece sabe a importância das pessoas para mim!</p>
+      <p>Preparamos uma pasta com as fotos tiradas no dia. FIque à vontade para baixar e compartilhar.<p/>`;
+  }
+}
 
 listContainer.style.display = "none";
 statusResponse.style.display = "none";
@@ -304,12 +305,8 @@ function triggerData(diaTrigger, mesTrigger, anoTrigger, horaTrigger) {
     `Iniciando verificação de dia...\nData Target: ${diaTrigger}/${mesTrigger}/${anoTrigger}, às ${hora} horas\nData de hoje: ${dia}/${mes}/${ano}`
   );
 
-  if (
-    dia === diaTrigger &&
-    ano >= anoTrigger &&
-    mes >= mesTrigger 
-  ) {
-    console.log('Passou na primeira lógica!')
+  if (dia === diaTrigger && ano >= anoTrigger && mes >= mesTrigger) {
+    console.log("Passou na primeira lógica!");
     return true;
   } else {
     if (
@@ -321,9 +318,7 @@ function triggerData(diaTrigger, mesTrigger, anoTrigger, horaTrigger) {
       console.log("Trigger de data  do segundo if atingida!");
       return true;
     } else {
-      console.log(
-        `Ainda não chegou na data aguardada!`
-      );
+      console.log(`Ainda não chegou na data aguardada!`);
       return false;
     }
   }
