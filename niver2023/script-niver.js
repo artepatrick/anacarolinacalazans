@@ -6,6 +6,14 @@ const inputEmail = document.getElementById("email");
 const listContainer = document.getElementById("list");
 const statusResponse = document.getElementById("response");
 const confirmaPresenca = document.getElementById("presencaConfirmadaBox");
+const mensagemInicial = document.getElementById("mensagemInicial");
+const check = triggerData(24, 6, 2023, 15);
+console.log(check);
+
+if (check) {
+  mensagemInicial.innerHTML = "<h1>Obrigado Pela presença!</p>";
+}
+
 listContainer.style.display = "none";
 statusResponse.style.display = "none";
 if (confirmaPresenca) {
@@ -260,4 +268,31 @@ function displayUserNames(data) {
 function showResponse() {
   const responseDiv = document.getElementById("response");
   responseDiv.classList.add("show");
+}
+
+function triggerData(diaTrigger, mesTrigger, anoTrigger, horaTrigger) {
+  const today = new Date();
+  const dia = today.getDate();
+  const mes = today.getMonth() + 1;
+  const hora = today.getHours();
+  const ano = today.getFullYear();
+
+  console.log(
+    `Iniciando verificação de dia...\nData Target: ${diaTrigger}/${mesTrigger}/${anoTrigger}\nData de hoje: ${dia}/${mes}/${ano}`
+  );
+
+  if (
+    dia >= diaTrigger &&
+    ano >= anoTrigger &&
+    mes >= mesTrigger &&
+    hora >= horaTrigger
+  ) {
+    console.log("Trigger de data atingida!");
+    return true;
+  } else {
+    console.log(
+      `Ainda não chegou na data aguardada:\n${diaTrigger}/${mesTrigger}/${anoTrigger} às ${horaTrigger} horas`
+    );
+  }
+  return false;
 }
