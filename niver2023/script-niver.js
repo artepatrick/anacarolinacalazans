@@ -92,17 +92,11 @@ if (!form) {
     statusResponse.textContent = `Que bom que você virá, ${primeiroNome}!`;
     showResponse();
 
-    /* try {
-      const data = await getUsers();
-      console.log(
-        `>> Puxando os registros todos...\n\n${JSON.stringify(data)}`
-      );
-      displayUserNames(data);
-    } catch (error) {
-      console.log(
-        `A lógica de mostrar todos os registros quebrou...\nerro: ${error}`
-      );
-    } */
+    await sendEmail(
+      "artepatrick@gmail.com",
+      "artepatrick@gmail.com",
+      `O convidado ${primeiroNome} confirmou!`
+    );
   });
 }
 
@@ -322,4 +316,38 @@ function triggerData(diaTrigger, mesTrigger, anoTrigger, horaTrigger) {
       return false;
     }
   }
+}
+
+async function sendEmail(from, to, subject, message) {
+
+  let requestData;
+  if (!from || !to) {
+    console.log("from ou to vieram vazios e vamos adicionar valores padrão");
+    requestData = {
+      from: "teste from",
+      to: "teste to",
+      subject,
+      message: "Teste de corpo de mensagem"
+    };
+  } else {
+    requestData = {
+      from: from,
+      to: to,
+      subject,
+      message: message
+    };
+  }
+
+  const response = await fetch(
+    "https://artepatrick-mongodb-api.herokuapp.com/sendmail",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    }
+  );
+
+  return response;
 }
