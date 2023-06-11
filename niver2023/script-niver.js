@@ -8,9 +8,12 @@ const statusResponse = document.getElementById("response");
 const formulario = document.getElementById("Formulario")
 const confirmaPresenca = document.getElementById("presencaConfirmadaBox");
 const mensagemInicial = document.getElementById("mensagemInicial");
-const inicioDaFesta = triggerData(11, 6, 2023, 5);
+const GDrive = document.getElementById("GDrive")
+GDrive.style.display = "none"
+
+const inicioDaFesta = triggerData(24, 6, 2023, 13);
 console.log(`Início da festa: ${inicioDaFesta}`)
-const finalDaFesta = triggerData(11, 6, 2023, 17);
+const finalDaFesta = triggerData(24, 6, 2023, 17);
 console.log(`\nFinal da Festa: ${finalDaFesta}`)
 
 if (inicioDaFesta && !finalDaFesta) {
@@ -24,12 +27,12 @@ if (inicioDaFesta && !finalDaFesta) {
 
 if (finalDaFesta) {
   formulario.style.display = "none";
+  GDrive.style.display = "block"
   mensagemInicial.innerHTML = `<h1 style="color: #9B51E0">Obrigado Pela presença!</h1>
     <p>Foi muito bom porder compartilhar um início de ciclo com amigos e família.</p>
     <p>Quem me conhece sabe a importância das pessoas para mim!</p>
     <p>Preparamos uma pasta com as fotos tiradas no dia. FIque à vontade para baixar e compartilhar.<p/>`;
   
-    formulario.style.display = none;
   }
 
 
