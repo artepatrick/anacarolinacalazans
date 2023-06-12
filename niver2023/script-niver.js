@@ -1,3 +1,4 @@
+
 const form = document.getElementById("apiForm");
 const button = document.getElementById("button");
 const inputName = document.getElementById("name");
@@ -107,7 +108,7 @@ if (!form) {
 
 if (!button2) {
   console.log(
-    "Essa página não possui Button2\nUse a rota da página de confirmados\nhttp://www.anacarolinacalazans.com.br/niver2023/confirmados.html"
+    "Essa página não possui Button2\nUse a rota da página de confirmados\nhttps://www.anacarolinacalazans.com.br/niver2023/confirmados.html"
   );
 } else {
   button2.addEventListener("click", async () => {
@@ -154,16 +155,40 @@ async function gravaUser(name, email, region, ipAddress, time) {
   return apiReturn;
 }
 
-async function getRegion(data) {
+async function getRegion() {
   try {
-    const response = await fetch("http://ip-api.com/json");
-    const data = await response.json();
-    return data.region;
+    const position = await getCurrentPosition();
+    return await getRegionByCoords(position.coords);
   } catch (error) {
-    console.error("Error getting region:", error);
-    return null;
+    handleLocationError(error);
+    return "Acesso à localização negado pelo usuário";
   }
 }
+
+function handleLocationError(error) {
+  if (error.code === 1) {
+    console.log("Usuário negou fornecer a localização\nerro:\n", error);
+  } else {
+    console.error("Error getting region:", error);
+  }
+}
+
+function getCurrentPosition() {
+  return new Promise((resolve, reject) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(resolve, reject);
+    } else {
+      reject(new Error("Geolocation is not supported"));
+    }
+  });
+}
+
+function getRegionByCoords({ latitude, longitude }) {
+  return fetch(
+    `https://geolocation-api-provider.com/region?lat=${latitude}&lon=${longitude}`
+  ).then(response => response.json());
+}
+
 
 async function getIPAddress() {
   try {
@@ -257,6 +282,7 @@ async function getUsers() {
 }
 
 function displayUserNames(data) {
+
   const userList = document.getElementById("userList");
   const listContainer = document.getElementById("list");
   userList.innerHTML = "";
@@ -280,11 +306,23 @@ function displayUserNames(data) {
         userList.appendChild(listItem);
         console.log(`Passando no for:\n${listItem}`);
       }
+
+      const totalUsers = document.createElement("p");
+      totalUsers.style.fontWeight = "bold";
+      totalUsers.style.marginTop = "1rem";
+      if (data.length > 0) {
+        totalUsers.textContent = `Total de convidados confirmados: ${data.length}`;
+      } else {
+        totalUsers.textContent = "Não há convidados confirmados";
+      }
+      userList.appendChild(totalUsers);
     } catch (error) {
       console.log(
         `Não deu para tratar a lista dos convidados confirmados...\nErro\n${error}`
       );
     }
+    // After listing the users, add a <p> element containing the total number of users listed
+
   }
 }
 
