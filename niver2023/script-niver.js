@@ -92,11 +92,16 @@ if (!form) {
     statusResponse.textContent = `Que bom que você virá, ${primeiroNome}!`;
     showResponse();
 
-    await sendEmail(
-      "artepatrick@gmail.com",
-      "artepatrick@gmail.com",
-      `O convidado ${primeiroNome} confirmou!`
-    );
+/*     try {
+      await sendEmail(
+        "artepatrick@gmail.com",
+        "artepatrick@gmail.com",
+        `Confirmação de presença`,
+        `O convidado ${primeiroNome} confirmou!`
+      );
+    } catch (error) {
+      console.log(`\nOps!\nErro na hora de rodar a função sendmail()\nVeja o erro:\n${error}`)
+    } */
   });
 }
 
@@ -319,7 +324,6 @@ function triggerData(diaTrigger, mesTrigger, anoTrigger, horaTrigger) {
 }
 
 async function sendEmail(from, to, subject, message) {
-
   let requestData;
   if (!from || !to) {
     console.log("from ou to vieram vazios e vamos adicionar valores padrão");
@@ -327,27 +331,29 @@ async function sendEmail(from, to, subject, message) {
       from: "teste from",
       to: "teste to",
       subject,
-      message: "Teste de corpo de mensagem"
+      message: "Teste de corpo de mensagem",
     };
   } else {
     requestData = {
       from: from,
       to: to,
       subject,
-      message: message
+      message: message,
     };
   }
-
-  const response = await fetch(
-    "https://artepatrick-mongodb-api.herokuapp.com/sendmail",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestData),
-    }
-  );
-
-  return response;
+  console.log(requestData);
+  try {
+    const response = await fetch(
+      "https://artepatrick-mongodb-api.herokuapp.com/sendmail",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      }
+    );
+  } catch (error) {
+    console.log(`deu ruim na tentativa de fazer o fetch...\n${error}`);
+  }
 }

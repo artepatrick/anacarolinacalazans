@@ -87,7 +87,7 @@ div.boxInternoIntroduz{
   margin: 0 auto;
   flex-wrap: wrap;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
 }
 
 #tituloPrincipal {
@@ -372,10 +372,28 @@ img#iconeMapa{
 }
 
 .fotoBar img{
-  max-width: 100%;
+  width: 100%;
   margin: 0 auto;
   margin-bottom: 20px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.galeria{
+  background-color: transparent;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.galeria img{
+  padding: 0 10px;
+  border-radius: 8px;
+  max-width: 40%;
 }
 
 @media (max-width: 600px) {
