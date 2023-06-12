@@ -92,7 +92,7 @@ if (!form) {
     statusResponse.textContent = `Que bom que você virá, ${primeiroNome}!`;
     showResponse();
 
-/*     try {
+    /*     try {
       await sendEmail(
         "artepatrick@gmail.com",
         "artepatrick@gmail.com",
@@ -156,7 +156,7 @@ async function gravaUser(name, email, region, ipAddress, time) {
 
 async function getRegion(data) {
   try {
-    const response = await fetch("https://ip-api.com/json");
+    const response = await fetch("http://ip-api.com/json");
     const data = await response.json();
     return data.region;
   } catch (error) {
