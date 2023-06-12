@@ -156,7 +156,7 @@ async function gravaUser(name, email, region, ipAddress, time) {
 
 async function getRegion(data) {
   try {
-    const response = await fetch("http://ip-api.com/json");
+    const response = await fetch("https://ip-api.com/json");
     const data = await response.json();
     return data.region;
   } catch (error) {
