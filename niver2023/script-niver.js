@@ -304,17 +304,74 @@ function displayUserNames(data) {
 
     try {
       console.log("Iniciando o for...");
+
       for (let i = 0; i < data.length; i++) {
         const user = data[i];
+
         console.log("Usuário isolado do banco de dados\n", user);
         const userName = user.userName;
         console.log(`\nuserName: ${userName}\n`);
         const listItem = document.createElement("li");
         listItem.textContent = userName;
+        listItem.style.display = "flex";
+        listItem.style.flexDirection = "row";
+        listItem.style.justifyContent = "space-between";
+        listItem.style.alignItems = "center";
         console.log(listItem);
         // Append the <li> element to the user list
-        userList.appendChild(listItem);
-        console.log(`Passando no for:\n${listItem}`);
+        if (user.email) {
+          const check = document.createElement("img");
+          check.src = "https://i.postimg.cc/pdqSqdtp/check.png";
+          check.style.width = "20px";
+          check.style.margin = "0 5px";
+          listItem.appendChild(check);
+          userList.appendChild(listItem);
+          //ad a floating modal on the image hover
+          const modal = document.createElement("div");
+          modal.classList.add("modal");
+          modal.style.display = "none"; // Initially hide the modal
+          modal.style.position = "absolute";
+          // make the modal appear in the righ end of the box
+
+          modal.style.transform = `${user.email.length}px`;
+          modal.style.color = "#fff";
+          modal.style.fontFamily = "'Sono', sans-serif, font-weight: 700;";
+          modal.style.fontSize = "14px"; // Font size of the modal
+          modal.style.backgroundColor = "#9B51E0"; // Background color of the modal
+          modal.style.padding = "10px"; // Padding of the modal
+          modal.style.border = "1px solid #ccc"; // Border of the modal
+          modal.style.zIndex = "1"; // Set a higher z-index to appear above other elements
+          listItem.appendChild(modal);
+          const modalText = document.createElement("p");
+          modalText.textContent = user.email;
+          modal.appendChild(modalText);
+
+          check.addEventListener("mouseover", () => {
+            modalText.textContent = user.email;
+            modal.style.display = user.email ? "block" : "none";
+            console.log(`passando no mouseover - ${user.email}`);
+          });
+          check.addEventListener("mouseout", () => {
+            modal.style.display = "none";
+          });
+
+          check.addEventListener("click", () => {
+
+            navigator.clipboard.writeText(user.email);
+            alert("Email copiado para a área de transferência!\n\n" + user.email);
+
+          });
+
+          console.log(`Passando no for:\n${listItem}`);
+        } else {
+          const noCheck = document.createElement("img");
+          noCheck.src = "https://i.postimg.cc/J7fRbpqS/noCheck.png";
+          noCheck.style.width = "20px";
+          noCheck.style.margin = "0 5px";
+          listItem.appendChild(noCheck);
+          userList.appendChild(listItem);
+          console.log(`Passando no for:\n${listItem}`);
+        }
       }
 
       const totalUsers = document.createElement("p");
@@ -332,6 +389,23 @@ function displayUserNames(data) {
       );
     }
     // After listing the users, add a <p> element containing the total number of users listed
+    const modal = document.createElement("div");
+    modal.classList.add("modal");
+    const modalContent = document.createElement("div");
+    modalContent.classList.add("modal-content");
+    const modalText = document.createElement("p");
+    modalText.textContent = "usuário inseriu email?";
+    modalContent.appendChild(modalText);
+    modal.appendChild(modalContent);
+    check.addEventListener("mouseover", () => {
+      // change the modalText.textContent to the user.email
+      modalText.textContent = user.email;
+      modal.style.display = "block";
+      console.log("Passou no mouseover");
+    });
+    check.addEventListener("mouseout", () => {
+      modal.style.display = "none";
+    });
 
   }
 }
