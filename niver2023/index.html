@@ -28,6 +28,7 @@
     </div>
 </div>
 </header> -->
+
 <body>
   <div class="faixaIntroduz">
     <div class="boxInternoIntroduz" id="mensagemInicial">
@@ -35,10 +36,13 @@
       <p>Vou comemorar meus <strong>38 anos</strong> e quero muito que você esteja comigo!</p>
 
       <p>
-        Reservei um cantinho muito especial na <a style="text-decoration: none;" href="#addressBox"><span style="font-weight:bolder; font-weight: bolder; color: #9B51E0;">Prainha Butiquim</span></a>  e conto com a sua confirmação para que a equipe de lá possa organizar o espaço para a gente!
+        Reservei um cantinho muito especial na <a style="text-decoration: none;" href="#addressBox"><span
+            style="font-weight:bolder; font-weight: bolder; color: #9B51E0;">Prainha Butiquim</span></a> e conto com a
+        sua confirmação para que a equipe de lá possa organizar o espaço para a gente!
       </p>
       <p>
-        O local do evento tem um <strong>espaço kids terceirizado</strong> com monitores e, por isso, cobra o valor de 25 reais para cada criança brincar o quanto quiser!
+        O local do evento tem um <strong>espaço kids terceirizado</strong> com monitores e, por isso, cobra o valor de
+        25 reais para cada criança brincar o quanto quiser!
       </p>
       <p>Vai ser no sábado, dia 24 de Junho, às 14h!</p>
       <!-- <a href="#apiForm" class="CTA-Confirma" style="text-decoration: none; font-family: 'Lilita One', cursive; color: #F2C94C;">Confirme sua presença!</a> -->
@@ -53,12 +57,12 @@
 
       <form id="apiForm">
         <div class="form-group">
-          <label for="prompt">Nome:</label>
-          <input type="text" id="name" name="prompt" required placeholder="Seu nome aqui!">
+          <label for="firstName">Nome:</label>
+          <input type="text" autocomplete="given-name" id="name" name="firstName" required placeholder="Seu nome aqui!">
         </div>
         <div class="form-group">
-          <label for="comment">E-mail:</label>
-          <input type="text" id="email" name="email" placeholder="Seu e-mail">
+          <label for="email">E-mail:</label>
+          <input type="text" autocomplete="email" id="email" name="email" placeholder="Seu e-mail">
         </div>
         <button id="button" type="submit">Eu vou!</button>
       </form>
@@ -79,7 +83,7 @@
 
       <div id="response" class="response">...
       </div>
-      
+
       <div id="list" class="list">
         <ul id="userList" class="userList">
         </ul>
@@ -109,45 +113,49 @@
     </div>
   </div>
 
-<div class="faixaGDrive" id="GDrive">
-  <div class="boxGDrive">
-    <iframe src="https://drive.google.com/embeddedfolderview?id=1FS_55839p5ztp8aTdpd91FauN_EQ0tRy#grid"
-    seamless="seamless" height="400" frameborder="5"></iframe>
+  <div class="faixaGDrive" id="GDrive">
+    <div class="boxGDrive">
+      <iframe src="https://drive.google.com/embeddedfolderview?id=1FS_55839p5ztp8aTdpd91FauN_EQ0tRy#grid"
+        seamless="seamless" height="400" frameborder="5"></iframe>
+    </div>
+
   </div>
 
-</div>
-
-<div class="addressContainer">
-  <div id="addressBox" class="addressBox">
-    <div class="addressTittleItems">
-      <img src="https://i.postimg.cc/GtX7YxZt/map.png" id="iconeMapa" alt="ícone de ponto no mapa">
-      <div class="addressTittleText">
-        <h2>Prainha Botequim</h2>
-        <p>Rua Moisés Kalil, 209 - Buritis, Belo Horizonte - MG, 30575-819</p>
+  <div class="addressContainer">
+    <div id="addressBox" class="addressBox">
+      <div class="addressTittleItems">
+        <img src="https://i.postimg.cc/GtX7YxZt/map.png" id="iconeMapa" alt="ícone de ponto no mapa">
+        <div class="addressTittleText">
+          <h2>Prainha Botequim</h2>
+          <p>Rua Moisés Kalil, 209 - Buritis, Belo Horizonte - MG, 30575-819</p>
+        </div>
       </div>
-    </div>
 
-    <div id="addressEmbed" class="addressTittleText">
-      <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14998.184838232852!2d-43.9754483!3d-19.9855776!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa6bddb4230d86d%3A0x996fab513108237!2sPrainha%20Butiquim%20Restaurante%20BH!5e0!3m2!1spt-BR!2sbr!4v1686314735467!5m2!1spt-BR!2sbr" class="mapEmbed"  style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </div>
+      <div id="addressEmbed" class="addressTittleText">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14998.184838232852!2d-43.9754483!3d-19.9855776!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xa6bddb4230d86d%3A0x996fab513108237!2sPrainha%20Butiquim%20Restaurante%20BH!5e0!3m2!1spt-BR!2sbr!4v1686314735467!5m2!1spt-BR!2sbr"
+          class="mapEmbed" style="border:0;" allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
 
+    </div>
+    <div class="fotoBar">
+      <img src="https://i.postimg.cc/3JGFjktr/Prainha-botequim.png"
+        alt="Foto do bar em um fim de tarde com guarda sol, mesas e várias cores.">
+    </div>
   </div>
-  <div class="fotoBar">
-    <img src="https://i.postimg.cc/3JGFjktr/Prainha-botequim.png" alt="Foto do bar em um fim de tarde com guarda sol, mesas e várias cores.">
-  </div>
-</div>
-<div class="galeria">
+  <div class="galeria">
     <img src="https://i.postimg.cc/d1bzs4wP/Butiquin-2.png" alt="">
     <img src="https://i.postimg.cc/mk7KtCgc/Butiquin-3.png" alt="">
-</div>
+  </div>
 
   <div class="iconeWhats">
     <a style="text-decoration: none;" class="floatingWhats"
-    href="https://api.whatsapp.com/send/?phone=5531999455764&text=Ol%C3%A1%2C%20Ana%20Carolina%21%20Encontrei%20o%20seu%20contato%20no%20site%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%21&type=phone_number&app_absent=0"
-    target="_blank">
-        <lottie-player class="lottieButton" src="https://assets3.lottiefiles.com/packages/lf20_ryosrokc.json"
-            background="transparent" speed="1" loop autoplay>
-          </a>
+      href="https://api.whatsapp.com/send/?phone=5531999455764&text=Ol%C3%A1%2C%20Ana%20Carolina%21%20Encontrei%20o%20seu%20contato%20no%20site%20e%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%21&type=phone_number&app_absent=0"
+      target="_blank">
+      <lottie-player class="lottieButton" src="https://assets3.lottiefiles.com/packages/lf20_ryosrokc.json"
+        background="transparent" speed="1" loop autoplay>
+    </a>
   </div>
 
   <script src="./script-niver.js"></script>
