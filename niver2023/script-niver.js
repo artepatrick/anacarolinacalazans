@@ -78,11 +78,19 @@ if (!form) {
 
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
-    const ipAddress = await getIPAddress();
-    const region = await getRegion();
-    const time = new Date();
     const primeiroNome = getFirstWord(name);
-
+    const time = new Date();
+    const ipAddress = "";;
+    const region = ""; 
+    try{
+      ipAddress = await getIPAddress();
+      region = await getRegion();
+    }catch{
+      ipAddress = "";
+      region = "";
+      console.log("Não foi possível obter o IP ou a região");
+    }
+    
     try {
       const envio = await gravaUser(name, email, region, ipAddress, time);
       console.log(`Envio realizado para o banco: \n${JSON.stringify(envio)}`);
@@ -102,17 +110,6 @@ if (!form) {
     confirmaPresenca.style.display = "block";
     statusResponse.textContent = `Que bom que você virá, ${primeiroNome}!`;
     showResponse();
-
-    /*     try {
-      await sendEmail(
-        "artepatrick@gmail.com",
-        "artepatrick@gmail.com",
-        `Confirmação de presença`,
-        `O convidado ${primeiroNome} confirmou!`
-      );
-    } catch (error) {
-      console.log(`\nOps!\nErro na hora de rodar a função sendmail()\nVeja o erro:\n${error}`)
-    } */
   });
 }
 
@@ -275,6 +272,7 @@ function getFirstWord(str) {
 }
 
 async function getUsers() {
+  console.log("Getting users...");
   const response = await fetch(
     "https://artepatrick-mongodb-api.herokuapp.com/niver",
     {
@@ -454,7 +452,7 @@ function triggerData(diaTrigger, mesTrigger, anoTrigger, horaTrigger) {
   }
 }
 
-async function sendEmail(from, to, subject, message) {
+/* async function sendEmail(from, to, subject, message) {
   let requestData;
   if (!from || !to) {
     console.log("from ou to vieram vazios e vamos adicionar valores padrão");
@@ -487,4 +485,4 @@ async function sendEmail(from, to, subject, message) {
   } catch (error) {
     console.log(`deu ruim na tentativa de fazer o fetch...\n${error}`);
   }
-}
+} */
