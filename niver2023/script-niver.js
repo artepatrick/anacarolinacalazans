@@ -6,6 +6,7 @@ if (typeof navigator !== "undefined" && navigator.userAgentData) {
   // Fallback to navigator.userAgent for unsupported browsers
   const userAgent = navigator.userAgent;
 }
+
 document.cookie = "firstName=BobEsponja; SameSite=None; Secure expires=true";
 
 const form = document.getElementById("apiForm");
