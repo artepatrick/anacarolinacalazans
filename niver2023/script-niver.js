@@ -86,8 +86,6 @@ if (!form) {
       ipAddress = await getIPAddress();
       region = await getRegion();
     }catch{
-      ipAddress = "";
-      region = "";
       console.log("Não foi possível obter o IP ou a região");
     }
     
@@ -273,20 +271,24 @@ function getFirstWord(str) {
 
 async function getUsers() {
   console.log("Getting users...");
-  const response = await fetch(
-    "https://artepatrick-mongodb-api.herokuapp.com/niver",
-    {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
+  try{
+    const response = await fetch(
+      "https://artepatrick-mongodb-api.herokuapp.com/niver",
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json", "Access-Control-Allow-Headers": "Content-Type, Authorization"  },
+      }
+    );
+  
+    if (!response.ok) {
+      console.log("ATENÇÃO!!\nnão rolou o Fetch!");
+      throw new Error("Failed to fetch user data");
     }
-  );
-
-  if (!response.ok) {
-    console.log("ATENÇÃO!!\nnão rolou o Fetch!");
-    throw new Error("Failed to fetch user data");
+    const data = await response.json();
+    return data;
+  }catch(error){
+    console.log(`Erro ao tentar pegar os usuários do banco de dados\n${error}`);
   }
-  const data = await response.json();
-  return data;
 }
 
 function displayUserNames(data) {
