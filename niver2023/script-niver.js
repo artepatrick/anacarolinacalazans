@@ -346,6 +346,16 @@ function displayUserNames(data) {
           modalText.textContent = user.email;
           modal.appendChild(modalText);
 
+          listItem.addEventListener("mouseover", () => {
+            listItem.style.fontWeight = "bold";
+            listItem.style.cursor = "pointer";
+            listItem.style.color = "#F2C94C";
+          });
+          listItem.addEventListener("mouseout", () => {
+            listItem.style.fontWeight = "normal";
+            listItem.style.color = "#606060";
+          });
+
           check.addEventListener("mouseover", () => {
             modalText.textContent = user.email;
             modal.style.display = user.email ? "block" : "none";
@@ -356,10 +366,8 @@ function displayUserNames(data) {
           });
 
           check.addEventListener("click", () => {
-
             navigator.clipboard.writeText(user.email);
             alert("Email copiado para a área de transferência!\n\n" + user.email);
-
           });
 
           console.log(`Passando no for:\n${listItem}`);
