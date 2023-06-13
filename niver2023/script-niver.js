@@ -1,3 +1,11 @@
+if (typeof navigator !== "undefined" && navigator.userAgentData) {
+  // Use navigator.userAgentData when available
+  const userAgent = navigator.userAgentData;
+  // Access the desired information from userAgent
+} else {
+  // Fallback to navigator.userAgent for unsupported browsers
+  const userAgent = navigator.userAgent;
+}
 
 const form = document.getElementById("apiForm");
 const button = document.getElementById("button");
