@@ -357,8 +357,9 @@ function displayUserNames(data) {
           });
 
           check.addEventListener("mouseover", () => {
-            modalText.textContent = user.email;
-            modal.style.display = user.email ? "block" : "none";
+            let region = user.region ? ` | ${user.region}` : "";
+            modalText.textContent = `${user.email}${region}`;
+            modal.style.display = "block";
             console.log(`passando no mouseover - ${user.email}`);
           });
           check.addEventListener("mouseout", () => {
