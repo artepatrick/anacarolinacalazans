@@ -399,6 +399,22 @@
    max-width: 40%;
  }
 
+ .powered {
+   font-family: 'Cabin', sans-serif;
+   font-size: 0.8em;
+   color: #7e7e7e;
+   text-align: center;
+   margin: 20px 0;
+ }
+
+ .artepatrick,
+ a {
+   font-family: righteous, sans-serif;
+   font-weight: bolder;
+   text-decoration: none;
+   color: #27AE60;
+ }
+
  @media (max-width: 600px) {
    .countdown-timer {
      margin: 5px auto;
