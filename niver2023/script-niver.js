@@ -21,6 +21,8 @@ const confirmaPresenca = document.getElementById("presencaConfirmadaBox");
 const mensagemInicial = document.getElementById("mensagemInicial");
 const GDrive = document.getElementById("GDrive");
 
+
+
 if (!GDrive) {
   console.log(`Essa página não possui lógica de convidados`);
 } else {
@@ -276,7 +278,7 @@ async function getUsers() {
       "https://artepatrick-mongodb-api.herokuapp.com/niver",
       {
         method: "GET",
-        headers: { "Content-Type": "application/json", "Access-Control-Allow-Headers": "Content-Type, Authorization"  },
+        headers: { "Content-Type": "application/json"},
       }
     );
   
@@ -296,18 +298,22 @@ function displayUserNames(data) {
   const userList = document.getElementById("userList");
   const listContainer = document.getElementById("list");
   userList.innerHTML = "";
+  
 
   if (!userList) {
     console.log("Não existe exibição de lista nessa página.");
   } else {
     listContainer.style.display = "block";
-
+    
     try {
       console.log("Iniciando o for...");
-
+      
       for (let i = 0; i < data.length; i++) {
+        const check = document.createElement("img");
         const user = data[i];
-
+        check.src = "https://i.postimg.cc/pdqSqdtp/check.png";
+        check.style.width = "20px";
+        check.style.margin = "0 5px";
         console.log("Usuário isolado do banco de dados\n", user);
         const userName = user.userName;
         console.log(`\nuserName: ${userName}\n`);
@@ -320,10 +326,7 @@ function displayUserNames(data) {
         console.log(listItem);
         // Append the <li> element to the user list
         if (user.email) {
-          const check = document.createElement("img");
-          check.src = "https://i.postimg.cc/pdqSqdtp/check.png";
-          check.style.width = "20px";
-          check.style.margin = "0 5px";
+          
           listItem.appendChild(check);
           userList.appendChild(listItem);
           //ad a floating modal on the image hover
@@ -454,37 +457,4 @@ function triggerData(diaTrigger, mesTrigger, anoTrigger, horaTrigger) {
   }
 }
 
-/* async function sendEmail(from, to, subject, message) {
-  let requestData;
-  if (!from || !to) {
-    console.log("from ou to vieram vazios e vamos adicionar valores padrão");
-    requestData = {
-      from: "teste from",
-      to: "teste to",
-      subject,
-      message: "Teste de corpo de mensagem",
-    };
-  } else {
-    requestData = {
-      from: from,
-      to: to,
-      subject,
-      message: message,
-    };
-  }
-  console.log(requestData);
-  try {
-    const response = await fetch(
-      "https://artepatrick-mongodb-api.herokuapp.com/sendmail",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      }
-    );
-  } catch (error) {
-    console.log(`deu ruim na tentativa de fazer o fetch...\n${error}`);
-  }
-} */
+
