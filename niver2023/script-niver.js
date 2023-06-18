@@ -1,14 +1,3 @@
-if (typeof navigator !== "undefined" && navigator.userAgentData) {
-  // Use navigator.userAgentData when available
-  const userAgent = navigator.userAgentData;
-  // Access the desired information from userAgent
-} else {
-  // Fallback to navigator.userAgent for unsupported browsers
-  const userAgent = navigator.userAgent;
-}
-
-document.cookie = "firstName=BobEsponja; SameSite=None; Secure expires=true";
-
 const form = document.getElementById("apiForm");
 const button = document.getElementById("button");
 const inputName = document.getElementById("name");
@@ -21,50 +10,9 @@ const confirmaPresenca = document.getElementById("presencaConfirmadaBox");
 const mensagemInicial = document.getElementById("mensagemInicial");
 const GDrive = document.getElementById("GDrive");
 
-if (!GDrive) {
-  console.log(`Essa página não possui lógica de convidados`);
-} else {
-  GDrive.style.display = "none";
-
-  const inicioDaFesta = triggerData(24, 6, 2023, 13);
-  console.log(`Início da festa: ${inicioDaFesta}`);
-  const finalDaFesta = triggerData(24, 6, 2023, 17);
-  console.log(`\nFinal da Festa: ${finalDaFesta}`);
-
-  if (inicioDaFesta && !finalDaFesta) {
-    formulario.style.display = "none";
-    mensagemInicial.innerHTML = `<h1 style="color: #9B51E0">Já começou!</h1>
-    <p>Já estamos aqui... Sò vem</p>
-    <p>A festa já começou, não precisa fazer reserva. Basta comparecer no <a style="text-decoration: none;" href="#addressBox"><span style="font-weight:bolder; font-weight: bolder; color: #9B51E0;">Prainha botiquim</span></a></p>
-    <p><a style="text-decoration: none;" href="#addressBox"><span style="font-weight:bolder; font-weight: bolder; color: #9B51E0;">Clique</span></a> para ver o endereço<p/>`;
-  }
-
-  if (finalDaFesta) {
-    formulario.style.display = "none";
-    GDrive.style.display = "block";
-    mensagemInicial.innerHTML = `<h1 style="color: #9B51E0">Obrigado Pela presença!</h1>
-      <p>Foi muito bom porder compartilhar um início de ciclo com amigos e família.</p>
-      <p>Quem me conhece sabe a importância das pessoas para mim!</p>
-      <p>Preparamos uma pasta com as fotos tiradas no dia. FIque à vontade para baixar e compartilhar.<p/>`;
-  }
-}
-
-listContainer.style.display = "none";
-statusResponse.style.display = "none";
-if (confirmaPresenca) {
-  confirmaPresenca.style.display = "none";
-}
-
-if (!form) {
-  console.log("não existe form nessa página...");
-} else {
-  form.addEventListener("click", () => {
-    statusResponse.textContent = "";
-    statusResponse.style.opacity = "1";
-    statusResponse.style.display = "none";
-    listContainer.style.display = "none";
-  });
-}
+confereData();
+checaEOcultaForm();
+ocultaListContainer();
 
 if (!form) {
   console.log("não existe form nessa página...");
@@ -80,17 +28,26 @@ if (!form) {
     const email = document.getElementById("email").value;
     const primeiroNome = getFirstWord(name);
     const time = new Date();
-    const ipAddress = "";;
-    const region = ""; 
-    try{
+    const ipAddress = "";
+    const region = "";
+
+    try {
       ipAddress = await getIPAddress();
       region = await getRegion();
-    }catch{
+    } catch {
       console.log("Não foi possível obter o IP ou a região");
     }
-    
+
     try {
-      const envio = await gravaUser(name, email, region, ipAddress, time);
+      getUserAgent();
+      const envio = await gravaUser(
+        name,
+        email,
+        region,
+        ipAddress,
+        time,
+        userAgent
+      );
       console.log(`Envio realizado para o banco: \n${JSON.stringify(envio)}`);
       if (!envio) {
         console.log('ATENÇÃO!\nA API não retornou nada no POST do "/User"...');
@@ -141,6 +98,7 @@ async function gravaUser(name, email, region, ipAddress, time) {
     region,
     ipAddress,
     time,
+    userAgent,
   };
   console.log(`Response\n${JSON.stringify(response)}`);
 
@@ -191,7 +149,7 @@ function getCurrentPosition() {
 function getRegionByCoords({ latitude, longitude }) {
   return fetch(
     `https://geolocation-api-provider.com/region?lat=${latitude}&lon=${longitude}`
-  ).then(response => response.json());
+  ).then((response) => response.json());
 }
 
 async function getIPAddress() {
@@ -270,41 +228,39 @@ function getFirstWord(str) {
 
 async function getUsers() {
   console.log("Getting users...");
-  try{
+  try {
     const response = await fetch(
       "https://artepatrick-mongodb-api.herokuapp.com/niver",
       {
         method: "GET",
-        headers: { "Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
       }
     );
-  
+
     if (!response.ok) {
       console.log("ATENÇÃO!!\nnão rolou o Fetch!");
       throw new Error("Failed to fetch user data");
     }
     const data = await response.json();
     return data;
-  }catch(error){
+  } catch (error) {
     console.log(`Erro ao tentar pegar os usuários do banco de dados\n${error}`);
   }
 }
 
 function displayUserNames(data) {
-
   const userList = document.getElementById("userList");
   const listContainer = document.getElementById("list");
   userList.innerHTML = "";
-  
 
   if (!userList) {
     console.log("Não existe exibição de lista nessa página.");
   } else {
     listContainer.style.display = "block";
-    
+
     try {
       console.log("Iniciando o for...");
-      
+
       for (let i = 0; i < data.length; i++) {
         const check = document.createElement("img");
         const user = data[i];
@@ -323,7 +279,6 @@ function displayUserNames(data) {
         console.log(listItem);
         // Append the <li> element to the user list
         if (user.email) {
-          
           listItem.appendChild(check);
           userList.appendChild(listItem);
           //ad a floating modal on the image hover
@@ -368,7 +323,9 @@ function displayUserNames(data) {
 
           check.addEventListener("click", () => {
             navigator.clipboard.writeText(user.email);
-            alert("Email copiado para a área de transferência!\n\n" + user.email);
+            alert(
+              "Email copiado para a área de transferência!\n\n" + user.email
+            );
           });
 
           console.log(`Passando no for:\n${listItem}`);
@@ -415,7 +372,6 @@ function displayUserNames(data) {
     check.addEventListener("mouseout", () => {
       modal.style.display = "none";
     });
-
   }
 }
 
@@ -452,4 +408,75 @@ function triggerData(diaTrigger, mesTrigger, anoTrigger, horaTrigger) {
       return false;
     }
   }
+}
+
+function confereData() {
+  if (!GDrive) {
+    console.log(`Essa página não possui lógica de convidados`);
+  } else {
+    GDrive.style.display = "none";
+
+    const inicioDaFesta = triggerData(24, 6, 2023, 13);
+    console.log(`Início da festa: ${inicioDaFesta}`);
+    const finalDaFesta = triggerData(24, 6, 2023, 17);
+    console.log(`\nFinal da Festa: ${finalDaFesta}`);
+
+    if (inicioDaFesta && !finalDaFesta) {
+      formulario.style.display = "none";
+      mensagemInicial.innerHTML = `<h1 style="color: #9B51E0">Já começou!</h1>
+      <p>Já estamos aqui... Sò vem</p>
+      <p>A festa já começou, não precisa fazer reserva. Basta comparecer no <a style="text-decoration: none;" href="#addressBox"><span style="font-weight:bolder; font-weight: bolder; color: #9B51E0;">Prainha botiquim</span></a></p>
+      <p><a style="text-decoration: none;" href="#addressBox"><span style="font-weight:bolder; font-weight: bolder; color: #9B51E0;">Clique</span></a> para ver o endereço<p/>`;
+    }
+
+    if (finalDaFesta) {
+      formulario.style.display = "none";
+      GDrive.style.display = "block";
+      mensagemInicial.innerHTML = `<h1 style="color: #9B51E0">Obrigado Pela presença!</h1>
+        <p>Foi muito bom porder compartilhar um início de ciclo com amigos e família.</p>
+        <p>Quem me conhece sabe a importância das pessoas para mim!</p>
+        <p>Preparamos uma pasta com as fotos tiradas no dia. FIque à vontade para baixar e compartilhar.<p/>`;
+    }
+  }
+}
+
+function checaEOcultaForm() {
+  if (!form) {
+    console.log("não existe form nessa página...");
+  } else {
+    form.addEventListener("click", () => {
+      statusResponse.textContent = "";
+      statusResponse.style.opacity = "1";
+      statusResponse.style.display = "none";
+      listContainer.style.display = "none";
+    });
+  }
+}
+
+function ocultaListContainer() {
+  listContainer.style.display = "none";
+  statusResponse.style.display = "none";
+  if (confirmaPresenca) {
+    confirmaPresenca.style.display = "none";
+  }
+}
+
+function getUserAgent() {
+  let userAgent;
+  let protoUserAgent;
+  if (typeof navigator !== "undefined" && navigator.userAgentData) {
+    // Use navigator.userAgentData when available
+    protoUserAgent = navigator.userAgentData;
+    userAgent = JSON.stringify(protoUserAgent);
+    // Access the desired information from userAgent
+  } else {
+    // Fallback to navigator.userAgent for unsupported browsers
+    protoUserAgent = navigator.userAgent.json();
+    userAgent = JSON.stringify(protoUserAgent);
+  }
+
+  console.log(`\n=== userAgent ===`);
+  console.log(userAgent);
+  console.log(`\n\n=== BRUTO ===`);
+  console.log(protoUserAgent);
 }
