@@ -21,8 +21,6 @@ const confirmaPresenca = document.getElementById("presencaConfirmadaBox");
 const mensagemInicial = document.getElementById("mensagemInicial");
 const GDrive = document.getElementById("GDrive");
 
-
-
 if (!GDrive) {
   console.log(`Essa página não possui lógica de convidados`);
 } else {
@@ -195,7 +193,6 @@ function getRegionByCoords({ latitude, longitude }) {
     `https://geolocation-api-provider.com/region?lat=${latitude}&lon=${longitude}`
   ).then(response => response.json());
 }
-
 
 async function getIPAddress() {
   try {
@@ -456,5 +453,3 @@ function triggerData(diaTrigger, mesTrigger, anoTrigger, horaTrigger) {
     }
   }
 }
-
-
