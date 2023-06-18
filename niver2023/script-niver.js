@@ -38,8 +38,9 @@ if (!form) {
       console.log("Não foi possível obter o IP ou a região");
     }
 
+    
     try {
-      getUserAgent();
+      const userAgent = getSystemUserAgent();
       const envio = await gravaUser(
         name,
         email,
@@ -47,23 +48,17 @@ if (!form) {
         ipAddress,
         time,
         userAgent
-      );
-      console.log(`Envio realizado para o banco: \n${JSON.stringify(envio)}`);
-      if (!envio) {
-        console.log('ATENÇÃO!\nA API não retornou nada no POST do "/User"...');
-      } else {
-        console.log(`(!envio) = false - ;)`);
+        );
+        console.log(`Envio realizado para o banco: \n${JSON.stringify(envio)}`);
+        if (!envio) {
+          console.log('ATENÇÃO!\nA API não retornou nada no POST do "/User"...');
+        } else {
+          console.log(`(!envio) = false - ;)`);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
-    }
-    button.textContent = "Eu vou!";
-    button.style = "background-color: #9B51E0";
-    button.ariaDisabled = false;
-    inputName.value = "";
-    inputEmail.value = "";
-    confirmaPresenca.style.display = "block";
-    statusResponse.textContent = `Que bom que você virá, ${primeiroNome}!`;
+    frontNormalState(primeiroNome);
     showResponse();
   });
 }
@@ -91,7 +86,7 @@ if (!button2) {
   });
 }
 
-async function gravaUser(name, email, region, ipAddress, time) {
+async function gravaUser(name, email, region, ipAddress, time, userAgent) {
   const response = {
     userName: name,
     email: email,
@@ -153,14 +148,16 @@ function getRegionByCoords({ latitude, longitude }) {
 }
 
 async function getIPAddress() {
-  try {
+  const standardResponse = "captura ip temporariamente desativada"
+  return standardResponse;
+/*   try {
     const response = await fetch("https://api.ipify.org?format=json");
     const data = await response.json();
     return data.ip;
   } catch (error) {
     console.error("Error getting IP address: ", error);
     return null;
-  }
+  } */
 }
 
 function getTimeRemaining(endTime) {
@@ -461,7 +458,7 @@ function ocultaListContainer() {
   }
 }
 
-function getUserAgent() {
+function getSystemUserAgent() {
   let userAgent;
   let protoUserAgent;
   if (typeof navigator !== "undefined" && navigator.userAgentData) {
@@ -479,4 +476,16 @@ function getUserAgent() {
   console.log(userAgent);
   console.log(`\n\n=== BRUTO ===`);
   console.log(protoUserAgent);
+
+  return userAgent;
+}
+
+function frontNormalState(primeiroNome) {
+  button.textContent = "Eu vou!";
+  button.style = "background-color: #9B51E0";
+  button.ariaDisabled = false;
+  inputName.value = "";
+  inputEmail.value = "";
+  confirmaPresenca.style.display = "block";
+  statusResponse.textContent = `Que bom que você virá, ${primeiroNome}!`;
 }
