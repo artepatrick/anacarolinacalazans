@@ -38,7 +38,7 @@ if (!form) {
 
     try {
       const userAgent = getSystemUserAgent();
-      const envio = await gravaUser(name, email, time, userAgent);
+      const envio = await gravaUser(name, email, userAgent);
       console.log(`Envio realizado para o banco: \n${JSON.stringify(envio)}`);
       if (!envio) {
         console.log('ATENÇÃO!\nA API não retornou nada no POST do "/User"...');
@@ -76,12 +76,13 @@ if (!button2) {
   });
 }
 
-async function gravaUser(name, email, region, ipAddress, time, userAgent) {
+async function gravaUser(name, email, userAgent) {
+  const getTime = new Date();
   const response = {
     userName: name,
     email: email,
-    time,
     userAgent,
+    time: getTime,
   };
   console.log(`Response\n${JSON.stringify(response)}`);
 
