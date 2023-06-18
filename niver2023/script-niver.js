@@ -28,36 +28,26 @@ if (!form) {
     const email = document.getElementById("email").value;
     const primeiroNome = getFirstWord(name);
     const time = new Date();
-    const ipAddress = "";
-    const region = "";
 
     try {
-      ipAddress = await getIPAddress();
-      region = await getRegion();
+      // ipAddress = await getIPAddress();
+      // region = await getRegion();
     } catch {
       console.log("Não foi possível obter o IP ou a região");
     }
 
-    
     try {
       const userAgent = getSystemUserAgent();
-      const envio = await gravaUser(
-        name,
-        email,
-        region,
-        ipAddress,
-        time,
-        userAgent
-        );
-        console.log(`Envio realizado para o banco: \n${JSON.stringify(envio)}`);
-        if (!envio) {
-          console.log('ATENÇÃO!\nA API não retornou nada no POST do "/User"...');
-        } else {
-          console.log(`(!envio) = false - ;)`);
-        }
-      } catch (error) {
-        console.log(error);
+      const envio = await gravaUser(name, email, time, userAgent);
+      console.log(`Envio realizado para o banco: \n${JSON.stringify(envio)}`);
+      if (!envio) {
+        console.log('ATENÇÃO!\nA API não retornou nada no POST do "/User"...');
+      } else {
+        console.log(`(!envio) = false - ;)`);
       }
+    } catch (error) {
+      console.log(error);
+    }
     frontNormalState(primeiroNome);
     showResponse();
   });
@@ -90,8 +80,6 @@ async function gravaUser(name, email, region, ipAddress, time, userAgent) {
   const response = {
     userName: name,
     email: email,
-    region,
-    ipAddress,
     time,
     userAgent,
   };
@@ -111,53 +99,6 @@ async function gravaUser(name, email, region, ipAddress, time, userAgent) {
     )}\nretorno da api:\n${apiReturn}`
   );
   return apiReturn;
-}
-
-async function getRegion() {
-  try {
-    const position = await getCurrentPosition();
-    return await getRegionByCoords(position.coords);
-  } catch (error) {
-    handleLocationError(error);
-    return "Acesso à localização negado pelo usuário";
-  }
-}
-
-function handleLocationError(error) {
-  if (error.code === 1) {
-    console.log("Usuário negou fornecer a localização\nerro:\n", error);
-  } else {
-    console.error("Error getting region:", error);
-  }
-}
-
-function getCurrentPosition() {
-  return new Promise((resolve, reject) => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(resolve, reject);
-    } else {
-      reject(new Error("Geolocation is not supported"));
-    }
-  });
-}
-
-function getRegionByCoords({ latitude, longitude }) {
-  return fetch(
-    `https://geolocation-api-provider.com/region?lat=${latitude}&lon=${longitude}`
-  ).then((response) => response.json());
-}
-
-async function getIPAddress() {
-  const standardResponse = "captura ip temporariamente desativada"
-  return standardResponse;
-/*   try {
-    const response = await fetch("https://api.ipify.org?format=json");
-    const data = await response.json();
-    return data.ip;
-  } catch (error) {
-    console.error("Error getting IP address: ", error);
-    return null;
-  } */
 }
 
 function getTimeRemaining(endTime) {
