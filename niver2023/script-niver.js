@@ -327,26 +327,28 @@ function triggerData(diaTrigger, mesTrigger, anoTrigger, horaTrigger) {
   const ano = today.getFullYear();
 
   console.log(
-    `Iniciando verificação de dia...\nData Target: ${diaTrigger}/${mesTrigger}/${anoTrigger}, às ${hora} horas\nData de hoje: ${dia}/${mes}/${ano}`
+    `Iniciando verificação de dia...\nData Target:\ndia:${diaTrigger}\nmês:${mesTrigger}\nano:${anoTrigger}\nhora: ${horaTrigger}\nData de hoje: ${dia}/${mes}/${ano} | hora:${hora}\n`
   );
 
-  if (dia === diaTrigger && ano >= anoTrigger && mes >= mesTrigger) {
+  if (ano > anoTrigger) {
     console.log("Passou na primeira lógica!");
     return true;
   } else {
-    if (
-      dia >= diaTrigger &&
-      ano >= anoTrigger &&
-      mes >= mesTrigger &&
-      hora >= horaTrigger
-    ) {
-      console.log("Trigger de data  do segundo if atingida!");
+    if (mes > mesTrigger) {
+      console.log("Passou na segunda lógica!");
       return true;
-    } else {
-      console.log(`Ainda não chegou na data aguardada!`);
-      return false;
+    }else{
+      if (dia > diaTrigger) {
+        console.log("Trigger de data  do segundo if atingida!");
+        return true;
+      } else {
+        if (dia === diaTrigger && hora >= horaTrigger) {
+          console.log("Trigger de data  do segundo if atingida!");
+          return true;
+        }else{ return false; console.log(`Ainda não chegou na data aguardada!`);}
+      }
     }
-  }
+  }  
 }
 
 function confereData() {
@@ -355,7 +357,7 @@ function confereData() {
   } else {
     GDrive.style.display = "none";
 
-    const inicioDaFesta = triggerData(24, 6, 2023, 13);
+    const inicioDaFesta = triggerData(24, 6, 2023, 6);
     console.log(`Início da festa: ${inicioDaFesta}`);
     const finalDaFesta = triggerData(24, 6, 2023, 17);
     console.log(`\nFinal da Festa: ${finalDaFesta}`);
@@ -363,16 +365,18 @@ function confereData() {
     if (inicioDaFesta && !finalDaFesta) {
       formulario.style.display = "none";
       mensagemInicial.innerHTML = `<h1 style="color: #9B51E0">Já começou!</h1>
-      <p>Já estamos aqui... Sò vem</p>
+      <p>Já estamos aqui... Só vem</p>
       <p>A festa já começou, não precisa fazer reserva. Basta comparecer no <a style="text-decoration: none;" href="#addressBox"><span style="font-weight:bolder; font-weight: bolder; color: #9B51E0;">Prainha botiquim</span></a></p>
-      <p><a style="text-decoration: none;" href="#addressBox"><span style="font-weight:bolder; font-weight: bolder; color: #9B51E0;">Clique</span></a> para ver o endereço<p/>`;
+      <p><a style="text-decoration: none;" href="#addressBox"><span style="font-weight:bolder; font-weight: bolder; color: #9B51E0;">Clique</span></a> para ver o endereço<p/>
+      <p>Guarde esse link e volte aqui mais tarde para ver as fotos!</p>`
+
     }
 
     if (finalDaFesta) {
       formulario.style.display = "none";
       GDrive.style.display = "block";
       mensagemInicial.innerHTML = `<h1 style="color: #9B51E0">Obrigado Pela presença!</h1>
-        <p>Foi muito bom porder compartilhar um início de ciclo com amigos e família.</p>
+        <p>Foi muito bom porder compartilhar um novo início de ciclo com amigos e família.</p>
         <p>Quem me conhece sabe a importância das pessoas para mim!</p>
         <p>Preparamos uma pasta com as fotos tiradas no dia. FIque à vontade para baixar e compartilhar.<p/>`;
     }
