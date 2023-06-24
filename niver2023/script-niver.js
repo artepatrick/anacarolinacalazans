@@ -357,7 +357,7 @@ function confereData() {
   } else {
     GDrive.style.display = "none";
 
-    const inicioDaFesta = triggerData(24, 6, 2023, 6);
+    const inicioDaFesta = triggerData(24, 6, 2023, 13);
     console.log(`Início da festa: ${inicioDaFesta}`);
     const finalDaFesta = triggerData(24, 6, 2023, 17);
     console.log(`\nFinal da Festa: ${finalDaFesta}`);
