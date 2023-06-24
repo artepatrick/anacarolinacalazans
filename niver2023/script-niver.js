@@ -9,6 +9,7 @@ const formulario = document.getElementById("Formulario");
 const confirmaPresenca = document.getElementById("presencaConfirmadaBox");
 const mensagemInicial = document.getElementById("mensagemInicial");
 const GDrive = document.getElementById("GDrive");
+const countdownContainer = document.getElementById("countdown-container");
 
 confereData();
 checaEOcultaForm();
@@ -359,11 +360,13 @@ function confereData() {
 
     const inicioDaFesta = triggerData(24, 6, 2023, 13);
     console.log(`Início da festa: ${inicioDaFesta}`);
-    const finalDaFesta = triggerData(24, 6, 2023, 17);
+    const finalDaFesta = triggerData(24, 6, 2023, 16);
     console.log(`\nFinal da Festa: ${finalDaFesta}`);
 
     if (inicioDaFesta && !finalDaFesta) {
       formulario.style.display = "none";
+      countdownContainer.style.display = "none";
+      GDrive.style.display = "none";
       mensagemInicial.innerHTML = `<h1 style="color: #9B51E0">Já começou!</h1>
       <p>Já estamos aqui... Só vem</p>
       <p>A festa já começou, não precisa fazer reserva. Basta comparecer no <a style="text-decoration: none;" href="#addressBox"><span style="font-weight:bolder; font-weight: bolder; color: #9B51E0;">Prainha botiquim</span></a></p>
@@ -374,6 +377,7 @@ function confereData() {
 
     if (finalDaFesta) {
       formulario.style.display = "none";
+      countdownContainer.style.display = "none";
       GDrive.style.display = "block";
       mensagemInicial.innerHTML = `<h1 style="color: #9B51E0">Obrigado Pela presença!</h1>
         <p>Foi muito bom porder compartilhar um novo início de ciclo com amigos e família.</p>
