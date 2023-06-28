@@ -160,7 +160,7 @@ footer {
     margin: 0 auto;
     max-width: 500px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: space-between;
     font-family: 'Roboto', sans-serif;
@@ -280,3 +280,18 @@ a:hover {
 /* .topico h2::before {
     content: "\066D    ";
 } */
+
+.powered {
+    font-family: 'Cabin', sans-serif;
+    font-size: 0.8em;
+    color: #ffffff;
+    text-align: center;
+    margin: 20px 0;
+  }
+
+  .artepatrick, a {
+    font-family: righteous, sans-serif;
+    font-weight:lighter;
+    text-decoration: none;
+    color: #27AE60;
+  }
