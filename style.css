@@ -95,11 +95,13 @@ header {
 }
 
 .containerSimples {
-    display: flex;
-    flex-direction: column;
     font-family: 'Roboto', sans-serif;
     padding-bottom: 5px;
     font-size: small;
+    background-color: #27AE60;
+}
+.linkClaro {
+    margin: 0 15px;
 }
 
 .box p {
@@ -157,7 +159,7 @@ footer {
     margin: 0 auto;
     max-width: 500px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
     font-family: 'Roboto', sans-serif;
@@ -283,7 +285,9 @@ a:hover {
     font-size: 0.8em;
     color: #ffffff;
     text-align: center;
-    margin: 20px 0;
+    margin: 10px 0;
+    margin-bottom: 0px;
+    width: 100%;
   }
 
   .artepatrick, a {
