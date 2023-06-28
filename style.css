@@ -87,8 +87,6 @@ header {
     /* box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.15); */
     border-radius: 8px;
     padding: 20px 30px;
-    display: flex;
-    flex-direction: column;
     align-items: center;
     min-width: 250px;
     /* height: calc(100vh - 345px); */
@@ -97,11 +95,10 @@ header {
 }
 
 .containerSimples {
-    max-width: 500px;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
     font-family: 'Roboto', sans-serif;
     padding-bottom: 5px;
-    padding-left: 30px;
     font-size: small;
 }
 
