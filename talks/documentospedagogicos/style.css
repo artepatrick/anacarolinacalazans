@@ -1,0 +1,339 @@
+header.banner {
+    background-color: #0E0423;
+    padding: 30px 50px 20px;
+    text-align: center;
+    min-width: 250px;
+}
+
+body {
+    font-family: 'Sono', sans-serif;
+    color: rgb(51, 51, 51);
+}
+
+h1 {
+    font-family: 'Poppins', sans-serif;
+    margin: 8px 0;
+    padding-left: 5px;
+    padding-right: 5px;
+    line-height: 115%;
+    cursor: context-menu;
+}
+
+h2 {
+    font-family: 'Poppins', sans-serif;
+    margin: 5px 0;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-bottom: 20px;
+    transition: 0.3s all;
+    cursor: context-menu;
+}
+
+h2:hover {
+    color: #ff5100;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+
+h2::before {
+    font-family: 'Raleway Dots', cursive;
+    font-size: x-large;
+    color: #d43b73;
+    content: "[  ";
+}
+
+h2::after {
+    font-family: 'Raleway Dots', cursive;
+    font-size: x-large;
+    color: #d43b73;
+    content: "  ]";
+}
+
+
+h3 {
+    margin: 5px 0;
+    padding-bottom: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: context-menu;
+}
+
+strong {
+    transition: 0.2s all;
+    color: #BB6BD9;
+}
+
+strong:hover {
+    transition: 0.2s all;
+    cursor: context-menu;
+    color: #9FE090;
+}
+
+p {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+img {
+    margin-bottom: 10px;
+}
+
+.container {
+    padding: 10px;
+}
+
+.fotoPerfilBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+img.fotoPerfil {
+    width: 200px;
+    border-radius: 500px;
+    border: white 20px;
+    border-width: 5px;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.15);
+    transition: 0.8s all;
+}
+
+
+
+img.fotoPerfil:hover {
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+
+div.imagem {
+    border-radius: 8px;
+    background-color: rgb(243, 243, 243);
+    padding: 30px 30px;
+    display: flex;
+    flex-direction: column;
+    min-width: 250px;
+    max-width: 850px;
+    margin: 10px auto;
+}
+
+div.imagem iframe {
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+}
+
+div.imagem p {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+img.todasAsImagens {
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
+    transition: 0.5s all;
+}
+
+#imagemDupla {
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.25);
+    transition: 0.5s all;
+}
+
+#imagemDupla:hover {
+    transform: scale(1);
+}
+
+
+img.todasAsImagens:hover {
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.45);
+}
+
+a.linkEmLinha {
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    color: #D91E63;
+    transition: 0.2s all;
+}
+
+a.linkEmLinha:hover {
+    color: #9FE090;
+    ;
+}
+
+.lottieEmLinha {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+a.standardButton {
+    color: rgb(97, 97, 97);
+    width: 200px;
+    display: flex;
+    font-family: 'Roboto', sans-serif;
+    text-decoration: none;
+    padding: 10px 0;
+    text-align: right;
+    justify-content: center;
+    background-color: white;
+    margin: 20px auto;
+    margin-bottom: 5px;
+    border-radius: 50px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.15);
+    transition: 0.5s all;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+a.standardButton:hover {
+    color: #D91E63;
+    box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+ul.lista {
+    list-style-position: outside;
+    list-style-image: url('https://i.postimg.cc/MHqTwy5K/check.png');
+    padding-left: 30px;
+    padding-bottom: 8px;
+}
+
+ul.lista li {
+    transition: 0.5s all;
+    cursor: context-menu;
+}
+
+ul.lista li:hover {
+    color: #9FE090;
+}
+
+
+div.bloco {
+    border-radius: 800px;
+    background-color: rgb(243, 243, 243);
+    padding: 30px 50px 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 20px;
+    min-width: 250px;
+    max-width: 1100px;
+    margin: 10px auto;
+}
+
+div.imagemMenor {
+    margin: 0 auto;
+}
+
+div.lottieBoxHorizontal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+lottie-player.lottieIcon {
+    width: 60px;
+    padding-left: 0 5px;
+}
+
+div.lottieBox {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lottiebox img{
+    width: 150px;
+}
+
+.headerStyles h1, h2, h3 {
+    font-family: Righteous;
+    color: #BB6BD9;
+}
+
+.headerStyles H3{
+    color: #FFFFFF;
+}
+
+lottie-player.lottieButton {
+    width: 30px;
+    padding-right: 5px;
+}
+
+lottie-player.lottie {
+    width: 150px;
+    height: 150px;
+    transition: 0.5s all;
+}
+
+lottie-player.lottie:hover {
+    border-radius: 150px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.whatsapp {
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    transition: 0.3s all;
+    cursor: context-menu;
+}
+
+div.whatsapp:hover {
+    color: #D91E63;
+    text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.25);
+}
+
+footer {
+    background-color: #0E0423;
+    padding: 20px 0;
+}
+
+
+
+.footerContainer {
+    margin: 0 auto;
+    max-width: 500px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    font-family: 'Roboto', sans-serif;
+    padding-top: 10px;
+    color: white;
+    padding: 0 30px;
+}
+
+.footerText, a {
+    font-size: small;
+    padding: 5px;
+    color: #ffffff;
+}
+
+.footerSide {
+    max-width: 400px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+}
+
+.floatingWhats {
+    width: 50px;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    opacity: 100%;
+    transition: 0.3s all;
+    z-index: 12;
+}
+
+.floatingWhats:hover {
+    opacity: 100%;
+}
+
+.iconeWhats {
+    width: 410px;
+
+}
