@@ -62,6 +62,11 @@ async function toggleStatus(id, currentStatus) {
   }
 }
 
+// Make functions available globally
+window.toggleStatus = toggleStatus;
+window.viewDetails = viewDetails;
+window.deleteParticipant = deleteParticipant;
+
 // Function to load participants data
 async function loadParticipants() {
   try {
