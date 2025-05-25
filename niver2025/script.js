@@ -1,5 +1,5 @@
 // Initialize Supabase client
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.0";
 
 // Load environment variables
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
