@@ -152,6 +152,61 @@ input:focus {
     background-color: #2f855a;
 }
 
+.countdown-section {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f6f8ff 0%, #f0f4ff 100%);
+    border-radius: 1rem;
+    box-shadow: 0 4px 15px rgba(128, 90, 213, 0.1);
+}
+
+.countdown-section h2 {
+    color: var(--purple-500);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.countdown-container {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 1rem 0;
+}
+
+.countdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+}
+
+.countdown-item span:first-child {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--purple-500);
+    background: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(128, 90, 213, 0.1);
+    min-width: 80px;
+}
+
+.countdown-label {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--gray-500);
+    font-weight: 500;
+}
+
+.countdown-message {
+    color: var(--purple-500);
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-top: 1rem;
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 1rem;
@@ -168,5 +223,23 @@ input:focus {
     
     h1 {
         font-size: 1.5rem;
+    }
+    
+    .countdown-container {
+        gap: 0.75rem;
+    }
+    
+    .countdown-item {
+        min-width: 60px;
+    }
+    
+    .countdown-item span:first-child {
+        font-size: 1.75rem;
+        min-width: 60px;
+        padding: 0.4rem 0.75rem;
+    }
+    
+    .countdown-label {
+        font-size: 0.8rem;
     }
 } 
