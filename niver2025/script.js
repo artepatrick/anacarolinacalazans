@@ -53,24 +53,35 @@ document
       return;
     }
 
-    // Show warning if more than one name is provided
-    if (names.length > 1) {
-      alert("Atenção: Apenas o primeiro nome será salvo no sistema.");
-    }
-
     const formData = {
-      name: names[0], // Only send the first name
       phone: document.getElementById("phone").value,
       email: document.getElementById("email").value,
       created_at: new Date().toISOString(),
     };
 
     try {
-      const { data, error } = await supabase
-        .from("presence_confirmations")
-        .insert([formData]);
+      // Start a transaction by inserting the main confirmation
+      const { data: confirmationData, error: confirmationError } =
+        await supabase
+          .from("presence_confirmations")
+          .insert([formData])
+          .select()
+          .single();
 
-      if (error) throw error;
+      if (confirmationError) throw confirmationError;
+
+      // Insert all names
+      const namesData = names.map((name) => ({
+        presence_confirmation_id: confirmationData.id,
+        name: name,
+        created_at: new Date().toISOString(),
+      }));
+
+      const { error: namesError } = await supabase
+        .from("presence_confirmation_names")
+        .insert(namesData);
+
+      if (namesError) throw namesError;
 
       // Show success message
       alert("Presença confirmada com sucesso!");
