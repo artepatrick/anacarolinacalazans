@@ -6,6 +6,7 @@
     <title>Ana Carolina Calazans - Confirmação de Presença</title>
     <link rel="stylesheet" href="https://unpkg.com/@chakra-ui/css@2.0.0/dist/chakra-ui.min.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://minichat.tolky.to/css/style.css" />
 </head>
 <body>
     <div class="container">
@@ -45,5 +46,14 @@
 
     <script src="https://unpkg.com/@chakra-ui/css@2.0.0/dist/chakra-ui.min.js"></script>
     <script type="module" src="script.js"></script>
+    <script type="module" src="https://minichat.tolky.to/main.js" async></script>
+    <script>
+        window.tolky = window.tolky || {
+            config: {
+                slug: "calazans",
+                firstMessage: "Olá, em que posso ajudá-lo?",
+            },
+        };
+    </script>
 </body>
 </html>
