@@ -1,10 +1,13 @@
+-- Drop existing table and related objects
+DROP TABLE IF EXISTS presence_confirmations CASCADE;
+
 -- Create presence_confirmations table
 CREATE TABLE presence_confirmations (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     names JSONB NOT NULL DEFAULT '[]'::jsonb,
     phone VARCHAR(20) NOT NULL,
     email VARCHAR(255) NOT NULL,
-    count INTEGER NOT NULL DEFAULT 0,
+    status VARCHAR(20) NOT NULL DEFAULT 'pendente',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

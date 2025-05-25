@@ -54,34 +54,22 @@ document
     }
 
     const formData = {
+      names: names,
       phone: document.getElementById("phone").value,
       email: document.getElementById("email").value,
+      status: "pendente",
       created_at: new Date().toISOString(),
     };
 
     try {
-      // Start a transaction by inserting the main confirmation
-      const { data: confirmationData, error: confirmationError } =
-        await supabase
-          .from("presence_confirmations")
-          .insert([formData])
-          .select()
-          .single();
+      // Insert the confirmation
+      const { data, error } = await supabase
+        .from("presence_confirmations")
+        .insert([formData])
+        .select()
+        .single();
 
-      if (confirmationError) throw confirmationError;
-
-      // Insert all names
-      const namesData = names.map((name) => ({
-        presence_confirmation_id: confirmationData.id,
-        name: name,
-        created_at: new Date().toISOString(),
-      }));
-
-      const { error: namesError } = await supabase
-        .from("presence_confirmation_names")
-        .insert(namesData);
-
-      if (namesError) throw namesError;
+      if (error) throw error;
 
       // Show success message
       alert("Presença confirmada com sucesso!");
