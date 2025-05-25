@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ana Carolina Calazans - Confirmação de Presença</title>
+    <link rel="stylesheet" href="https://unpkg.com/@chakra-ui/css@2.0.0/dist/chakra-ui.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <div class="profile-section">
+                <img src="https://tolky.to/_next/image?url=https%3A%2F%2Fi.postimg.cc%2FT2tQppZB%2Fcarol-comprimida.jpg&w=1920&q=75" 
+                     alt="Ana Carolina Calazans" 
+                     class="profile-image">
+                <h1>Ana Carolina Calazans</h1>
+                <p class="subtitle">Confirme sua presença</p>
+            </div>
+
+            <form id="confirmationForm" class="form-container">
+                <div class="form-group">
+                    <label for="name">Nome Completo</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Telefone</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <button type="submit" class="submit-button">Confirmar Presença</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@chakra-ui/css@2.0.0/dist/chakra-ui.min.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
