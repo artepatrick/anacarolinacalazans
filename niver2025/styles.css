@@ -210,10 +210,12 @@ input:focus {
 @media (max-width: 768px) {
     .container {
         padding: 1rem;
+        padding-bottom: 5rem;
     }
     
     .content {
         padding: 1.5rem;
+        margin-bottom: 4rem;
     }
     
     .profile-image {
