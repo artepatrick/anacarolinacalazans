@@ -43,6 +43,25 @@ function getStatusBadge(status) {
   return `<span class="px-2 py-1 text-xs font-medium rounded-full ${config.color}">${config.text}</span>`;
 }
 
+// Function to toggle participant status
+async function toggleStatus(id, currentStatus) {
+  try {
+    const newStatus =
+      currentStatus === "confirmado" ? "pendente" : "confirmado";
+    const { error } = await supabase
+      .from("presence_confirmations")
+      .update({ status: newStatus })
+      .eq("id", id);
+
+    if (error) throw error;
+
+    loadParticipants(); // Reload the list to show updated status
+  } catch (error) {
+    console.error("Error toggling status:", error);
+    alert("Erro ao alterar status do participante");
+  }
+}
+
 // Function to load participants data
 async function loadParticipants() {
   try {
@@ -72,9 +91,9 @@ async function loadParticipants() {
         (participant) => `
             <tr>
                 <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm font-medium text-gray-900">${
-                      participant.names[0]
-                    }</div>
+                    <div class="text-sm font-medium text-gray-900">${participant.names.join(
+                      ", "
+                    )}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm text-gray-500">${
@@ -93,6 +112,15 @@ async function loadParticipants() {
                     <button class="text-purple-600 hover:text-purple-900 mr-3" onclick="viewDetails('${
                       participant.id
                     }')">Ver detalhes</button>
+                    <button class="text-green-600 hover:text-green-900 mr-3" onclick="toggleStatus('${
+                      participant.id
+                    }', '${participant.status}')">
+                        ${
+                          participant.status === "confirmado"
+                            ? "Marcar como Pendente"
+                            : "Confirmar Presença"
+                        }
+                    </button>
                     <button class="text-red-600 hover:text-red-900" onclick="deleteParticipant('${
                       participant.id
                     }')">Excluir</button>
