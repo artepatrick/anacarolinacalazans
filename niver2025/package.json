@@ -2,17 +2,23 @@
   "name": "niver2025",
   "version": "1.0.0",
   "description": "Site de confirmação de presença para Ana Carolina Calazans",
-  "main": "index.html",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "node server.js",
+    "start": "concurrently \"npm run server\" \"npm run dev\""
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.39.0"
+    "@supabase/supabase-js": "^2.39.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
   },
   "devDependencies": {
     "vite": "^5.0.0",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "concurrently": "^8.2.2"
   }
 } 

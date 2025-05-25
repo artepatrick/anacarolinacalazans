@@ -19,10 +19,14 @@
             </div>
 
             <form id="confirmationForm" class="form-container">
-                <div class="form-group">
-                    <label for="name">Nome Completo</label>
-                    <input type="text" id="name" name="name" required>
+                <div id="namesContainer">
+                    <div class="form-group">
+                        <label for="name">Nome Completo</label>
+                        <input type="text" class="name-input" name="name" required>
+                    </div>
                 </div>
+
+                <button type="button" id="addNameButton" class="add-name-button">+ Adicionar mais um nome</button>
 
                 <div class="form-group">
                     <label for="phone">Telefone</label>

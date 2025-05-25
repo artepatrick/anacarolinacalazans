@@ -1,9 +1,10 @@
 -- Create presence_confirmations table
 CREATE TABLE presence_confirmations (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    names JSONB NOT NULL DEFAULT '[]'::jsonb,
     phone VARCHAR(20) NOT NULL,
     email VARCHAR(255) NOT NULL,
+    count INTEGER NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

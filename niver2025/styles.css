@@ -107,6 +107,51 @@ input:focus {
     box-shadow: 0 4px 12px rgba(128, 90, 213, 0.3);
 }
 
+.name-input-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.name-input {
+    flex: 1;
+}
+
+.remove-name-button {
+    background-color: var(--red-500);
+    color: white;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.remove-name-button:hover {
+    background-color: #c53030;
+}
+
+.add-name-button {
+    background-color: var(--green-500);
+    color: white;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.add-name-button:hover {
+    background-color: #2f855a;
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 1rem;
