@@ -15,6 +15,7 @@ export default defineConfig({
     },
   },
   define: {
+    "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
     "import.meta.env.SUPABASE_URL": JSON.stringify(process.env.SUPABASE_URL),
     "import.meta.env.SUPABASE_ANON_KEY": JSON.stringify(
       process.env.SUPABASE_ANON_KEY
