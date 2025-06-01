@@ -1,18 +1,9 @@
-// Initialize Supabase client
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.0";
-import { config } from "../config.js";
-
-// Configuration
-const SUPABASE_URL = config.SUPABASE_URL;
-const SUPABASE_ANON_KEY = config.SUPABASE_ANON_KEY;
-
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  console.error(
-    "Missing required configuration. Please check your configuration values."
-  );
-}
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Import API service functions
+import {
+  getParticipants,
+  deleteParticipant as apiDeleteParticipant,
+  getParticipantCount,
+} from "../api.js";
 
 // Function to format date
 function formatDate(dateString) {
@@ -48,12 +39,20 @@ async function toggleStatus(id, currentStatus) {
   try {
     const newStatus =
       currentStatus === "confirmado" ? "pendente" : "confirmado";
-    const { error } = await supabase
-      .from("presence_confirmations")
-      .update({ status: newStatus })
-      .eq("id", id);
+    const response = await fetch(
+      `${window.location.origin}/api/participants/${id}/status`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: newStatus }),
+      }
+    );
 
-    if (error) throw error;
+    if (!response.ok) {
+      throw new Error("Failed to update status");
+    }
 
     loadParticipants(); // Reload the list to show updated status
   } catch (error) {
@@ -70,12 +69,7 @@ window.deleteParticipant = deleteParticipant;
 // Function to load participants data
 async function loadParticipants() {
   try {
-    const { data, error } = await supabase
-      .from("presence_confirmations")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (error) throw error;
+    const data = await getParticipants();
 
     // Calculate total number of people by summing up the length of names arrays
     const totalPeople = data.reduce(
@@ -153,13 +147,13 @@ async function loadParticipants() {
 // Function to view participant details
 async function viewDetails(id) {
   try {
-    const { data, error } = await supabase
-      .from("presence_confirmations")
-      .select("*")
-      .eq("id", id)
-      .single();
-
-    if (error) throw error;
+    const response = await fetch(
+      `${window.location.origin}/api/participants/${id}`
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch participant details");
+    }
+    const data = await response.json();
 
     // Show details in a modal or alert
     alert(`
@@ -178,13 +172,7 @@ async function viewDetails(id) {
 async function deleteParticipant(id) {
   if (confirm("Tem certeza que deseja excluir este participante?")) {
     try {
-      const { error } = await supabase
-        .from("presence_confirmations")
-        .delete()
-        .eq("id", id);
-
-      if (error) throw error;
-
+      await apiDeleteParticipant(id);
       alert("Participante excluído com sucesso!");
       loadParticipants(); // Reload the list
     } catch (error) {
