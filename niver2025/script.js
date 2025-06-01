@@ -27,11 +27,10 @@ updateCountdown(); // Initial update
 
 // Initialize Supabase client
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.0";
-import { config } from "./config.js";
 
 // Configuration
-const SUPABASE_URL = config.SUPABASE_URL;
-const SUPABASE_ANON_KEY = config.SUPABASE_ANON_KEY;
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   console.error(
@@ -63,7 +62,46 @@ document.getElementById("addNameButton").addEventListener("click", () => {
     });
 });
 
-// Form submission handler
+// Function to send notification using Tolky API
+async function sendTolkyNotification(userData) {
+  try {
+    const response = await fetch(
+      `${process.env.TOLKY_API_BASE_URL}/api/externalAPIs/public/externalNotificationAI`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.TOLKY_REASONING_TOKEN}`,
+        },
+        body: JSON.stringify({
+          data: [
+            {
+              userName: userData.names[0],
+              email: userData.email,
+              phone: userData.phone,
+              eventType: "birthday",
+              eventDate: "2025-06-28",
+            },
+          ],
+          generalInstructions:
+            "Estamos enviando uma confirmação de presença para um aniversário. Por favor, envie uma mensagem amigável confirmando a presença e agradecendo o interesse.",
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error("Error sending notification:", error);
+    throw error;
+  }
+}
+
+// Modify the form submission handler to include notification
 document
   .getElementById("confirmationForm")
   .addEventListener("submit", async (e) => {
@@ -97,6 +135,19 @@ document
         .single();
 
       if (error) throw error;
+
+      const reportPayload = {
+        data: [
+          {
+            userName: "Ana Carolina",
+            phone: "553199455764",
+          },
+        ],
+        generalInstructions: `Explique à Ana Carolina que mais um convidado`,
+      };
+
+      // Send notification using Tolky API
+      await sendTolkyNotification(reportPayload);
 
       // Show success message
       alert("Presença confirmada com sucesso!");
