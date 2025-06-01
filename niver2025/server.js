@@ -13,14 +13,33 @@ const port = process.env.PORT || 3000;
 
 // Initialize Supabase client
 const supabase = createClient(
-  process.env.VITE_SUPABASE_URL,
-  process.env.VITE_SUPABASE_ANON_KEY
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_KEY
 );
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: ["https://anacarolinacalazans.com.br", "http://localhost:3000"],
+    methods: ["GET", "DELETE", "POST", "OPTIONS"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(express.json());
 app.use(express.static(join(__dirname)));
+
+// Enable WebSocket upgrade
+app.use((req, res, next) => {
+  if (
+    req.headers.upgrade &&
+    req.headers.upgrade.toLowerCase() === "websocket"
+  ) {
+    res.setHeader("Upgrade", "websocket");
+    res.setHeader("Connection", "Upgrade");
+  }
+  next();
+});
 
 // API endpoint to get participants
 app.get("/api/participants", async (req, res) => {

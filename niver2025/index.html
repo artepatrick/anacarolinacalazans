@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ana Carolina Calazans - Confirmação de Presença</title>
+    <link rel="icon" type="image/svg+xml" href="./public/favicon.svg" />
     <link rel="stylesheet" href="https://unpkg.com/@chakra-ui/css@2.0.0/dist/chakra-ui.min.css">
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://minichat.tolky.to/css/style.css" />
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
@@ -62,7 +63,10 @@
                     <input type="email" id="email" name="email" required>
                 </div>
 
-                <button type="submit" class="submit-button">Confirmar Presença</button>
+                <button type="submit" class="submit-button" id="submitButton">
+                    <span class="button-text">Confirmar Presença</span>
+                    <span class="loading-spinner">Processando...</span>
+                </button>
             </form>
         </div>
     </div>
