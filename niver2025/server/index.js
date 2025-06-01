@@ -1,14 +1,17 @@
-import "dotenv/config";
+import { config } from "dotenv";
 import express from "express";
 import { createClient } from "@supabase/supabase-js";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import cors from "cors";
-import * as spotifyService from "./spotify-service.js";
-import { spotifyApi, getAuthUrl } from "./spotify-api.js";
+import * as spotifyService from "../spotify-service.js";
+import { spotifyApi, getAuthUrl } from "../spotify-api.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+// Load environment variables from the root .env file
+config({ path: join(__dirname, "..", ".env") });
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -23,9 +26,11 @@ console.log("Environment variables check:", {
   hasSpotifyClientId: !!process.env.SPOTIFY_CLIENT_ID,
   hasSpotifyClientSecret: !!process.env.SPOTIFY_CLIENT_SECRET,
   hasSpotifyRedirectUri: !!process.env.SPOTIFY_REDIRECT_URI,
+  hasSpotifyPlaylistId: !!process.env.SPOTIFY_PLAYLIST_ID,
   spotifyClientIdLength: process.env.SPOTIFY_CLIENT_ID?.length,
   spotifyClientSecretLength: process.env.SPOTIFY_CLIENT_SECRET?.length,
   spotifyRedirectUriLength: process.env.SPOTIFY_REDIRECT_URI?.length,
+  spotifyPlaylistIdLength: process.env.SPOTIFY_PLAYLIST_ID?.length,
 });
 
 // Initialize Supabase client
@@ -40,6 +45,8 @@ app.use(
     origin: [
       "https://anacarolinacalazans.com.br",
       "http://localhost:3000",
+      "http://localhost:3001",
+      "http://localhost:3002",
       "http://localhost:5173", // Vite default port
       "http://127.0.0.1:5173",
       "http://127.0.0.1:3000",
@@ -52,6 +59,13 @@ app.use(
 
 // Parse JSON bodies
 app.use(express.json());
+
+// Store tokens in memory (in production, you should use a database)
+let spotifyTokens = {
+  accessToken: null,
+  refreshToken: null,
+  expiresAt: null,
+};
 
 // API Routes - These must come BEFORE the static file serving
 // Get participants
@@ -83,12 +97,21 @@ app.get("/api/participants", async (req, res) => {
 // Add new participant
 app.post("/api/participants", async (req, res) => {
   try {
-    const { names, email, phone, status, created_at, updated_at } = req.body;
+    const {
+      names,
+      email,
+      phone,
+      status,
+      created_at,
+      updated_at,
+      musicSuggestions,
+    } = req.body;
 
     // Log the received data for debugging
     console.log("Received participant data:", req.body);
 
-    const { data, error } = await supabase
+    // Start a transaction
+    const { data: participant, error: participantError } = await supabase
       .from("presence_confirmations")
       .insert([
         {
@@ -102,12 +125,33 @@ app.post("/api/participants", async (req, res) => {
       ])
       .select();
 
-    if (error) {
-      console.error("Supabase error:", error);
-      throw error;
+    if (participantError) {
+      console.error("Supabase error:", participantError);
+      throw participantError;
     }
 
-    res.status(201).json(data[0]);
+    // If there are music suggestions, save them
+    if (musicSuggestions && musicSuggestions.length > 0) {
+      const musicSuggestionsData = musicSuggestions.map((suggestion) => ({
+        presence_confirmation_id: participant[0].id,
+        song_title: suggestion.song_title,
+        artist: suggestion.artist,
+        spotify_url: suggestion.spotify_url,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      }));
+
+      const { error: musicError } = await supabase
+        .from("music_suggestions")
+        .insert(musicSuggestionsData);
+
+      if (musicError) {
+        console.error("Error saving music suggestions:", musicError);
+        throw musicError;
+      }
+    }
+
+    res.status(201).json(participant[0]);
   } catch (error) {
     console.error("Error adding participant:", error);
     res.status(500).json({
@@ -232,14 +276,26 @@ app.get("/niver2025/callback", async (req, res) => {
       return res.redirect("/niver2025?error=no_code");
     }
 
+    console.log("Received authorization code, exchanging for tokens...");
+
     // Exchange the code for an access token
     const data = await spotifyApi.authorizationCodeGrant(code);
     const { access_token, refresh_token, expires_in } = data.body;
 
-    // Store the tokens securely (you might want to use a database or secure session)
-    // For now, we'll just store them in memory
+    console.log("Successfully obtained tokens, storing them...");
+
+    // Store the tokens
+    spotifyTokens = {
+      accessToken: access_token,
+      refreshToken: refresh_token,
+      expiresAt: Date.now() + expires_in * 1000,
+    };
+
+    // Set the tokens in the API instance
     spotifyApi.setAccessToken(access_token);
     spotifyApi.setRefreshToken(refresh_token);
+
+    console.log("Tokens stored successfully, redirecting to main page...");
 
     // Redirect to the main page with success
     res.redirect("/niver2025?auth=success");
@@ -263,9 +319,16 @@ app.get("/api/spotify/search", async (req, res) => {
     res.json(tracks);
   } catch (error) {
     console.error("Error searching tracks:", error);
-    res
-      .status(500)
-      .json({ error: "Failed to search tracks", details: error.message });
+    if (error.message === "Authentication required") {
+      return res.status(401).json({
+        error: "Authentication required",
+        authUrl: getAuthUrl(),
+      });
+    }
+    res.status(500).json({
+      error: "Failed to search tracks",
+      details: error.message,
+    });
   }
 });
 
@@ -367,8 +430,67 @@ app.get("/api/spotify/recommendations", async (req, res) => {
   }
 });
 
+// Add track to playlist
+app.post("/api/spotify/playlist/add", async (req, res) => {
+  console.log("Received request to add track to playlist:", req.body);
+  try {
+    const { trackId } = req.body;
+    if (!trackId) {
+      console.log("Error: Track ID is missing from request");
+      return res.status(400).json({ error: "Track ID is required" });
+    }
+
+    // Check if we have valid tokens
+    if (!spotifyTokens.accessToken || Date.now() >= spotifyTokens.expiresAt) {
+      console.log("Token expired or missing, attempting to refresh...");
+      if (spotifyTokens.refreshToken) {
+        try {
+          // Try to refresh the token
+          console.log("Refreshing token...");
+          const data = await spotifyApi.refreshAccessToken();
+          spotifyTokens = {
+            ...spotifyTokens,
+            accessToken: data.body.access_token,
+            expiresAt: Date.now() + data.body.expires_in * 1000,
+          };
+          spotifyApi.setAccessToken(data.body.access_token);
+          console.log("Token refreshed successfully");
+        } catch (error) {
+          console.error("Error refreshing token:", error);
+          return res.status(401).json({
+            error: "Authentication required",
+            authUrl: getAuthUrl(),
+          });
+        }
+      } else {
+        console.log("No refresh token available, redirecting to auth...");
+        return res.status(401).json({
+          error: "Authentication required",
+          authUrl: getAuthUrl(),
+        });
+      }
+    }
+
+    console.log(`Processing request to add track ${trackId} to playlist`);
+    const result = await spotifyService.addTrackToPlaylist(trackId);
+    console.log("Successfully processed request:", result);
+    res.json(result);
+  } catch (error) {
+    console.error("Error in playlist add route:", error);
+    if (error.message.includes("Authentication required")) {
+      return res.status(401).json({
+        error: "Authentication required",
+        authUrl: getAuthUrl(),
+      });
+    }
+    res
+      .status(500)
+      .json({ error: error.message || "Failed to add track to playlist" });
+  }
+});
+
 // Serve static files AFTER API routes
-app.use(express.static(join(__dirname)));
+app.use(express.static(join(__dirname, "..")));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

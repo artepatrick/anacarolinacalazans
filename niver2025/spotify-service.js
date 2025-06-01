@@ -1,25 +1,4 @@
-import { spotifyApi } from "./spotify-api.js";
-
-let accessToken = null;
-let tokenExpirationTime = null;
-
-// Function to get a valid access token
-async function getValidAccessToken() {
-  if (accessToken && tokenExpirationTime && Date.now() < tokenExpirationTime) {
-    return accessToken;
-  }
-
-  try {
-    const data = await spotifyApi.clientCredentialsGrant();
-    accessToken = data.body["access_token"];
-    tokenExpirationTime = Date.now() + data.body["expires_in"] * 1000;
-    spotifyApi.setAccessToken(accessToken);
-    return accessToken;
-  } catch (error) {
-    console.error("Error getting Spotify access token:", error);
-    throw error;
-  }
-}
+import { spotifyApi, initializeClientCredentials } from "./spotify-api.js";
 
 // Search for tracks
 export async function searchTracks(query, limit = 10) {
@@ -29,21 +8,44 @@ export async function searchTracks(query, limit = 10) {
       hasAccessToken: !!spotifyApi.getAccessToken(),
       hasClientId: !!spotifyApi.getClientId(),
       hasClientSecret: !!spotifyApi.getClientSecret(),
+      redirectUri: spotifyApi.getRedirectURI(),
     });
 
-    await getValidAccessToken();
-    console.log("Got valid access token, proceeding with search");
+    // Check if we have a valid access token
+    if (!spotifyApi.getAccessToken()) {
+      console.log(
+        "No access token available, initializing client credentials..."
+      );
+      const token = await initializeClientCredentials();
+      console.log("New token obtained:", {
+        hasToken: !!token,
+        tokenLength: token?.length,
+      });
+    }
 
+    console.log("Making search request to Spotify API...");
     const response = await spotifyApi.searchTracks(query, { limit });
     console.log("Search response received:", {
       status: response.statusCode,
       hasTracks: !!response.body?.tracks,
       trackCount: response.body?.tracks?.items?.length || 0,
+      headers: response.headers,
     });
 
     return response.body.tracks.items;
   } catch (error) {
     console.error("Error searching tracks:", error);
+    console.error("Error details:", {
+      message: error.message,
+      statusCode: error.statusCode,
+      body: error.body,
+    });
+    if (
+      error.body?.error?.status === 401 ||
+      error.message === "Authentication required"
+    ) {
+      throw new Error("Authentication required");
+    }
     throw error;
   }
 }
@@ -51,7 +53,6 @@ export async function searchTracks(query, limit = 10) {
 // Get track details
 export async function getTrack(trackId) {
   try {
-    await getValidAccessToken();
     const response = await spotifyApi.getTrack(trackId);
     return response.body;
   } catch (error) {
@@ -63,7 +64,6 @@ export async function getTrack(trackId) {
 // Get artist details
 export async function getArtist(artistId) {
   try {
-    await getValidAccessToken();
     const response = await spotifyApi.getArtist(artistId);
     return response.body;
   } catch (error) {
@@ -75,7 +75,6 @@ export async function getArtist(artistId) {
 // Get artist's top tracks
 export async function getArtistTopTracks(artistId, country = "BR") {
   try {
-    await getValidAccessToken();
     const response = await spotifyApi.getArtistTopTracks(artistId, country);
     return response.body.tracks;
   } catch (error) {
@@ -87,7 +86,6 @@ export async function getArtistTopTracks(artistId, country = "BR") {
 // Get artist's albums
 export async function getArtistAlbums(artistId, limit = 10) {
   try {
-    await getValidAccessToken();
     const response = await spotifyApi.getArtistAlbums(artistId, { limit });
     return response.body.items;
   } catch (error) {
@@ -99,7 +97,6 @@ export async function getArtistAlbums(artistId, limit = 10) {
 // Get album details
 export async function getAlbum(albumId) {
   try {
-    await getValidAccessToken();
     const response = await spotifyApi.getAlbum(albumId);
     return response.body;
   } catch (error) {
@@ -111,7 +108,6 @@ export async function getAlbum(albumId) {
 // Get album tracks
 export async function getAlbumTracks(albumId, limit = 50) {
   try {
-    await getValidAccessToken();
     const response = await spotifyApi.getAlbumTracks(albumId, { limit });
     return response.body.items;
   } catch (error) {
@@ -123,7 +119,6 @@ export async function getAlbumTracks(albumId, limit = 50) {
 // Get recommendations based on seed tracks
 export async function getRecommendations(seedTracks, limit = 20) {
   try {
-    await getValidAccessToken();
     const response = await spotifyApi.getRecommendations({
       seed_tracks: seedTracks,
       limit,
@@ -131,6 +126,36 @@ export async function getRecommendations(seedTracks, limit = 20) {
     return response.body.tracks;
   } catch (error) {
     console.error("Error getting recommendations:", error);
+    throw error;
+  }
+}
+
+// Add track to playlist
+export async function addTrackToPlaylist(trackId) {
+  try {
+    console.log(`Attempting to add track ${trackId} to playlist`);
+
+    if (!spotifyApi.getAccessToken()) {
+      throw new Error("Authentication required");
+    }
+
+    const trackUri = `spotify:track:${trackId}`;
+    console.log(`Adding track URI: ${trackUri}`);
+
+    const response = await spotifyApi.addTracksToPlaylist(
+      "3IXvRrv8DcsH2ggcXnpnLy",
+      [trackUri]
+    );
+    console.log("Successfully added track to playlist:", response.body);
+    return response.body;
+  } catch (error) {
+    console.error("Error adding track to playlist:", error);
+    if (
+      error.body?.error?.status === 401 ||
+      error.message === "Authentication required"
+    ) {
+      throw new Error("Authentication required");
+    }
     throw error;
   }
 }
