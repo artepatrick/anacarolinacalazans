@@ -284,17 +284,34 @@ document
       console.log("Successfully saved to Supabase:", data);
 
       const NOTIFICATION_PHONE = "5531991391722";
+      const NOTIFICATION_PHONE02 = "553199455764";
 
-      // Send notification using Tolky API
+      // Send notification using Tolky API for first phone
       const notificationResult = await sendTolkyNotification({
         names: finalData.names,
-        email: null,
+        email: finalData.email,
         phone: NOTIFICATION_PHONE,
+        generalInstructions: `Explique ao Patrick que ${
+          existingData
+            ? "mais convidados foram adicionados à confirmação existente"
+            : "novos convidados confirmaram presença"
+        }. Nomes: ${finalData.names.join(", ")}. Email: ${
+          finalData.email
+        }. Telefone: ${finalData.phone}.`,
+      });
+
+      // Send notification using Tolky API for second phone
+      const notificationResult2 = await sendTolkyNotification({
+        names: finalData.names,
+        email: finalData.email,
+        phone: NOTIFICATION_PHONE02,
         generalInstructions: `Explique à Ana Carolina que ${
           existingData
             ? "mais convidados foram adicionados à confirmação existente"
             : "novos convidados confirmaram presença"
-        }.`,
+        }. Nomes: ${finalData.names.join(", ")}. Email: ${
+          finalData.email
+        }. Telefone: ${finalData.phone}.`,
       });
 
       // Show success message
