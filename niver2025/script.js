@@ -300,6 +300,8 @@ document
         }. Telefone: ${finalData.phone}.`,
       });
 
+      console.log("Notification result:", notificationResult);
+
       // Send notification using Tolky API for second phone
       const notificationResult2 = await sendTolkyNotification({
         names: finalData.names,
