@@ -70,6 +70,19 @@
                     <input type="email" id="email" name="email" required>
                 </div>
 
+                <div class="form-group">
+                    <label for="musicSearch">Sugerir Músicas</label>
+                    <div class="music-search-container">
+                        <input type="text" id="musicSearch" placeholder="Busque uma música...">
+                        <div id="searchResults" class="search-results"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Músicas Sugeridas</label>
+                    <div id="suggestedMusic" class="suggested-music-list"></div>
+                </div>
+
                 <button type="submit" class="submit-button" id="submitButton">
                     <span class="button-text">Confirmar Presença</span>
                     <span class="loading-spinner">Processando...</span>
@@ -80,6 +93,7 @@
 
     <script src="https://unpkg.com/@chakra-ui/css@2.0.0/dist/chakra-ui.min.js"></script>
     <script type="module" src="script.js"></script>
+    <script type="module" src="music.js"></script>
     <script type="module" src="https://minichat.tolky.to/main.js" async></script>
     <script>
         window.tolky = window.tolky || {
