@@ -4,6 +4,8 @@ import { createClient } from "@supabase/supabase-js";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import cors from "cors";
+import * as spotifyService from "./spotify-service.js";
+import { spotifyApi, getAuthUrl } from "./spotify-api.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -17,6 +19,13 @@ console.log("Environment variables check:", {
   hasSupabaseKey: !!process.env.SUPABASE_SERVICE_KEY,
   supabaseUrlLength: process.env.SUPABASE_URL?.length,
   supabaseKeyLength: process.env.SUPABASE_SERVICE_KEY?.length,
+  // Add Spotify credentials check
+  hasSpotifyClientId: !!process.env.SPOTIFY_CLIENT_ID,
+  hasSpotifyClientSecret: !!process.env.SPOTIFY_CLIENT_SECRET,
+  hasSpotifyRedirectUri: !!process.env.SPOTIFY_REDIRECT_URI,
+  spotifyClientIdLength: process.env.SPOTIFY_CLIENT_ID?.length,
+  spotifyClientSecretLength: process.env.SPOTIFY_CLIENT_SECRET?.length,
+  spotifyRedirectUriLength: process.env.SPOTIFY_REDIRECT_URI?.length,
 });
 
 // Initialize Supabase client
@@ -198,6 +207,163 @@ app.post("/api/notifications", async (req, res) => {
       error: "Failed to send notification",
       details: error.message,
     });
+  }
+});
+
+// Spotify API Routes
+// Get Spotify authentication URL
+app.get("/api/spotify/auth-url", (req, res) => {
+  try {
+    const authUrl = getAuthUrl();
+    res.json({ url: authUrl });
+  } catch (error) {
+    console.error("Error generating auth URL:", error);
+    res.status(500).json({ error: "Failed to generate auth URL" });
+  }
+});
+
+// Spotify Authentication Callback
+app.get("/niver2025/callback", async (req, res) => {
+  try {
+    const { code } = req.query;
+
+    if (!code) {
+      console.error("No authorization code received");
+      return res.redirect("/niver2025?error=no_code");
+    }
+
+    // Exchange the code for an access token
+    const data = await spotifyApi.authorizationCodeGrant(code);
+    const { access_token, refresh_token, expires_in } = data.body;
+
+    // Store the tokens securely (you might want to use a database or secure session)
+    // For now, we'll just store them in memory
+    spotifyApi.setAccessToken(access_token);
+    spotifyApi.setRefreshToken(refresh_token);
+
+    // Redirect to the main page with success
+    res.redirect("/niver2025?auth=success");
+  } catch (error) {
+    console.error("Error in Spotify callback:", error);
+    res.redirect("/niver2025?error=auth_failed");
+  }
+});
+
+// Search tracks
+app.get("/api/spotify/search", async (req, res) => {
+  try {
+    const { query, limit } = req.query;
+    if (!query) {
+      return res.status(400).json({ error: "Query parameter is required" });
+    }
+    const tracks = await spotifyService.searchTracks(
+      query,
+      parseInt(limit) || 10
+    );
+    res.json(tracks);
+  } catch (error) {
+    console.error("Error searching tracks:", error);
+    res
+      .status(500)
+      .json({ error: "Failed to search tracks", details: error.message });
+  }
+});
+
+// Get track details
+app.get("/api/spotify/tracks/:id", async (req, res) => {
+  try {
+    const track = await spotifyService.getTrack(req.params.id);
+    res.json(track);
+  } catch (error) {
+    console.error("Error getting track:", error);
+    res.status(500).json({ error: "Failed to get track" });
+  }
+});
+
+// Get artist details
+app.get("/api/spotify/artists/:id", async (req, res) => {
+  try {
+    const artist = await spotifyService.getArtist(req.params.id);
+    res.json(artist);
+  } catch (error) {
+    console.error("Error getting artist:", error);
+    res.status(500).json({ error: "Failed to get artist" });
+  }
+});
+
+// Get artist's top tracks
+app.get("/api/spotify/artists/:id/top-tracks", async (req, res) => {
+  try {
+    const { country } = req.query;
+    const tracks = await spotifyService.getArtistTopTracks(
+      req.params.id,
+      country || "BR"
+    );
+    res.json(tracks);
+  } catch (error) {
+    console.error("Error getting artist top tracks:", error);
+    res.status(500).json({ error: "Failed to get artist top tracks" });
+  }
+});
+
+// Get artist's albums
+app.get("/api/spotify/artists/:id/albums", async (req, res) => {
+  try {
+    const { limit } = req.query;
+    const albums = await spotifyService.getArtistAlbums(
+      req.params.id,
+      parseInt(limit) || 10
+    );
+    res.json(albums);
+  } catch (error) {
+    console.error("Error getting artist albums:", error);
+    res.status(500).json({ error: "Failed to get artist albums" });
+  }
+});
+
+// Get album details
+app.get("/api/spotify/albums/:id", async (req, res) => {
+  try {
+    const album = await spotifyService.getAlbum(req.params.id);
+    res.json(album);
+  } catch (error) {
+    console.error("Error getting album:", error);
+    res.status(500).json({ error: "Failed to get album" });
+  }
+});
+
+// Get album tracks
+app.get("/api/spotify/albums/:id/tracks", async (req, res) => {
+  try {
+    const { limit } = req.query;
+    const tracks = await spotifyService.getAlbumTracks(
+      req.params.id,
+      parseInt(limit) || 50
+    );
+    res.json(tracks);
+  } catch (error) {
+    console.error("Error getting album tracks:", error);
+    res.status(500).json({ error: "Failed to get album tracks" });
+  }
+});
+
+// Get recommendations
+app.get("/api/spotify/recommendations", async (req, res) => {
+  try {
+    const { seed_tracks, limit } = req.query;
+    if (!seed_tracks) {
+      return res
+        .status(400)
+        .json({ error: "seed_tracks parameter is required" });
+    }
+    const tracks = await spotifyService.getRecommendations(
+      seed_tracks.split(","),
+      parseInt(limit) || 20
+    );
+    res.json(tracks);
+  } catch (error) {
+    console.error("Error getting recommendations:", error);
+    res.status(500).json({ error: "Failed to get recommendations" });
   }
 });
 

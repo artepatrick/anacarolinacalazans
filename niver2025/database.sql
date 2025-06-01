@@ -35,4 +35,28 @@ CREATE TRIGGER update_presence_confirmations_updated_at
 CREATE TRIGGER update_presence_confirmation_names_updated_at
     BEFORE UPDATE ON presence_confirmation_names
     FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+-- Create table for music suggestions
+CREATE TABLE public.music_suggestions (
+    id uuid NOT NULL DEFAULT extensions.uuid_generate_v4(),
+    presence_confirmation_id uuid NOT NULL,
+    song_title character varying(255) NOT NULL,
+    artist character varying(255),
+    spotify_url character varying(512),
+    created_at timestamp with time zone NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT music_suggestions_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_music_suggestion_confirmation FOREIGN KEY (presence_confirmation_id)
+        REFERENCES public.presence_confirmations (id) ON DELETE CASCADE
+) TABLESPACE pg_default;
+
+-- Create index on the foreign key
+CREATE INDEX IF NOT EXISTS idx_music_suggestions_confirmation_id 
+ON public.music_suggestions USING btree (presence_confirmation_id) TABLESPACE pg_default;
+
+-- Create trigger for updated_at
+CREATE TRIGGER update_music_suggestions_updated_at
+    BEFORE UPDATE ON music_suggestions
+    FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column(); 

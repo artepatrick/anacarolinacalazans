@@ -27,6 +27,7 @@ updateCountdown(); // Initial update
 
 // Import API service
 import { addParticipant, getParticipants, sendNotification } from "./api.js";
+import { getSuggestedTracks } from "./music.js";
 
 // Add name input field
 document.getElementById("addNameButton").addEventListener("click", () => {
@@ -98,6 +99,7 @@ document
           status: "pendente",
           created_at: existingParticipant.created_at,
           updated_at: new Date().toISOString(),
+          music_suggestions: getSuggestedTracks(),
         };
 
         // Show confirmation dialog
@@ -122,6 +124,7 @@ document
           email: email,
           status: "pendente",
           created_at: new Date().toISOString(),
+          music_suggestions: getSuggestedTracks(),
         };
       }
 
