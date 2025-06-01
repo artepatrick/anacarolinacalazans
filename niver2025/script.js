@@ -29,13 +29,16 @@ updateCountdown(); // Initial update
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.0";
 
 // Configuration
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
+const SUPABASE_URL = import.meta.env.SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.SUPABASE_ANON_KEY;
 
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   console.error(
     "Missing required configuration. Please check your configuration values."
   );
+  console.log("SUPABASE_URL:", SUPABASE_URL);
+  console.log("SUPABASE_ANON_KEY:", SUPABASE_ANON_KEY);
+  throw new Error("Supabase configuration is missing");
 }
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -65,13 +68,17 @@ document.getElementById("addNameButton").addEventListener("click", () => {
 // Function to send notification using Tolky API
 async function sendTolkyNotification(userData) {
   try {
+    const standard =
+      "Estamos enviando uma confirmação de presença para um aniversário. Por favor, envie uma mensagem amigável confirmando a presença e agradecendo o interesse.";
     const response = await fetch(
-      `${process.env.TOLKY_API_BASE_URL}/api/externalAPIs/public/externalNotificationAI`,
+      `${
+        import.meta.env.TOLKY_API_BASE_URL
+      }/api/externalAPIs/public/externalNotificationAI`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.TOLKY_REASONING_TOKEN}`,
+          Authorization: `Bearer ${import.meta.env.TOLKY_REASONING_TOKEN}`,
         },
         body: JSON.stringify({
           data: [
@@ -83,8 +90,7 @@ async function sendTolkyNotification(userData) {
               eventDate: "2025-06-28",
             },
           ],
-          generalInstructions:
-            "Estamos enviando uma confirmação de presença para um aniversário. Por favor, envie uma mensagem amigável confirmando a presença e agradecendo o interesse.",
+          generalInstructions: userData.generalInstructions || standard,
         }),
       }
     );
@@ -107,26 +113,34 @@ document
   .addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Get all names
-    const nameInputs = document.querySelectorAll(".name-input");
-    const names = Array.from(nameInputs)
-      .map((input) => input.value.trim())
-      .filter((name) => name !== "");
+    const submitButton = document.getElementById("submitButton");
+    const buttonText = submitButton.querySelector(".button-text");
+    const loadingSpinner = submitButton.querySelector(".loading-spinner");
 
-    if (names.length === 0) {
-      alert("Por favor, adicione pelo menos um nome.");
-      return;
-    }
-
-    const formData = {
-      names: names,
-      phone: document.getElementById("phone").value,
-      email: document.getElementById("email").value,
-      status: "pendente",
-      created_at: new Date().toISOString(),
-    };
+    // Disable button and show loading state
+    submitButton.disabled = true;
+    submitButton.classList.add("loading");
 
     try {
+      // Get all names
+      const nameInputs = document.querySelectorAll(".name-input");
+      const names = Array.from(nameInputs)
+        .map((input) => input.value.trim())
+        .filter((name) => name !== "");
+
+      if (names.length === 0) {
+        alert("Por favor, adicione pelo menos um nome.");
+        return;
+      }
+
+      const formData = {
+        names: names,
+        phone: document.getElementById("phone").value,
+        email: document.getElementById("email").value,
+        status: "pendente",
+        created_at: new Date().toISOString(),
+      };
+
       // Insert the confirmation
       const { data, error } = await supabase
         .from("presence_confirmations")
@@ -136,18 +150,13 @@ document
 
       if (error) throw error;
 
-      const reportPayload = {
-        data: [
-          {
-            userName: "Ana Carolina",
-            phone: "553199455764",
-          },
-        ],
-        generalInstructions: `Explique à Ana Carolina que mais um convidado`,
-      };
-
       // Send notification using Tolky API
-      await sendTolkyNotification(reportPayload);
+      await sendTolkyNotification({
+        names: names,
+        email: document.getElementById("email").value,
+        phone: document.getElementById("phone").value,
+        generalInstructions: `Explique à Ana Carolina que mais um convidado confirmou presença.`,
+      });
 
       // Show success message
       alert("Presença confirmada com sucesso!");
@@ -164,5 +173,9 @@ document
     } catch (error) {
       console.error("Error:", error);
       alert("Erro ao confirmar presença. Por favor, tente novamente.");
+    } finally {
+      // Re-enable button and hide loading state
+      submitButton.disabled = false;
+      submitButton.classList.remove("loading");
     }
   });

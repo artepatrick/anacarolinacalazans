@@ -91,20 +91,56 @@ input:focus {
 }
 
 .submit-button {
+    width: 100%;
+    padding: 12px;
     background-color: var(--purple-500);
     color: white;
-    padding: 1rem;
     border: none;
     border-radius: 0.5rem;
+    cursor: pointer;
     font-size: 1rem;
     font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .submit-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(128, 90, 213, 0.3);
+}
+
+.submit-button:disabled {
+    background-color: var(--purple-500);
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.submit-button .button-text,
+.submit-button .loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.3s ease;
+}
+
+.submit-button .loading-spinner {
+    opacity: 0;
+    display: inline-block;
+}
+
+.submit-button.loading .button-text {
+    opacity: 0;
+}
+
+.submit-button.loading .loading-spinner {
+    opacity: 1;
 }
 
 .name-input-group {
