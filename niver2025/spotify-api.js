@@ -1,4 +1,12 @@
 import SpotifyWebApi from "spotify-web-api-node";
+import { config } from "dotenv";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+
+// Load environment variables
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+config({ path: join(__dirname, ".env") });
 
 // Determine the redirect URI based on the environment
 const getRedirectUri = () => {
@@ -33,7 +41,19 @@ export const getAuthUrl = () => {
     "playlist-modify-private",
   ];
 
-  return spotifyApi.createAuthorizeURL(scopes, "state");
+  // Generate a random state value
+  const state = Math.random().toString(36).substring(7);
+
+  // Create the authorization URL manually instead of using createAuthorizeURL
+  const params = new URLSearchParams({
+    client_id: spotifyApi.getClientId(),
+    response_type: "code",
+    redirect_uri: spotifyApi.getRedirectURI(),
+    state: state,
+    scope: scopes.join(" "),
+  });
+
+  return `https://accounts.spotify.com/authorize?${params.toString()}`;
 };
 
 // Function to refresh access token
@@ -50,3 +70,49 @@ export const refreshAccessToken = async (refreshToken) => {
     throw error;
   }
 };
+
+// Function to initialize client credentials
+export const initializeClientCredentials = async () => {
+  try {
+    console.log("Initializing client credentials...");
+    console.log("Current credentials state:", {
+      hasClientId: !!spotifyApi.getClientId(),
+      hasClientSecret: !!spotifyApi.getClientSecret(),
+      hasAccessToken: !!spotifyApi.getAccessToken(),
+      redirectUri: spotifyApi.getRedirectURI(),
+    });
+
+    const data = await spotifyApi.clientCredentialsGrant();
+    console.log("Received token data:", {
+      hasAccessToken: !!data.body.access_token,
+      tokenType: data.body.token_type,
+      expiresIn: data.body.expires_in,
+    });
+
+    spotifyApi.setAccessToken(data.body.access_token);
+    console.log("Client credentials initialized successfully");
+    return data.body.access_token;
+  } catch (error) {
+    console.error("Error initializing client credentials:", error);
+    console.error("Error details:", {
+      message: error.message,
+      statusCode: error.statusCode,
+      body: error.body,
+    });
+    throw error;
+  }
+};
+
+// Initialize client credentials when the module is loaded
+console.log("Starting Spotify API initialization...");
+initializeClientCredentials()
+  .then(() => console.log("Spotify API initialized successfully"))
+  .catch((error) => {
+    console.error("Failed to initialize Spotify API:", error);
+    // Don't exit the process, just log the error
+    console.error("Error details:", {
+      message: error.message,
+      statusCode: error.statusCode,
+      body: error.body,
+    });
+  });

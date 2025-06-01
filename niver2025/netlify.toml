@@ -22,6 +22,18 @@
   compress = true
 
 [[redirects]]
+  from = "/niver2025/callback"
+  to = "/.netlify/functions/spotify-callback"
+  status = 200
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
-  status = 200 
+  status = 200
+
+[dev]
+  command = "npm run dev"
+  port = 8888
+  targetPort = 3000
+  publish = "."
+  autoLaunch = true 

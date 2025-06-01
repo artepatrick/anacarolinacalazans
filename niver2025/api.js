@@ -1,6 +1,7 @@
 // API service for frontend-backend communication
 const API_BASE_URL =
-  process.env.NODE_ENV === "development"
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1"
     ? "http://localhost:3001" // Local development
     : window.location.origin; // Production
 
@@ -47,12 +48,21 @@ export async function addParticipant(participant) {
     const url = `${API_BASE_URL}/api/participants`;
     console.log("Adding participant to:", url);
 
+    // Get music suggestions if available
+    const musicSuggestions = window.getSuggestedTracks
+      ? window.getSuggestedTracks()
+      : [];
+    const participantData = {
+      ...participant,
+      musicSuggestions,
+    };
+
     const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(participant),
+      body: JSON.stringify(participantData),
     });
 
     if (!response.ok) {
