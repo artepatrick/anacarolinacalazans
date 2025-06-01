@@ -1,6 +1,6 @@
 // API service for frontend-backend communication
 const API_BASE_URL = import.meta.env.DEV
-  ? "http://localhost:5173" // Local development
+  ? "http://localhost:3001" // Local development
   : window.location.origin; // Production
 
 console.log("API Service initialized with base URL:", API_BASE_URL);

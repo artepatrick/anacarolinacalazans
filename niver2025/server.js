@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 
 // Debug: Check if environment variables are loaded
 console.log("Environment variables check:", {
@@ -21,7 +21,7 @@ console.log("Environment variables check:", {
 
 // Initialize Supabase client
 const supabase = createClient(
-  process.env.SUPABASE_URL,
+  process.env.SUPABASE_URL || "https://jpkqterigrjwpyrwmxfj.supabase.co",
   process.env.SUPABASE_SERVICE_KEY
 );
 
@@ -48,33 +48,63 @@ app.use(express.json());
 // Get participants
 app.get("/api/participants", async (req, res) => {
   try {
+    console.log("Fetching participants from Supabase...");
+
     const { data, error } = await supabase
       .from("presence_confirmations")
       .select("*")
       .order("created_at", { ascending: false });
 
-    if (error) throw error;
+    if (error) {
+      console.error("Supabase error:", error);
+      throw error;
+    }
+
+    console.log(`Successfully fetched ${data.length} participants`);
     res.json(data);
   } catch (error) {
     console.error("Error fetching participants:", error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({
+      error: "Internal server error",
+      details: error.message,
+    });
   }
 });
 
 // Add new participant
 app.post("/api/participants", async (req, res) => {
   try {
-    const { name, email, phone } = req.body;
+    const { names, email, phone, status, created_at, updated_at } = req.body;
+
+    // Log the received data for debugging
+    console.log("Received participant data:", req.body);
+
     const { data, error } = await supabase
       .from("presence_confirmations")
-      .insert([{ name, email, phone }])
+      .insert([
+        {
+          names,
+          email,
+          phone,
+          status: status || "pendente",
+          created_at: created_at || new Date().toISOString(),
+          updated_at: updated_at || new Date().toISOString(),
+        },
+      ])
       .select();
 
-    if (error) throw error;
+    if (error) {
+      console.error("Supabase error:", error);
+      throw error;
+    }
+
     res.status(201).json(data[0]);
   } catch (error) {
     console.error("Error adding participant:", error);
-    res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({
+      error: "Internal server error",
+      details: error.message,
+    });
   }
 });
 
@@ -109,6 +139,68 @@ app.get("/api/participants/count", async (req, res) => {
   }
 });
 
+// Send notification
+app.post("/api/notifications", async (req, res) => {
+  try {
+    console.log("Received notification request:", req.body);
+
+    const userData = req.body;
+    const standard =
+      "Estamos enviando uma confirmação de presença para um aniversário. Por favor, envie uma mensagem amigável confirmando a presença e agradecendo o interesse.";
+
+    const requestBody = {
+      data: [
+        {
+          userName: userData.names[0],
+          email: userData.email,
+          phone: userData.phone,
+          eventType: "birthday",
+          eventDate: "2025-06-28",
+        },
+      ],
+      generalInstructions: userData.generalInstructions || standard,
+    };
+
+    console.log("Sending request to Tolky:", {
+      url: process.env.TOLKY_API_BASE_URL,
+      hasToken: !!process.env.TOLKY_REASONING_TOKEN,
+    });
+
+    const response = await fetch(
+      `${process.env.TOLKY_API_BASE_URL}/api/externalAPIs/public/externalNotificationAI`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.TOLKY_REASONING_TOKEN}`,
+        },
+        body: JSON.stringify(requestBody),
+      }
+    );
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Tolky API error:", {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorText,
+      });
+      throw new Error(`Tolky API error: ${errorText}`);
+    }
+
+    const result = await response.json();
+    console.log("Tolky API success response:", result);
+
+    res.json({ success: true, data: result });
+  } catch (error) {
+    console.error("Error sending notification:", error);
+    res.status(500).json({
+      error: "Failed to send notification",
+      details: error.message,
+    });
+  }
+});
+
 // Serve static files AFTER API routes
 app.use(express.static(join(__dirname)));
 
@@ -123,6 +215,6 @@ app.use((req, res) => {
   res.status(404).json({ error: "Not found" });
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
 });
