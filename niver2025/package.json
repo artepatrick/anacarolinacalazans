@@ -4,6 +4,9 @@
   "description": "Site de confirmação de presença para Ana Carolina Calazans",
   "main": "server.js",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "node build-config.js && vite build",
