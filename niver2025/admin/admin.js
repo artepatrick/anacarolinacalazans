@@ -77,17 +77,26 @@ async function loadParticipants() {
 
     if (error) throw error;
 
+    // Calculate total number of people by summing up the length of names arrays
+    const totalPeople = data.reduce(
+      (sum, participant) => sum + participant.names.length,
+      0
+    );
+    const confirmedPeople = data
+      .filter((p) => p.status === "confirmado")
+      .reduce((sum, participant) => sum + participant.names.length, 0);
+    const pendingPeople = data
+      .filter((p) => p.status === "pendente")
+      .reduce((sum, participant) => sum + participant.names.length, 0);
+    const cancelledPeople = data
+      .filter((p) => p.status === "cancelado")
+      .reduce((sum, participant) => sum + participant.names.length, 0);
+
     // Update stats
-    document.getElementById("totalInscritos").textContent = data.length;
-    document.getElementById("totalConfirmados").textContent = data.filter(
-      (p) => p.status === "confirmado"
-    ).length;
-    document.getElementById("totalPendentes").textContent = data.filter(
-      (p) => p.status === "pendente"
-    ).length;
-    document.getElementById("totalCancelados").textContent = data.filter(
-      (p) => p.status === "cancelado"
-    ).length;
+    document.getElementById("totalInscritos").textContent = totalPeople;
+    document.getElementById("totalConfirmados").textContent = confirmedPeople;
+    document.getElementById("totalPendentes").textContent = pendingPeople;
+    document.getElementById("totalCancelados").textContent = cancelledPeople;
 
     // Update table
     const tableBody = document.getElementById("participantsTable");
