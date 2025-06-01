@@ -41,6 +41,15 @@ app.use((req, res, next) => {
   next();
 });
 
+// Secure endpoint to get Supabase configuration
+app.get("/api/config", (req, res) => {
+  // Only return the public anon key, never the service key
+  res.json({
+    SUPABASE_URL: process.env.SUPABASE_URL,
+    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
+  });
+});
+
 // API endpoint to get participants
 app.get("/api/participants", async (req, res) => {
   try {

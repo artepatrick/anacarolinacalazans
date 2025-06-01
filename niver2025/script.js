@@ -27,29 +27,21 @@ updateCountdown(); // Initial update
 
 // Initialize Supabase client
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.39.0";
+import { config, initializeConfig } from "./config.js";
 
-// Configuration
-const SUPABASE_URL = import.meta.env.SUPABASE_URL;
-const SUPABASE_ANON_KEY = import.meta.env.SUPABASE_ANON_KEY;
+// Wait for configuration to be loaded
+await initializeConfig();
 
-// Environment check logging
-console.log("Environment check:", {
-  hasSupabaseUrl: !!SUPABASE_URL,
-  hasSupabaseKey: !!SUPABASE_ANON_KEY,
-  hasTolkyApiUrl: !!import.meta.env.TOLKY_API_BASE_URL,
-  hasTolkyToken: !!import.meta.env.TOLKY_REASONING_TOKEN,
-});
-
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+if (!config.SUPABASE_URL || !config.SUPABASE_ANON_KEY) {
   console.error(
     "Missing required configuration. Please check your configuration values."
   );
-  console.log("SUPABASE_URL:", SUPABASE_URL);
-  console.log("SUPABASE_ANON_KEY:", SUPABASE_ANON_KEY);
+  console.log("SUPABASE_URL:", config.SUPABASE_URL);
+  console.log("SUPABASE_ANON_KEY:", config.SUPABASE_ANON_KEY);
   throw new Error("Supabase configuration is missing");
 }
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabase = createClient(config.SUPABASE_URL, config.SUPABASE_ANON_KEY);
 
 // Add name input field
 document.getElementById("addNameButton").addEventListener("click", () => {
