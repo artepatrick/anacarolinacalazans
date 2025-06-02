@@ -1,9 +1,15 @@
 // API service for frontend-backend communication
-const API_BASE_URL =
-  window.location.hostname === "localhost" ||
-  window.location.hostname === "127.0.0.1"
-    ? "http://localhost:3001" // Local development
-    : window.location.origin; // Production
+const API_BASE_URL = (() => {
+  const hostname = window.location.hostname;
+  const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
+
+  if (isLocalhost) {
+    return "http://localhost:3001"; // Local development
+  }
+
+  // In production, use the current origin
+  return window.location.origin;
+})();
 
 console.log("API Service initialized with base URL:", API_BASE_URL);
 

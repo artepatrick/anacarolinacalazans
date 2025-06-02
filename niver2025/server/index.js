@@ -68,6 +68,52 @@ let spotifyTokens = {
 };
 
 // API Routes - These must come BEFORE the static file serving
+// Spotify authentication route
+app.get("/api/spotify/auth", async (req, res) => {
+  try {
+    const authUrl = getAuthUrl();
+    res.json({ authUrl });
+  } catch (error) {
+    console.error("Error generating auth URL:", error);
+    res.status(500).json({ error: "Failed to generate auth URL" });
+  }
+});
+
+// Spotify callback route
+app.get("/niver2025/callback", async (req, res) => {
+  try {
+    const { code, state } = req.query;
+
+    if (!code) {
+      throw new Error("No code provided");
+    }
+
+    // Exchange the code for an access token
+    const data = await spotifyApi.authorizationCodeGrant(code);
+    const { access_token, refresh_token, expires_in } = data.body;
+
+    // Store tokens
+    spotifyTokens = {
+      accessToken: access_token,
+      refreshToken: refresh_token,
+      expiresAt: Date.now() + expires_in * 1000,
+    };
+
+    // Set the tokens in the API instance
+    spotifyApi.setAccessToken(access_token);
+    spotifyApi.setRefreshToken(refresh_token);
+
+    // Redirect back to the main page with success
+    res.redirect("/?spotify_auth=success");
+  } catch (error) {
+    console.error("Spotify Callback Error:", error);
+    // Redirect back to the main page with error
+    res.redirect(
+      "/?spotify_auth=error&message=" + encodeURIComponent(error.message)
+    );
+  }
+});
+
 // Get participants
 app.get("/api/participants", async (req, res) => {
   try {
@@ -251,52 +297,6 @@ app.post("/api/notifications", async (req, res) => {
       error: "Failed to send notification",
       details: error.message,
     });
-  }
-});
-
-// Spotify API Routes
-// Get Spotify authentication URL
-app.get("/api/spotify/auth", (req, res) => {
-  const authUrl = getAuthUrl();
-  res.json({ authUrl });
-});
-
-// Spotify Authentication Callback
-app.get("/niver2025/callback", async (req, res) => {
-  const { code } = req.query;
-  try {
-    console.log(
-      "Received Spotify callback with code:",
-      code ? "present" : "missing"
-    );
-
-    if (!code) {
-      console.error("No authorization code received");
-      return res.redirect("/niver2025?auth=error&reason=no_code");
-    }
-
-    const data = await spotifyApi.authorizationCodeGrant(code);
-    const { access_token, refresh_token } = data.body;
-
-    // Store tokens in session or database
-    // For now, we'll just store them in memory
-    spotifyTokens = {
-      accessToken: access_token,
-      refreshToken: refresh_token,
-      expiresAt: Date.now() + data.body.expires_in * 1000,
-    };
-
-    // Set the tokens in the API instance
-    spotifyApi.setAccessToken(access_token);
-    spotifyApi.setRefreshToken(refresh_token);
-
-    console.log("Successfully authenticated with Spotify");
-    res.redirect("/niver2025?auth=success");
-  } catch (error) {
-    console.error("Error in Spotify callback:", error);
-    res.redirect(
-      "/niver2025?auth=error&reason=" + encodeURIComponent(error.message)
-    );
   }
 });
 
