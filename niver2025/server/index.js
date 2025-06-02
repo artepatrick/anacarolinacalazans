@@ -300,31 +300,49 @@ app.post("/api/notifications", async (req, res) => {
   }
 });
 
-// Search tracks
+// Spotify search endpoint
 app.get("/api/spotify/search", async (req, res) => {
   try {
-    const { query, limit } = req.query;
+    const { query, limit = 10 } = req.query;
+
     if (!query) {
       return res.status(400).json({ error: "Query parameter is required" });
     }
-    const tracks = await spotifyService.searchTracks(
-      query,
-      parseInt(limit) || 10
-    );
-    res.json(tracks);
-  } catch (error) {
-    console.error("Error searching tracks:", error);
-    if (error.message === "Authentication required") {
-      const authUrl = getAuthUrl();
-      return res.status(401).json({
-        error: "Authentication required",
-        authUrl,
-      });
+
+    // Check if we need to refresh the token
+    if (spotifyTokens.expiresAt && Date.now() >= spotifyTokens.expiresAt) {
+      const data = await spotifyApi.refreshAccessToken();
+      spotifyTokens.accessToken = data.body.access_token;
+      spotifyTokens.expiresAt = Date.now() + data.body.expires_in * 1000;
+      spotifyApi.setAccessToken(spotifyTokens.accessToken);
     }
-    res.status(500).json({
-      error: "Failed to search tracks",
-      details: error.message,
+
+    // Search for tracks
+    const searchResults = await spotifyApi.searchTracks(query, {
+      limit: parseInt(limit),
     });
+
+    // Format the response
+    const tracks = searchResults.body.tracks.items.map((track) => ({
+      id: track.id,
+      name: track.name,
+      artist: track.artists.map((artist) => artist.name).join(", "),
+      album: track.album.name,
+      image: track.album.images[0]?.url,
+      preview_url: track.preview_url,
+    }));
+
+    res.json({ tracks });
+  } catch (error) {
+    console.error("Error searching Spotify tracks:", error);
+    if (error.statusCode === 401) {
+      res.status(401).json({
+        error: "Authentication required",
+        authUrl: getAuthUrl(),
+      });
+    } else {
+      res.status(500).json({ error: "Failed to search tracks" });
+    }
   }
 });
 

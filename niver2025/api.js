@@ -7,8 +7,8 @@ const API_BASE_URL = (() => {
     return "http://localhost:3001"; // Local development
   }
 
-  // In production, use the current origin
-  return window.location.origin;
+  // In production, use Netlify Functions URL
+  return `${window.location.origin}/.netlify/functions/api`;
 })();
 
 console.log("API Service initialized with base URL:", API_BASE_URL);
