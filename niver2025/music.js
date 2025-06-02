@@ -44,8 +44,10 @@ function debounce(func, wait) {
 }
 
 // Display search results
-function displaySearchResults(tracks) {
+function displaySearchResults(response) {
   searchResults.innerHTML = "";
+  const tracks = response.tracks || [];
+
   if (tracks.length === 0) {
     searchResults.style.display = "none";
     return;
@@ -55,12 +57,10 @@ function displaySearchResults(tracks) {
     const resultItem = document.createElement("div");
     resultItem.className = "search-result-item";
     resultItem.innerHTML = `
-            <img src="${track.album.images[2]?.url || ""}" alt="${track.name}">
+            <img src="${track.image || ""}" alt="${track.name}">
             <div class="track-info">
                 <div class="track-name">${track.name}</div>
-                <div class="artist-name">${track.artists
-                  .map((artist) => artist.name)
-                  .join(", ")}</div>
+                <div class="artist-name">${track.artist}</div>
             </div>
         `;
 
@@ -83,12 +83,10 @@ function addTrackToSuggestions(track) {
   trackElement.className = "suggested-music-item";
   trackElement.dataset.trackId = track.id;
   trackElement.innerHTML = `
-        <img src="${track.album.images[2]?.url || ""}" alt="${track.name}">
+        <img src="${track.image || ""}" alt="${track.name}">
         <div class="track-info">
             <div class="track-name">${track.name}</div>
-            <div class="artist-name">${track.artists
-              .map((artist) => artist.name)
-              .join(", ")}</div>
+            <div class="artist-name">${track.artist}</div>
         </div>
         <div class="track-status"></div>
         <button class="remove-button" title="Remover música">&times;</button>
@@ -164,8 +162,8 @@ function addTrackToSuggestions(track) {
   // Store complete track data
   trackElement.dataset.trackData = JSON.stringify({
     song_title: track.name,
-    artist: track.artists.map((artist) => artist.name).join(", "),
-    spotify_url: track.external_urls?.spotify || null,
+    artist: track.artist,
+    spotify_url: track.preview_url || null,
   });
 
   // Add track to Spotify playlist with loading state

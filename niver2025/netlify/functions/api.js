@@ -41,24 +41,60 @@ export async function handler(event, context) {
     // Handle different API routes
     switch (path) {
       case "/spotify/search":
-        const tracks = await spotifyService.searchTracks(
-          queryParams.query,
-          parseInt(queryParams.limit) || 10
-        );
+        const { query, limit = 10 } = queryParams;
+        if (!query) {
+          return {
+            statusCode: 400,
+            headers: { ...headers, "Content-Type": "application/json" },
+            body: JSON.stringify({ error: "Query parameter is required" }),
+          };
+        }
+
+        // Check if we need to refresh the token
+        if (spotifyTokens.expiresAt && Date.now() >= spotifyTokens.expiresAt) {
+          const data = await spotifyApi.refreshAccessToken();
+          spotifyTokens.accessToken = data.body.access_token;
+          spotifyTokens.expiresAt = Date.now() + data.body.expires_in * 1000;
+          spotifyApi.setAccessToken(spotifyTokens.accessToken);
+        }
+
+        // Search for tracks
+        const searchResults = await spotifyApi.searchTracks(query, {
+          limit: parseInt(limit),
+        });
+
+        // Format the response
+        const tracks = searchResults.body.tracks.items.map((track) => ({
+          id: track.id,
+          name: track.name,
+          artist: track.artists.map((artist) => artist.name).join(", "),
+          album: track.album.name,
+          image: track.album.images[0]?.url,
+          preview_url: track.preview_url,
+        }));
+
         return {
           statusCode: 200,
           headers: { ...headers, "Content-Type": "application/json" },
-          body: JSON.stringify(tracks),
+          body: JSON.stringify({ tracks }),
         };
 
       case "/spotify/playlist/add":
         if (event.httpMethod !== "POST") {
-          throw new Error("Method not allowed");
+          return {
+            statusCode: 405,
+            headers: { ...headers, "Content-Type": "application/json" },
+            body: JSON.stringify({ error: "Method not allowed" }),
+          };
         }
 
         const { trackId } = JSON.parse(event.body);
         if (!trackId) {
-          throw new Error("Track ID is required");
+          return {
+            statusCode: 400,
+            headers: { ...headers, "Content-Type": "application/json" },
+            body: JSON.stringify({ error: "Track ID is required" }),
+          };
         }
 
         // Check if we have valid tokens
@@ -104,7 +140,49 @@ export async function handler(event, context) {
           body: JSON.stringify(result),
         };
 
-      // Add other API routes here...
+      case "/participants":
+        if (event.httpMethod === "GET") {
+          const { data, error } = await supabase
+            .from("presence_confirmations")
+            .select("*")
+            .order("created_at", { ascending: false });
+
+          if (error) throw error;
+
+          return {
+            statusCode: 200,
+            headers: { ...headers, "Content-Type": "application/json" },
+            body: JSON.stringify(data),
+          };
+        } else if (event.httpMethod === "POST") {
+          const participant = JSON.parse(event.body);
+          const { data, error } = await supabase
+            .from("presence_confirmations")
+            .insert([participant])
+            .select();
+
+          if (error) throw error;
+
+          return {
+            statusCode: 201,
+            headers: { ...headers, "Content-Type": "application/json" },
+            body: JSON.stringify(data[0]),
+          };
+        }
+        break;
+
+      case "/participants/count":
+        const { count, error: countError } = await supabase
+          .from("presence_confirmations")
+          .select("*", { count: "exact", head: true });
+
+        if (countError) throw countError;
+
+        return {
+          statusCode: 200,
+          headers: { ...headers, "Content-Type": "application/json" },
+          body: JSON.stringify({ count }),
+        };
 
       default:
         return {
