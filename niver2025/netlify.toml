@@ -4,7 +4,7 @@
   functions = "netlify/functions"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
 
 [[plugins]]
   package = "@netlify/plugin-lighthouse"
@@ -48,5 +48,5 @@
 
 [dev]
   command = "npm run dev"
-  port = 3000
-  targetPort = 3001 
+  port = 3001
+  targetPort = 3002 
