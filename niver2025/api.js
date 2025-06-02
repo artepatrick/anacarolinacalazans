@@ -44,7 +44,7 @@ async function handleAuthError(error) {
 // Spotify API endpoints
 export async function searchSpotifyTracks(query, limit = 10) {
   try {
-    const url = `${API_BASE_URL}/api/spotify/search?query=${encodeURIComponent(
+    const url = `${API_BASE_URL}/spotify/search?query=${encodeURIComponent(
       query
     )}&limit=${limit}`;
     console.log("Searching Spotify tracks:", url);
@@ -69,7 +69,7 @@ export async function searchSpotifyTracks(query, limit = 10) {
 
 export async function addTrackToSpotifyPlaylist(trackId) {
   try {
-    const url = `${API_BASE_URL}/api/spotify/playlist/add`;
+    const url = `${API_BASE_URL}/spotify/playlist/add`;
     console.log("Adding track to Spotify playlist:", url);
 
     const response = await fetch(url, {
@@ -102,7 +102,7 @@ export async function addTrackToSpotifyPlaylist(trackId) {
 // Get all participants
 export async function getParticipants() {
   try {
-    const url = `${API_BASE_URL}/api/participants`;
+    const url = `${API_BASE_URL}/participants`;
     console.log("Fetching participants from:", url);
 
     const response = await fetch(url);
@@ -121,7 +121,7 @@ export async function getParticipants() {
 // Add new participant
 export async function addParticipant(participant) {
   try {
-    const url = `${API_BASE_URL}/api/participants`;
+    const url = `${API_BASE_URL}/participants`;
     console.log("Adding participant to:", url);
 
     // Get music suggestions if available
@@ -156,7 +156,7 @@ export async function addParticipant(participant) {
 // Delete participant
 export async function deleteParticipant(id) {
   try {
-    const url = `${API_BASE_URL}/api/participants/${id}`;
+    const url = `${API_BASE_URL}/participants/${id}`;
     console.log("Deleting participant from:", url);
 
     const response = await fetch(url, {
@@ -178,7 +178,7 @@ export async function deleteParticipant(id) {
 // Get participant count
 export async function getParticipantCount() {
   try {
-    const url = `${API_BASE_URL}/api/participants/count`;
+    const url = `${API_BASE_URL}/participants/count`;
     console.log("Getting participant count from:", url);
 
     const response = await fetch(url);
@@ -197,7 +197,7 @@ export async function getParticipantCount() {
 // Send notification through backend
 export async function sendNotification(userData) {
   try {
-    const url = `${API_BASE_URL}/api/notifications`;
+    const url = `${API_BASE_URL}/notifications`;
     console.log("Sending notification through:", url);
 
     const response = await fetch(url, {
