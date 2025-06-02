@@ -262,9 +262,19 @@ app.get("/api/spotify/auth", (req, res) => {
 });
 
 // Spotify Authentication Callback
-app.get("/api/spotify/callback", async (req, res) => {
+app.get("/niver2025/callback", async (req, res) => {
   const { code } = req.query;
   try {
+    console.log(
+      "Received Spotify callback with code:",
+      code ? "present" : "missing"
+    );
+
+    if (!code) {
+      console.error("No authorization code received");
+      return res.redirect("/niver2025?auth=error&reason=no_code");
+    }
+
     const data = await spotifyApi.authorizationCodeGrant(code);
     const { access_token, refresh_token } = data.body;
 
@@ -280,10 +290,13 @@ app.get("/api/spotify/callback", async (req, res) => {
     spotifyApi.setAccessToken(access_token);
     spotifyApi.setRefreshToken(refresh_token);
 
+    console.log("Successfully authenticated with Spotify");
     res.redirect("/niver2025?auth=success");
   } catch (error) {
     console.error("Error in Spotify callback:", error);
-    res.redirect("/niver2025?auth=error");
+    res.redirect(
+      "/niver2025?auth=error&reason=" + encodeURIComponent(error.message)
+    );
   }
 });
 
