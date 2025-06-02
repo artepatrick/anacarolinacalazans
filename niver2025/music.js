@@ -16,16 +16,17 @@ const suggestedMusicList = document.getElementById("suggestedMusic");
 
 // Check for authentication return
 const urlParams = new URLSearchParams(window.location.search);
-const authStatus = urlParams.get("auth");
-if (authStatus === "success") {
+const spotifyAuth = urlParams.get("spotify_auth");
+if (spotifyAuth === "success") {
   // Get the stored URL and redirect back
   const redirectUrl = sessionStorage.getItem("redirectAfterAuth");
   if (redirectUrl) {
     sessionStorage.removeItem("redirectAfterAuth");
     window.location.href = redirectUrl;
   }
-} else if (authStatus === "error") {
-  console.error("Authentication failed");
+} else if (spotifyAuth === "error") {
+  const errorMessage = urlParams.get("message");
+  console.error("Spotify authentication failed:", errorMessage);
   // You might want to show an error message to the user
 }
 

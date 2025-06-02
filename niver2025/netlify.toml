@@ -22,23 +22,29 @@
 [build.processing.images]
   compress = true
 
-[[redirects]]
-  from = "/niver2025/callback"
-  to = "/.netlify/functions/spotify-callback"
-  status = 200
-  force = true
-
+# API Routes
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/api/:splat"
   status = 200
-  force = true
 
+# Spotify Callback
+[[redirects]]
+  from = "/spotify/callback"
+  to = "/.netlify/functions/spotify-callback"
+  status = 200
+
+# Niver2025 Spotify Callback
+[[redirects]]
+  from = "/niver2025/callback"
+  to = "/.netlify/functions/spotify-callback"
+  status = 200
+
+# SPA Routes
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  force = true
 
 [dev]
   command = "npm run dev"
