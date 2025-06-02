@@ -8,6 +8,12 @@ Este é um projeto web que integra várias funcionalidades, incluindo uma API, s
 niver2025/
 ├── admin/              # Área administrativa do projeto
 ├── netlify/           # Configurações do Netlify
+│   └── functions/     # Netlify Serverless Functions
+│       ├── api.js     # API principal
+│       ├── spotify-callback.js # Callback do Spotify
+│       └── spotify/   # Serviços do Spotify
+│           ├── config.js
+│           └── service.js
 ├── node_modules/      # Dependências do projeto
 ├── public/            # Arquivos públicos estáticos
 ├── server/            # Servidor backend
@@ -44,6 +50,7 @@ niver2025/
 - Node.js
 - Vite
 - Netlify
+- Netlify Functions (Serverless)
 - Spotify API
 - SQL (Banco de dados)
 - Express.js
@@ -62,10 +69,34 @@ niver2025/
    SPOTIFY_CLIENT_SECRET=seu_client_secret
    SPOTIFY_REDIRECT_URI=https://anacarolinacalazans.com.br/niver2025/callback
    SPOTIFY_PLAYLIST_ID=id_da_sua_playlist
+   SUPABASE_URL=sua_url_do_supabase
+   SUPABASE_SERVICE_KEY=sua_chave_do_supabase
    ```
-4. Inicie o servidor de desenvolvimento:
+
+4. Para desenvolvimento local:
    ```bash
    npm run dev
+   ```
+
+## 🌐 Deploy no Netlify
+
+1. Configure as variáveis de ambiente no Netlify:
+   - Acesse o dashboard do Netlify
+   - Vá em Site settings > Environment variables
+   - Adicione todas as variáveis de ambiente necessárias
+
+2. Estrutura das Netlify Functions:
+   - `/netlify/functions/api.js`: API principal
+   - `/netlify/functions/spotify-callback.js`: Callback do Spotify
+   - `/netlify/functions/spotify/`: Serviços do Spotify
+     - `config.js`: Configuração do Spotify
+     - `service.js`: Serviços do Spotify
+
+3. Deploy:
+   ```bash
+   git add .
+   git commit -m "Seu commit message"
+   git push
    ```
 
 ## 🔐 Autenticação Spotify
