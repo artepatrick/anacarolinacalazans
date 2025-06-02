@@ -23,6 +23,76 @@ async function handleResponse(response) {
   return response.json();
 }
 
+// Helper function to handle authentication
+async function handleAuthError(error) {
+  if (error.error === "Authentication required" && error.authUrl) {
+    // Store the current URL to redirect back after authentication
+    sessionStorage.setItem("redirectAfterAuth", window.location.href);
+    // Redirect to Spotify auth page
+    window.location.href = error.authUrl;
+    return { success: false, error: "Authentication required" };
+  }
+  throw error;
+}
+
+// Spotify API endpoints
+export async function searchSpotifyTracks(query, limit = 10) {
+  try {
+    const url = `${API_BASE_URL}/api/spotify/search?query=${encodeURIComponent(
+      query
+    )}&limit=${limit}`;
+    console.log("Searching Spotify tracks:", url);
+
+    const response = await fetch(url);
+    if (!response.ok) {
+      const errorData = await response.json();
+      if (response.status === 401) {
+        return handleAuthError(errorData);
+      }
+      throw new Error(
+        `Failed to search tracks: ${errorData.error || response.statusText}`
+      );
+    }
+
+    return await handleResponse(response);
+  } catch (error) {
+    console.error("Error searching Spotify tracks:", error);
+    throw error;
+  }
+}
+
+export async function addTrackToSpotifyPlaylist(trackId) {
+  try {
+    const url = `${API_BASE_URL}/api/spotify/playlist/add`;
+    console.log("Adding track to Spotify playlist:", url);
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ trackId }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      if (response.status === 401) {
+        return handleAuthError(errorData);
+      }
+      throw new Error(
+        `Failed to add track to playlist: ${
+          errorData.error || response.statusText
+        }`
+      );
+    }
+
+    return await handleResponse(response);
+  } catch (error) {
+    console.error("Error adding track to Spotify playlist:", error);
+    throw error;
+  }
+}
+
 // Get all participants
 export async function getParticipants() {
   try {

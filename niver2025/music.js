@@ -1,4 +1,6 @@
 // Music search and suggestions functionality
+import { searchSpotifyTracks, addTrackToSpotifyPlaylist } from "./api.js";
+
 const API_BASE_URL =
   window.location.hostname === "localhost" ||
   window.location.hostname === "127.0.0.1"
@@ -12,6 +14,21 @@ const musicSearchInput = document.getElementById("musicSearch");
 const searchResults = document.getElementById("searchResults");
 const suggestedMusicList = document.getElementById("suggestedMusic");
 
+// Check for authentication return
+const urlParams = new URLSearchParams(window.location.search);
+const authStatus = urlParams.get("auth");
+if (authStatus === "success") {
+  // Get the stored URL and redirect back
+  const redirectUrl = sessionStorage.getItem("redirectAfterAuth");
+  if (redirectUrl) {
+    sessionStorage.removeItem("redirectAfterAuth");
+    window.location.href = redirectUrl;
+  }
+} else if (authStatus === "error") {
+  console.error("Authentication failed");
+  // You might want to show an error message to the user
+}
+
 // Debounce function to limit API calls
 function debounce(func, wait) {
   let timeout;
@@ -23,20 +40,6 @@ function debounce(func, wait) {
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
   };
-}
-
-// Search tracks on Spotify
-async function searchTracks(query) {
-  try {
-    const response = await fetch(
-      `${API_BASE_URL}/api/spotify/search?query=${encodeURIComponent(query)}`
-    );
-    if (!response.ok) throw new Error("Failed to search tracks");
-    return await response.json();
-  } catch (error) {
-    console.error("Error searching tracks:", error);
-    return [];
-  }
 }
 
 // Display search results
@@ -65,55 +68,6 @@ function displaySearchResults(tracks) {
   });
 
   searchResults.style.display = "block";
-}
-
-// Add track to Spotify playlist
-async function addTrackToPlaylist(trackId) {
-  console.log("Frontend: Attempting to add track to playlist:", trackId);
-  console.log("Frontend: API Base URL:", API_BASE_URL);
-  try {
-    const requestUrl = `${API_BASE_URL}/api/spotify/playlist/add`;
-    console.log("Frontend: Sending request to:", requestUrl);
-    console.log("Frontend: Request payload:", { trackId });
-
-    const response = await fetch(requestUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ trackId }),
-    });
-
-    console.log("Frontend: Response status:", response.status);
-    console.log(
-      "Frontend: Response headers:",
-      Object.fromEntries(response.headers.entries())
-    );
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Frontend: Error response:", errorData);
-
-      if (response.status === 401 && errorData.authUrl) {
-        console.log(
-          "Frontend: Authentication required, redirecting to:",
-          errorData.authUrl
-        );
-        window.location.href = errorData.authUrl;
-        return { success: false, error: "Authentication required" };
-      }
-
-      throw new Error(errorData.error || "Failed to add track to playlist");
-    }
-
-    const result = await response.json();
-    console.log("Frontend: Successfully added track to playlist:", result);
-    return { success: true, result };
-  } catch (error) {
-    console.error("Frontend: Error adding track to playlist:", error);
-    console.error("Frontend: Error stack trace:", error.stack);
-    return { success: false, error: error.message };
-  }
 }
 
 // Add track to suggestions
@@ -220,7 +174,7 @@ function addTrackToSuggestions(track) {
   statusElement.style.color = "#666";
 
   console.log("Frontend: Calling addTrackToPlaylist with ID:", track.id);
-  addTrackToPlaylist(track.id).then(({ success, error }) => {
+  addTrackToSpotifyPlaylist(track.id).then(({ success, error }) => {
     if (success) {
       statusElement.innerHTML =
         '<span class="success">Adicionado à playlist</span>';
@@ -251,7 +205,7 @@ const handleSearch = debounce(async (event) => {
     return;
   }
 
-  const tracks = await searchTracks(query);
+  const tracks = await searchSpotifyTracks(query);
   displaySearchResults(tracks);
 }, 300);
 

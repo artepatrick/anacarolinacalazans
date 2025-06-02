@@ -26,7 +26,7 @@ export default defineConfig({
         secure: false,
       },
       "/niver2025/callback": {
-        target: "http://localhost:8888/.netlify/functions/spotify-callback",
+        target: "http://localhost:3001",
         changeOrigin: true,
         secure: false,
       },
