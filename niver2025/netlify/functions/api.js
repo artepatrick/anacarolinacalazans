@@ -1,6 +1,6 @@
-import { createClient } from "@supabase/supabase-js";
-import { spotifyApi, getAuthUrl } from "../spotify/config.js";
-import * as spotifyService from "../spotify/service.js";
+const { createClient } = require("@supabase/supabase-js");
+const { spotifyApi, getAuthUrl } = require("../spotify/config.js");
+const spotifyService = require("../spotify/service.js");
 
 // Initialize Supabase client
 const supabase = createClient(
@@ -15,7 +15,7 @@ let spotifyTokens = {
   expiresAt: null,
 };
 
-export async function handler(event, context) {
+exports.handler = async function (event, context) {
   // Parse the URL to get the path and query parameters
   const url = new URL(event.rawUrl);
   // Remove both /.netlify/functions/api and /api from the path
@@ -204,4 +204,4 @@ export async function handler(event, context) {
       }),
     };
   }
-}
+};
