@@ -256,52 +256,34 @@ app.post("/api/notifications", async (req, res) => {
 
 // Spotify API Routes
 // Get Spotify authentication URL
-app.get("/api/spotify/auth-url", (req, res) => {
-  try {
-    const authUrl = getAuthUrl();
-    res.json({ url: authUrl });
-  } catch (error) {
-    console.error("Error generating auth URL:", error);
-    res.status(500).json({ error: "Failed to generate auth URL" });
-  }
+app.get("/api/spotify/auth", (req, res) => {
+  const authUrl = getAuthUrl();
+  res.json({ authUrl });
 });
 
 // Spotify Authentication Callback
-app.get("/niver2025/callback", async (req, res) => {
+app.get("/api/spotify/callback", async (req, res) => {
+  const { code } = req.query;
   try {
-    const { code } = req.query;
-
-    if (!code) {
-      console.error("No authorization code received");
-      return res.redirect("/niver2025?error=no_code");
-    }
-
-    console.log("Received authorization code, exchanging for tokens...");
-
-    // Exchange the code for an access token
     const data = await spotifyApi.authorizationCodeGrant(code);
-    const { access_token, refresh_token, expires_in } = data.body;
+    const { access_token, refresh_token } = data.body;
 
-    console.log("Successfully obtained tokens, storing them...");
-
-    // Store the tokens
+    // Store tokens in session or database
+    // For now, we'll just store them in memory
     spotifyTokens = {
       accessToken: access_token,
       refreshToken: refresh_token,
-      expiresAt: Date.now() + expires_in * 1000,
+      expiresAt: Date.now() + data.body.expires_in * 1000,
     };
 
     // Set the tokens in the API instance
     spotifyApi.setAccessToken(access_token);
     spotifyApi.setRefreshToken(refresh_token);
 
-    console.log("Tokens stored successfully, redirecting to main page...");
-
-    // Redirect to the main page with success
     res.redirect("/niver2025?auth=success");
   } catch (error) {
     console.error("Error in Spotify callback:", error);
-    res.redirect("/niver2025?error=auth_failed");
+    res.redirect("/niver2025?auth=error");
   }
 });
 
@@ -320,9 +302,10 @@ app.get("/api/spotify/search", async (req, res) => {
   } catch (error) {
     console.error("Error searching tracks:", error);
     if (error.message === "Authentication required") {
+      const authUrl = getAuthUrl();
       return res.status(401).json({
         error: "Authentication required",
-        authUrl: getAuthUrl(),
+        authUrl,
       });
     }
     res.status(500).json({

@@ -14,6 +14,21 @@ const musicSearchInput = document.getElementById("musicSearch");
 const searchResults = document.getElementById("searchResults");
 const suggestedMusicList = document.getElementById("suggestedMusic");
 
+// Check for authentication return
+const urlParams = new URLSearchParams(window.location.search);
+const authStatus = urlParams.get("auth");
+if (authStatus === "success") {
+  // Get the stored URL and redirect back
+  const redirectUrl = sessionStorage.getItem("redirectAfterAuth");
+  if (redirectUrl) {
+    sessionStorage.removeItem("redirectAfterAuth");
+    window.location.href = redirectUrl;
+  }
+} else if (authStatus === "error") {
+  console.error("Authentication failed");
+  // You might want to show an error message to the user
+}
+
 // Debounce function to limit API calls
 function debounce(func, wait) {
   let timeout;

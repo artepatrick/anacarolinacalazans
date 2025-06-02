@@ -23,6 +23,18 @@ async function handleResponse(response) {
   return response.json();
 }
 
+// Helper function to handle authentication
+async function handleAuthError(error) {
+  if (error.error === "Authentication required" && error.authUrl) {
+    // Store the current URL to redirect back after authentication
+    sessionStorage.setItem("redirectAfterAuth", window.location.href);
+    // Redirect to Spotify auth page
+    window.location.href = error.authUrl;
+    return { success: false, error: "Authentication required" };
+  }
+  throw error;
+}
+
 // Spotify API endpoints
 export async function searchSpotifyTracks(query, limit = 10) {
   try {
@@ -33,8 +45,13 @@ export async function searchSpotifyTracks(query, limit = 10) {
 
     const response = await fetch(url);
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to search tracks: ${errorText}`);
+      const errorData = await response.json();
+      if (response.status === 401) {
+        return handleAuthError(errorData);
+      }
+      throw new Error(
+        `Failed to search tracks: ${errorData.error || response.statusText}`
+      );
     }
 
     return await handleResponse(response);
@@ -58,8 +75,15 @@ export async function addTrackToSpotifyPlaylist(trackId) {
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to add track to playlist: ${errorText}`);
+      const errorData = await response.json();
+      if (response.status === 401) {
+        return handleAuthError(errorData);
+      }
+      throw new Error(
+        `Failed to add track to playlist: ${
+          errorData.error || response.statusText
+        }`
+      );
     }
 
     return await handleResponse(response);
