@@ -18,7 +18,10 @@ let spotifyTokens = {
 export async function handler(event, context) {
   // Parse the URL to get the path and query parameters
   const url = new URL(event.rawUrl);
-  const path = url.pathname.replace("/.netlify/functions/api", "");
+  // Remove both /.netlify/functions/api and /api from the path
+  const path = url.pathname
+    .replace("/.netlify/functions/api", "")
+    .replace("/api", "");
   const queryParams = Object.fromEntries(url.searchParams);
 
   // Set CORS headers
