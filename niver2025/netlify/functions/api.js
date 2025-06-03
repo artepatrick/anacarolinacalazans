@@ -18,9 +18,10 @@ let spotifyTokens = {
 exports.handler = async function (event, context) {
   // Parse the URL to get the path and query parameters
   const url = new URL(event.rawUrl);
-  // Remove both /.netlify/functions/api and /api from the path
+  // Remove /.netlify/functions/api, /api, and /niver2025/api from the path
   const path = url.pathname
     .replace("/.netlify/functions/api", "")
+    .replace("/niver2025/api", "")
     .replace("/api", "");
   const queryParams = Object.fromEntries(url.searchParams);
 

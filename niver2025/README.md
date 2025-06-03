@@ -7,11 +7,11 @@ Este é um projeto web que integra várias funcionalidades, incluindo uma API, s
 ```
 niver2025/
 ├── admin/              # Área administrativa do projeto
-├── server/            # Servidor backend Express
-│   ├── index.js       # Servidor principal
-│   ├── routes.js      # Rotas da API
-│   └── spotify/       # Serviços do Spotify
-├── node_modules/      # Dependências do projeto
+├── netlify/           # Configurações do Netlify
+│   ├── functions/     # Serverless functions
+│   │   ├── api.js     # API principal
+│   │   └── spotify/   # Serviços do Spotify
+│   └── spotify/       # Configurações do Spotify
 ├── public/            # Arquivos públicos estáticos
 ├── api.js             # Cliente API para frontend
 ├── config.js          # Configurações do projeto
@@ -31,7 +31,7 @@ niver2025/
 ## 🚀 Funcionalidades Principais
 
 - **API REST**: Implementação de endpoints para gerenciamento de dados
-- **Servidor Express**: Servidor backend rodando na porta 3001
+- **Serverless Functions**: API rodando no Netlify Functions
 - **Integração com Spotify**: 
   - Autenticação OAuth2 com gerenciamento automático de tokens
   - Busca avançada de músicas com suporte a paginação
@@ -46,7 +46,7 @@ niver2025/
 ## 🛠️ Tecnologias Utilizadas
 
 - Node.js
-- Express.js
+- Netlify Functions
 - Vite
 - Spotify API
 - SQL (Banco de dados)
@@ -59,7 +59,7 @@ niver2025/
    ```bash
    npm install
    ```
-3. Configure as variáveis de ambiente (baseado em config.template.js):
+3. Configure as variáveis de ambiente no Netlify:
    ```
    SPOTIFY_CLIENT_ID=seu_client_id
    SPOTIFY_CLIENT_SECRET=seu_client_secret
@@ -71,34 +71,26 @@ niver2025/
 
 4. Para desenvolvimento local:
    ```bash
-   # Terminal 1 - Servidor Backend
-   cd niver2025
-   npm run server
-   
-   # Terminal 2 - Frontend
+   # Terminal 1 - Servidor de Desenvolvimento
    cd niver2025
    npm run dev
    ```
 
-## 🌐 Estrutura do Servidor
+## 🌐 Estrutura da API
 
-O projeto utiliza um servidor Express.js rodando na porta 3001 para gerenciar todas as requisições da API. A estrutura é a seguinte:
+O projeto utiliza Netlify Functions para gerenciar todas as requisições da API. A estrutura é a seguinte:
 
-1. **Servidor Principal** (`server/index.js`):
-   - Configuração do Express
-   - Middleware CORS
+1. **API Principal** (`netlify/functions/api.js`):
+   - Configuração do CORS
    - Conexão com Supabase
-   - Rotas principais
-
-2. **Rotas da API** (`server/routes.js`):
    - Endpoints do Spotify
    - Gerenciamento de participantes
-   - Autenticação
 
-3. **Cliente API** (`api.js`):
+2. **Cliente API** (`api.js`):
    - Comunicação entre frontend e backend
    - Gerenciamento de requisições
    - Tratamento de erros
+   - Configuração automática da URL base baseada no ambiente
 
 ## 🔐 Autenticação Spotify
 
@@ -119,6 +111,17 @@ O projeto utiliza autenticação OAuth2 com Spotify. O fluxo de autenticação i
 - **Playlists**: Adição automática de faixas à playlist do evento
 - **Tratamento de Erros**: Sistema robusto de logs e tratamento de erros de autenticação
 
+## 🚀 Deploy
+
+O projeto está configurado para deploy automático no Netlify:
+
+1. **Build**: O Netlify automaticamente executa `npm run build` para gerar os arquivos estáticos
+2. **Functions**: As funções serverless são automaticamente deployadas da pasta `netlify/functions`
+3. **Redirects**: Configurados para:
+   - `/niver2025/api/*` → API endpoints
+   - `/niver2025/callback` → Spotify callback
+   - `/*` → SPA routes
+
 ## 📝 Documentação Adicional
 
 - [Documentação da API Spotify](spotify-api-docs.md)
@@ -127,8 +130,7 @@ O projeto utiliza autenticação OAuth2 com Spotify. O fluxo de autenticação i
 
 ## 🔧 Scripts Disponíveis
 
-- `npm run dev`: Inicia o servidor de desenvolvimento frontend
-- `npm run server`: Inicia o servidor backend
+- `npm run dev`: Inicia o servidor de desenvolvimento
 - `npm run build`: Gera build de produção
 - `npm start`: Inicia o servidor em modo produção
 

@@ -22,25 +22,34 @@
 [build.processing.images]
   compress = true
 
-# API Routes
+# API Routes - These must come BEFORE the SPA route
+[[redirects]]
+  from = "/niver2025/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+  force = true
+
 [[redirects]]
   from = "/.netlify/functions/api/*"
   to = "/.netlify/functions/api/:splat"
   status = 200
+  force = true
 
 # Spotify Callback
 [[redirects]]
   from = "/spotify/callback"
   to = "/.netlify/functions/spotify-callback"
   status = 200
+  force = true
 
 # Niver2025 Spotify Callback
 [[redirects]]
   from = "/niver2025/callback"
   to = "/.netlify/functions/spotify-callback"
   status = 200
+  force = true
 
-# SPA Routes
+# SPA Routes - This must come LAST
 [[redirects]]
   from = "/*"
   to = "/index.html"
