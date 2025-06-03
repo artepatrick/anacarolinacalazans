@@ -88,66 +88,8 @@ function addTrackToSuggestions(track) {
             <div class="track-name">${track.name}</div>
             <div class="artist-name">${track.artist}</div>
         </div>
-        <div class="track-status"></div>
         <button class="remove-button" title="Remover música">&times;</button>
     `;
-
-  // Add styles for track status
-  const style = document.createElement("style");
-  style.textContent = `
-    .track-status {
-      display: flex;
-      align-items: center;
-      font-size: 0.9em;
-      margin-left: 10px;
-      min-width: 150px;
-    }
-    
-    .track-status .loading {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .track-status .loading::before {
-      content: '';
-      width: 16px;
-      height: 16px;
-      border: 2px solid #666;
-      border-top-color: transparent;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    
-    .track-status .success {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .track-status .success::before {
-      content: '✓';
-      font-weight: bold;
-    }
-    
-    .track-status .error {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .track-status .error::before {
-      content: '✗';
-      font-weight: bold;
-    }
-    
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-  `;
-  document.head.appendChild(style);
 
   // Add remove functionality
   const removeButton = trackElement.querySelector(".remove-button");
@@ -164,32 +106,6 @@ function addTrackToSuggestions(track) {
     song_title: track.name,
     artist: track.artist,
     spotify_url: track.preview_url || null,
-  });
-
-  // Add track to Spotify playlist with loading state
-  const statusElement = trackElement.querySelector(".track-status");
-  statusElement.innerHTML =
-    '<span class="loading">Adicionando à playlist...</span>';
-  statusElement.style.color = "#666";
-
-  console.log("Frontend: Calling addTrackToPlaylist with ID:", track.id);
-  addTrackToSpotifyPlaylist(track.id).then(({ success, error }) => {
-    if (success) {
-      statusElement.innerHTML =
-        '<span class="success">Adicionado à playlist</span>';
-      statusElement.style.color = "#4CAF50";
-      // Remove success message after 3 seconds
-      setTimeout(() => {
-        statusElement.innerHTML = "";
-      }, 3000);
-    } else {
-      statusElement.innerHTML = `<span class="error">Erro: ${error}</span>`;
-      statusElement.style.color = "#f44336";
-      // Remove error message after 5 seconds
-      setTimeout(() => {
-        statusElement.innerHTML = "";
-      }, 5000);
-    }
   });
 
   musicSearchInput.value = "";
