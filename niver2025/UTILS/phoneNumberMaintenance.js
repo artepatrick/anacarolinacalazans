@@ -1,8 +1,7 @@
-const PhoneNumberFormatter = require("./phoneNumberFormatter");
-const { createClient } = require("@supabase/supabase-js");
-const { Log } = require("node-api-rest-framework");
+import PhoneNumberFormatter from "./phoneNumberFormatter.js";
+import { createClient } from "@supabase/supabase-js";
 
-class PhoneNumberMaintenance {
+export class PhoneNumberMaintenance {
   constructor(supabaseUrl, supabaseKey) {
     this.supabase = createClient(supabaseUrl, supabaseKey);
     this.formatter = new PhoneNumberFormatter();
@@ -63,7 +62,9 @@ class PhoneNumberMaintenance {
 
       return results;
     } catch (error) {
-      Log.error(`Erro na manutenção de números de telefone: ${error.message}`);
+      console.error(
+        `Erro na manutenção de números de telefone: ${error.message}`
+      );
       return {
         success: false,
         updated: 0,
@@ -124,7 +125,7 @@ class PhoneNumberMaintenance {
         data: result,
       };
     } catch (error) {
-      Log.error(`Erro ao inserir/atualizar registro: ${error.message}`);
+      console.error(`Erro ao inserir/atualizar registro: ${error.message}`);
       return {
         success: false,
         error: error.message,
@@ -133,4 +134,5 @@ class PhoneNumberMaintenance {
   }
 }
 
-module.exports = PhoneNumberMaintenance;
+// Exporta uma instância da classe
+export default new PhoneNumberMaintenance();

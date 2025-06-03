@@ -1,5 +1,10 @@
-const SpotifyWebApi = require("spotify-web-api-node");
-require("dotenv").config();
+import SpotifyWebApi from "spotify-web-api-node";
+import { config } from "dotenv";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+
+// Load environment variables
+config({ path: join(dirname(fileURLToPath(import.meta.url)), "..", ".env") });
 
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
@@ -24,7 +29,7 @@ async function getValidAccessToken() {
 }
 
 // Função para adicionar uma música à playlist
-async function addTrackToPlaylist(trackId) {
+export async function addTrackToPlaylist(trackId) {
   try {
     console.log(
       `Attempting to add track ${trackId} to playlist ${PLAYLIST_ID}`
@@ -44,7 +49,3 @@ async function addTrackToPlaylist(trackId) {
     throw error;
   }
 }
-
-module.exports = {
-  addTrackToPlaylist,
-};

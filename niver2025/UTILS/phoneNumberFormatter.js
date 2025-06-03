@@ -1,14 +1,13 @@
-const {
+import {
   parsePhoneNumberFromString,
   isValidPhoneNumber,
-} = require("libphonenumber-js");
-const { Log } = require("node-api-rest-framework");
+} from "libphonenumber-js";
 
 /**
  * Classe para formatação de números de telefone brasileiros
  * @class PhoneNumberFormatter
  */
-class PhoneNumberFormatter {
+export class PhoneNumberFormatter {
   /**
    * Cria uma instância de PhoneNumberFormatter
    * @param {string} defaultCountryCode - Código de país padrão (ISO 3166-1 alpha-2)
@@ -49,7 +48,7 @@ class PhoneNumberFormatter {
       throw new Error("Número inválido ou não pode ser formatado.");
     } catch (error) {
       let errMsg = `Erro ao formatar para formato completo: ${input} ->  ${error.message}`;
-      Log.error(errMsg);
+      console.error(errMsg);
       return input;
     }
   }
@@ -74,7 +73,7 @@ class PhoneNumberFormatter {
 
       return fullNumber;
     } catch (error) {
-      Log.error("Erro ao formatar sem dígito extra:", error.message);
+      console.error("Erro ao formatar sem dígito extra:", error.message);
       return input;
     }
   }
@@ -113,7 +112,7 @@ class PhoneNumberFormatter {
 
       throw new Error("Formato de número não suportado para exibição.");
     } catch (error) {
-      Log.error(`Erro ao formatar para exibição: ${error.message}`);
+      console.error(`Erro ao formatar para exibição: ${error.message}`);
       return input;
     }
   }
@@ -167,7 +166,7 @@ class PhoneNumberFormatter {
       }
 
       if (cleanNumber.length < 12) {
-        Log.error(
+        console.error(
           "Número de telefone inválido. Deve conter pelo menos 8 dígitos além do DDD e do código nacional."
         );
         throw new Error(`Número de telefone inválido: ${cleanNumber}`);
@@ -177,10 +176,10 @@ class PhoneNumberFormatter {
     } catch (e) {
       let err = `${e?.message}`;
       let errMsg = `ERRO: em prepareNumber() -> ${err}`;
-      Log.error(errMsg);
+      console.error(errMsg);
       return input;
     }
   }
 }
 
-module.exports = PhoneNumberFormatter;
+export default PhoneNumberFormatter;

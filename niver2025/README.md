@@ -7,23 +7,18 @@ Este é um projeto web que integra várias funcionalidades, incluindo uma API, s
 ```
 niver2025/
 ├── admin/              # Área administrativa do projeto
-├── netlify/           # Configurações do Netlify
-│   └── functions/     # Netlify Serverless Functions
-│       ├── api.js     # API principal
-│       ├── spotify-callback.js # Callback do Spotify
-│       └── spotify/   # Serviços do Spotify
-│           ├── config.js
-│           └── service.js
+├── server/            # Servidor backend Express
+│   ├── index.js       # Servidor principal
+│   ├── routes.js      # Rotas da API
+│   └── spotify/       # Serviços do Spotify
 ├── node_modules/      # Dependências do projeto
 ├── public/            # Arquivos públicos estáticos
-├── server/            # Servidor backend
-├── api.js             # Configuração principal da API
+├── api.js             # Cliente API para frontend
 ├── config.js          # Configurações do projeto
 ├── database.sql       # Schema do banco de dados
 ├── design.md          # Documentação de design
 ├── index.html         # Página principal
 ├── music.js           # Lógica de música e integração Spotify
-├── netlify.toml       # Configuração do Netlify
 ├── package.json       # Dependências e scripts
 ├── schema.sql         # Schema do banco de dados
 ├── script.js          # Scripts principais
@@ -36,24 +31,25 @@ niver2025/
 ## 🚀 Funcionalidades Principais
 
 - **API REST**: Implementação de endpoints para gerenciamento de dados
+- **Servidor Express**: Servidor backend rodando na porta 3001
 - **Integração com Spotify**: 
-  - Autenticação OAuth2
-  - Busca de músicas
-  - Adição de músicas à playlist
-  - Gerenciamento de tokens
+  - Autenticação OAuth2 com gerenciamento automático de tokens
+  - Busca avançada de músicas com suporte a paginação
+  - Detalhes completos de artistas, álbuns e faixas
+  - Recomendações personalizadas baseadas em faixas
+  - Gerenciamento de playlists
+  - Sistema robusto de tratamento de erros e logs
+  - Suporte a credenciais do cliente para operações públicas
 - **Interface Administrativa**: Painel de controle para gerenciamento
-- **Servidor Backend**: Processamento de requisições e lógica de negócio
 - **Frontend**: Interface do usuário responsiva e moderna
 
 ## 🛠️ Tecnologias Utilizadas
 
 - Node.js
+- Express.js
 - Vite
-- Netlify
-- Netlify Functions (Serverless)
 - Spotify API
 - SQL (Banco de dados)
-- Express.js
 - Supabase
 
 ## ⚙️ Configuração do Ambiente
@@ -75,38 +71,53 @@ niver2025/
 
 4. Para desenvolvimento local:
    ```bash
+   # Terminal 1 - Servidor Backend
+   cd niver2025
+   npm run server
+   
+   # Terminal 2 - Frontend
+   cd niver2025
    npm run dev
    ```
 
-## 🌐 Deploy no Netlify
+## 🌐 Estrutura do Servidor
 
-1. Configure as variáveis de ambiente no Netlify:
-   - Acesse o dashboard do Netlify
-   - Vá em Site settings > Environment variables
-   - Adicione todas as variáveis de ambiente necessárias
+O projeto utiliza um servidor Express.js rodando na porta 3001 para gerenciar todas as requisições da API. A estrutura é a seguinte:
 
-2. Estrutura das Netlify Functions:
-   - `/netlify/functions/api.js`: API principal
-   - `/netlify/functions/spotify-callback.js`: Callback do Spotify
-   - `/netlify/functions/spotify/`: Serviços do Spotify
-     - `config.js`: Configuração do Spotify
-     - `service.js`: Serviços do Spotify
+1. **Servidor Principal** (`server/index.js`):
+   - Configuração do Express
+   - Middleware CORS
+   - Conexão com Supabase
+   - Rotas principais
 
-3. Deploy:
-   ```bash
-   git add .
-   git commit -m "Seu commit message"
-   git push
-   ```
+2. **Rotas da API** (`server/routes.js`):
+   - Endpoints do Spotify
+   - Gerenciamento de participantes
+   - Autenticação
+
+3. **Cliente API** (`api.js`):
+   - Comunicação entre frontend e backend
+   - Gerenciamento de requisições
+   - Tratamento de erros
 
 ## 🔐 Autenticação Spotify
 
 O projeto utiliza autenticação OAuth2 com Spotify. O fluxo de autenticação inclui:
 
-1. Redirecionamento para página de autorização do Spotify
+1. Redirecionamento para página de autorização do Spotify com escopos específicos
 2. Callback para `/niver2025/callback` após autorização
 3. Gerenciamento automático de tokens de acesso e refresh
-4. Redirecionamento de volta para a aplicação após autenticação
+4. Suporte a credenciais do cliente para operações públicas
+5. Redirecionamento de volta para a aplicação após autenticação
+
+## 🎵 Funcionalidades do Spotify
+
+- **Busca de Músicas**: Busca avançada com suporte a filtros e paginação
+- **Detalhes de Artistas**: Informações completas, top tracks e álbuns
+- **Gerenciamento de Álbuns**: Detalhes e faixas de álbuns
+- **Recomendações**: Sistema de recomendações baseado em faixas semelhantes
+- **Playlists**: Adição automática de faixas à playlist do evento
+- **Tratamento de Erros**: Sistema robusto de logs e tratamento de erros de autenticação
 
 ## 📝 Documentação Adicional
 
@@ -116,9 +127,10 @@ O projeto utiliza autenticação OAuth2 com Spotify. O fluxo de autenticação i
 
 ## 🔧 Scripts Disponíveis
 
-- `npm run dev`: Inicia o servidor de desenvolvimento
+- `npm run dev`: Inicia o servidor de desenvolvimento frontend
+- `npm run server`: Inicia o servidor backend
 - `npm run build`: Gera build de produção
-- `npm run deploy`: Faz deploy para o Netlify
+- `npm start`: Inicia o servidor em modo produção
 
 ## 📄 Licença
 

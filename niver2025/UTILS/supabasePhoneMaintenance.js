@@ -1,5 +1,5 @@
-const PhoneNumberMaintenance = require("./phoneNumberMaintenance");
-const { createClient } = require("@supabase/supabase-js");
+import PhoneNumberMaintenance from "./phoneNumberMaintenance.js";
+import { createClient } from "@supabase/supabase-js";
 
 class SupabasePhoneMaintenance {
   constructor(supabaseUrl, supabaseKey) {
@@ -77,4 +77,4 @@ class SupabasePhoneMaintenance {
   }
 }
 
-module.exports = SupabasePhoneMaintenance;
+export default SupabasePhoneMaintenance;
