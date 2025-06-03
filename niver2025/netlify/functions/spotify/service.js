@@ -1,6 +1,6 @@
-import { spotifyApi } from "./config.js";
+const { spotifyApi } = require("./config");
 
-export async function addTrackToPlaylist(trackId) {
+async function addTrackToPlaylist(trackId) {
   try {
     const playlistId = process.env.SPOTIFY_PLAYLIST_ID;
 
@@ -9,12 +9,22 @@ export async function addTrackToPlaylist(trackId) {
       `spotify:track:${trackId}`,
     ]);
 
-    return { success: true, message: "Track added to playlist successfully" };
+    return {
+      success: true,
+      message: "Track added to playlist successfully",
+    };
   } catch (error) {
     console.error("Error adding track to playlist:", error);
-    throw error;
+    throw {
+      statusCode: error.statusCode || 500,
+      message: error.message || "Failed to add track to playlist",
+    };
   }
 }
+
+module.exports = {
+  addTrackToPlaylist,
+};
 
 export async function refreshAccessToken() {
   try {

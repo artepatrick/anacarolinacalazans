@@ -1,6 +1,6 @@
 const { createClient } = require("@supabase/supabase-js");
-const { spotifyApi, getAuthUrl } = require("../spotify/config.js");
-const spotifyService = require("../spotify/service.js");
+const { spotifyApi, getAuthUrl } = require("./spotify/config");
+const spotifyService = require("./spotify/service");
 
 // Initialize Supabase client
 const supabase = createClient(
@@ -30,6 +30,7 @@ exports.handler = async function (event, context) {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Headers": "Content-Type",
     "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Content-Type": "application/json",
   };
 
   // Handle OPTIONS request for CORS
@@ -49,7 +50,7 @@ exports.handler = async function (event, context) {
         if (!query) {
           return {
             statusCode: 400,
-            headers: { ...headers, "Content-Type": "application/json" },
+            headers,
             body: JSON.stringify({ error: "Query parameter is required" }),
           };
         }
@@ -79,7 +80,7 @@ exports.handler = async function (event, context) {
 
         return {
           statusCode: 200,
-          headers: { ...headers, "Content-Type": "application/json" },
+          headers,
           body: JSON.stringify({ tracks }),
         };
 

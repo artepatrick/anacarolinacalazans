@@ -1,4 +1,4 @@
-import SpotifyWebApi from "spotify-web-api-node";
+const SpotifyWebApi = require("spotify-web-api-node");
 
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
@@ -6,8 +6,9 @@ const spotifyApi = new SpotifyWebApi({
   redirectUri: process.env.SPOTIFY_REDIRECT_URI,
 });
 
-export function getAuthUrl() {
+function getAuthUrl() {
   const scopes = [
+    "user-read-private",
     "user-read-email",
     "playlist-modify-public",
     "playlist-modify-private",
@@ -16,4 +17,7 @@ export function getAuthUrl() {
   return spotifyApi.createAuthorizeURL(scopes);
 }
 
-export { spotifyApi };
+module.exports = {
+  spotifyApi,
+  getAuthUrl,
+};
