@@ -448,4 +448,11 @@ input:focus {
 .suggested-music-item .remove-button:hover {
     color: #cc0000;
     background: none;
+}
+
+.music-description {
+    font-size: 0.9rem;
+    color: var(--gray-500);
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
 } 
