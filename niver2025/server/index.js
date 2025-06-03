@@ -7,6 +7,7 @@ import cors from "cors";
 import * as spotifyService from "../spotify-service.js";
 import { spotifyApi, getAuthUrl } from "../spotify-api.js";
 import SupabasePhoneMaintenance from "../UTILS/supabasePhoneMaintenance.js";
+import routes from "./routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -66,6 +67,9 @@ app.use(
 
 // Parse JSON bodies
 app.use(express.json());
+
+// Register routes
+app.use("/api", routes);
 
 // Store tokens in memory (in production, you should use a database)
 let spotifyTokens = {
