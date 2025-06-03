@@ -1,6 +1,5 @@
 import express from "express";
-import { addTrackToPlaylist } from "./spotify-playlist.js";
-import { spotifyApi } from "../spotify-api.js";
+import { spotifyApi, addTrackToPlaylist } from "./services/spotify/index.js";
 
 const router = express.Router();
 
@@ -30,7 +29,7 @@ router.get("/spotify/search", async (req, res) => {
   }
 });
 
-// Rota para adicionar música à playlist
+// Route to add track to playlist
 router.post("/spotify/playlist/add", async (req, res) => {
   console.log("Received request to add track to playlist:", req.body);
   try {
