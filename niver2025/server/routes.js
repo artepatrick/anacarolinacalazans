@@ -1,7 +1,8 @@
-const express = require("express");
+import express from "express";
+import { addTrackToPlaylist } from "./spotify-playlist.js";
+import { spotifyApi } from "../spotify-api.js";
+
 const router = express.Router();
-const { addTrackToPlaylist } = require("./spotify-playlist");
-const { spotifyApi } = require("../spotify-api");
 
 // Spotify search endpoint
 router.get("/spotify/search", async (req, res) => {
@@ -49,4 +50,4 @@ router.post("/spotify/playlist/add", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
