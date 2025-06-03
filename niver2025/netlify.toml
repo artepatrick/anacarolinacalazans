@@ -1,7 +1,7 @@
 [build]
   command = "npm run build"
   publish = "dist"
-  functions = "netlify/functions"
+  functions = "dist/netlify/functions"
 
 [build.environment]
   NODE_VERSION = "20"
@@ -30,7 +30,7 @@
   force = true
 
 [[redirects]]
-  from = "/.netlify/functions/api/*"
+  from = "/api/*"
   to = "/.netlify/functions/api/:splat"
   status = 200
   force = true
@@ -57,5 +57,5 @@
 
 [dev]
   command = "npm run dev"
-  port = 3001
-  targetPort = 3002 
+  port = 8888
+  targetPort = 3001 
