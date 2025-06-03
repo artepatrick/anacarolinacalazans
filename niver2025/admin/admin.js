@@ -1,9 +1,25 @@
-// Import API service functions
-import {
-  getParticipants,
-  deleteParticipant as apiDeleteParticipant,
-  getParticipantCount,
-} from "../api.js";
+// Function to get participants from the server
+async function getParticipants() {
+  const response = await fetch(`${window.location.origin}/api/participants`);
+  if (!response.ok) {
+    throw new Error("Failed to fetch participants");
+  }
+  return response.json();
+}
+
+// Function to delete participant
+async function deleteParticipant(id) {
+  const response = await fetch(
+    `${window.location.origin}/api/participants/${id}`,
+    {
+      method: "DELETE",
+    }
+  );
+  if (!response.ok) {
+    throw new Error("Failed to delete participant");
+  }
+  return response.json();
+}
 
 // Function to format date
 function formatDate(dateString) {
@@ -165,20 +181,6 @@ async function viewDetails(id) {
   } catch (error) {
     console.error("Error viewing details:", error);
     alert("Erro ao carregar detalhes do participante");
-  }
-}
-
-// Function to delete participant
-async function deleteParticipant(id) {
-  if (confirm("Tem certeza que deseja excluir este participante?")) {
-    try {
-      await apiDeleteParticipant(id);
-      alert("Participante excluído com sucesso!");
-      loadParticipants(); // Reload the list
-    } catch (error) {
-      console.error("Error deleting participant:", error);
-      alert("Erro ao excluir participante");
-    }
   }
 }
 

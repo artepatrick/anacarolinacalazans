@@ -6,6 +6,7 @@ import { dirname, join } from "path";
 import cors from "cors";
 import * as spotifyService from "../spotify-service.js";
 import { spotifyApi, getAuthUrl } from "../spotify-api.js";
+import SupabasePhoneMaintenance from "../UTILS/supabasePhoneMaintenance.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -36,6 +37,12 @@ console.log("Environment variables check:", {
 // Initialize Supabase client
 const supabase = createClient(
   process.env.SUPABASE_URL || "https://jpkqterigrjwpyrwmxfj.supabase.co",
+  process.env.SUPABASE_SERVICE_KEY
+);
+
+// Initialize phone maintenance
+const phoneMaintenance = new SupabasePhoneMaintenance(
+  process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_KEY
 );
 
@@ -156,6 +163,15 @@ app.post("/api/participants", async (req, res) => {
     // Log the received data for debugging
     console.log("Received participant data:", req.body);
 
+    // Validate and format phone number
+    const phoneValidation = phoneMaintenance.validatePhoneNumber(phone);
+    if (!phoneValidation.isValid) {
+      return res.status(400).json({
+        error: "Invalid phone number",
+        details: phoneValidation.error,
+      });
+    }
+
     // Start a transaction
     const { data: participant, error: participantError } = await supabase
       .from("presence_confirmations")
@@ -163,7 +179,7 @@ app.post("/api/participants", async (req, res) => {
         {
           names,
           email,
-          phone,
+          phone: phoneValidation.formattedNumber,
           status: status || "pendente",
           created_at: created_at || new Date().toISOString(),
           updated_at: updated_at || new Date().toISOString(),
@@ -200,6 +216,34 @@ app.post("/api/participants", async (req, res) => {
     res.status(201).json(participant[0]);
   } catch (error) {
     console.error("Error adding participant:", error);
+    res.status(500).json({
+      error: "Internal server error",
+      details: error.message,
+    });
+  }
+});
+
+// Add new endpoint to update all phone numbers
+app.post("/api/maintenance/update-phones", async (req, res) => {
+  try {
+    const result = await phoneMaintenance.updateAllPhoneNumbers();
+    res.json(result);
+  } catch (error) {
+    console.error("Error updating phone numbers:", error);
+    res.status(500).json({
+      error: "Internal server error",
+      details: error.message,
+    });
+  }
+});
+
+// Add new endpoint to find invalid phone numbers
+app.get("/api/maintenance/invalid-phones", async (req, res) => {
+  try {
+    const invalidPhones = await phoneMaintenance.findInvalidPhoneNumbers();
+    res.json(invalidPhones);
+  } catch (error) {
+    console.error("Error finding invalid phone numbers:", error);
     res.status(500).json({
       error: "Internal server error",
       details: error.message,
