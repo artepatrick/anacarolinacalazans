@@ -1,9 +1,11 @@
 :root {
-    --purple-500: #805AD5;
-    --red-500: #E53E3E;
-    --yellow-400: #ECC94B;
-    --green-500: #38A169;
-    --gray-500: #718096;
+    --spotify-black: #121212;
+    --spotify-dark-gray: #181818;
+    --spotify-light-gray: #282828;
+    --spotify-green: #1DB954;
+    --spotify-white: #FFFFFF;
+    --spotify-gray: #B3B3B3;
+    --spotify-hover: #282828;
 }
 
 * {
@@ -14,8 +16,9 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: var(--spotify-black);
     min-height: 100vh;
+    color: var(--spotify-white);
 }
 
 .container {
@@ -25,12 +28,17 @@ body {
 }
 
 .content {
-    background: white;
+    background: var(--spotify-dark-gray);
     border-radius: 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     padding: 2rem;
     max-width: 600px;
     margin: 2rem auto;
+    transition: transform 0.3s ease;
+}
+
+.content:hover {
+    transform: translateY(-5px);
 }
 
 .profile-section {
@@ -44,19 +52,25 @@ body {
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 1rem;
-    border: 4px solid var(--purple-500);
+    border: 4px solid var(--spotify-green);
+    transition: transform 0.3s ease;
+}
+
+.profile-image:hover {
+    transform: scale(1.05);
 }
 
 h1 {
     font-size: 2rem;
-    font-weight: 600;
-    color: var(--purple-500);
+    font-weight: 700;
+    color: var(--spotify-white);
     margin-bottom: 0.5rem;
+    letter-spacing: -0.5px;
 }
 
 .subtitle {
     font-size: 1.1rem;
-    color: var(--gray-500);
+    color: var(--spotify-gray);
 }
 
 .form-container {
@@ -73,52 +87,58 @@ h1 {
 
 label {
     font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--gray-500);
+    font-weight: 600;
+    color: var(--spotify-white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 input {
     padding: 0.75rem;
-    border: 2px solid #E2E8F0;
+    background: var(--spotify-light-gray);
+    border: 2px solid transparent;
     border-radius: 0.5rem;
     font-size: 1rem;
-    transition: border-color 0.3s ease;
+    color: var(--spotify-white);
+    transition: all 0.3s ease;
 }
 
 input:focus {
     outline: none;
-    border-color: var(--purple-500);
+    border-color: var(--spotify-green);
+    background: var(--spotify-hover);
 }
 
 .submit-button {
     width: 100%;
     padding: 12px;
-    background-color: var(--purple-500);
-    color: white;
+    background-color: var(--spotify-green);
+    color: var(--spotify-black);
     border: none;
-    border-radius: 0.5rem;
+    border-radius: 2rem;
     cursor: pointer;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 700;
     transition: all 0.3s ease;
     position: relative;
     min-height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .submit-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(128, 90, 213, 0.3);
+    transform: scale(1.02);
+    background-color: #1ed760;
 }
 
 .submit-button:disabled {
-    background-color: var(--purple-500);
+    background-color: var(--spotify-gray);
     opacity: 0.7;
     cursor: not-allowed;
     transform: none;
-    box-shadow: none;
 }
 
 .submit-button .button-text,
@@ -172,36 +192,40 @@ input:focus {
 }
 
 .add-name-button {
-    background-color: var(--green-500);
-    color: white;
+    background-color: var(--spotify-light-gray);
+    color: var(--spotify-white);
     padding: 0.75rem;
     border: none;
-    border-radius: 0.5rem;
+    border-radius: 2rem;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
     margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .add-name-button:hover {
-    background-color: #2f855a;
+    background-color: var(--spotify-hover);
+    transform: scale(1.02);
 }
 
 .countdown-section {
     text-align: center;
     margin-bottom: 2rem;
     padding: 1.5rem;
-    background: linear-gradient(135deg, #f6f8ff 0%, #f0f4ff 100%);
+    background: var(--spotify-light-gray);
     border-radius: 1rem;
-    box-shadow: 0 4px 15px rgba(128, 90, 213, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .countdown-section h2 {
-    color: var(--purple-500);
+    color: var(--spotify-white);
     font-size: 1.5rem;
     margin-bottom: 1rem;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 .countdown-container {
@@ -221,37 +245,38 @@ input:focus {
 .countdown-item span:first-child {
     font-size: 2.5rem;
     font-weight: 700;
-    color: var(--purple-500);
-    background: white;
+    color: var(--spotify-white);
+    background: var(--spotify-dark-gray);
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
-    box-shadow: 0 4px 6px rgba(128, 90, 213, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     min-width: 80px;
 }
 
 .countdown-label {
     margin-top: 0.5rem;
     font-size: 0.9rem;
-    color: var(--gray-500);
+    color: var(--spotify-gray);
     font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 .countdown-message {
-    color: var(--purple-500);
+    color: var(--spotify-green);
     font-size: 1.1rem;
-    font-weight: 500;
+    font-weight: 600;
     margin-top: 1rem;
 }
 
 @media (max-width: 768px) {
     .container {
         padding: 1rem;
-        padding-bottom: 5rem;
     }
     
     .content {
         padding: 1.5rem;
-        margin-bottom: 4rem;
+        margin: 1rem auto;
     }
     
     .profile-image {
@@ -264,7 +289,7 @@ input:focus {
     }
     
     .countdown-container {
-        gap: 0.75rem;
+        gap: 1rem;
     }
     
     .countdown-item {
@@ -272,9 +297,8 @@ input:focus {
     }
     
     .countdown-item span:first-child {
-        font-size: 1.75rem;
+        font-size: 2rem;
         min-width: 60px;
-        padding: 0.4rem 0.75rem;
     }
     
     .countdown-label {
@@ -285,47 +309,45 @@ input:focus {
 /* Music Search Styles */
 .music-search-container {
     position: relative;
-    width: 100%;
+    margin-top: 0.5rem;
 }
 
 .search-input-wrapper {
     position: relative;
     display: flex;
     align-items: center;
-    background-color: #ffffff;
-    border-radius: 8px;
-    padding: 8px 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: var(--spotify-light-gray);
+    border-radius: 2rem;
+    padding: 0.5rem 1rem;
     transition: all 0.3s ease;
 }
 
 .search-input-wrapper:focus-within {
-    box-shadow: 0 4px 12px rgba(128, 90, 213, 0.2);
+    background: var(--spotify-hover);
+    box-shadow: 0 0 0 2px var(--spotify-green);
 }
 
 .search-icon {
     width: 20px;
     height: 20px;
-    color: var(--gray-500);
-    margin-right: 12px;
+    color: var(--spotify-gray);
+    margin-right: 0.5rem;
 }
 
 #musicSearch {
-    flex: 1;
-    border: none;
-    padding: 12px 0;
-    font-size: 1rem;
     background: transparent;
-    color: #333;
+    border: none;
+    color: var(--spotify-white);
+    width: 100%;
+    padding: 0.5rem;
 }
 
 #musicSearch:focus {
     outline: none;
-    border: none;
 }
 
 #musicSearch::placeholder {
-    color: var(--gray-500);
+    color: var(--spotify-gray);
 }
 
 .search-results {
@@ -333,32 +355,27 @@ input:focus {
     top: 100%;
     left: 0;
     right: 0;
-    background: white;
-    border-radius: 8px;
-    margin-top: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: var(--spotify-dark-gray);
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     max-height: 300px;
     overflow-y: auto;
+    display: none;
     z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
 }
 
 .search-results.active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+    display: block;
 }
 
 .search-result-item {
     display: flex;
     align-items: center;
-    padding: 12px 16px;
+    padding: 0.75rem;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--spotify-light-gray);
 }
 
 .search-result-item:last-child {
@@ -366,14 +383,14 @@ input:focus {
 }
 
 .search-result-item:hover {
-    background-color: #f8f9fa;
+    background-color: var(--spotify-hover);
 }
 
 .search-result-item img {
     width: 40px;
     height: 40px;
     border-radius: 4px;
-    margin-right: 12px;
+    margin-right: 1rem;
     object-fit: cover;
 }
 
@@ -382,42 +399,45 @@ input:focus {
 }
 
 .search-result-item .track-name {
+    color: var(--spotify-white);
     font-weight: 500;
-    color: #333;
-    margin-bottom: 4px;
+    margin-bottom: 0.25rem;
 }
 
 .search-result-item .artist-name {
+    color: var(--spotify-gray);
     font-size: 0.9rem;
-    color: var(--gray-500);
 }
 
 .suggested-music-list {
-    margin-top: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    max-height: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    max-height: 300px;
     overflow-y: auto;
 }
 
 .suggested-music-item {
     display: flex;
     align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    background: white;
+    padding: 0.75rem;
+    background: var(--spotify-light-gray);
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
 }
 
-.suggested-music-item:last-child {
-    border-bottom: none;
+.suggested-music-item:hover {
+    background: var(--spotify-hover);
+    transform: translateX(5px);
 }
 
 .suggested-music-item img {
     width: 40px;
     height: 40px;
-    object-fit: cover;
     border-radius: 4px;
-    margin-right: 10px;
+    margin-right: 1rem;
+    object-fit: cover;
 }
 
 .suggested-music-item .track-info {
@@ -425,34 +445,33 @@ input:focus {
 }
 
 .suggested-music-item .track-name {
-    font-weight: bold;
-    margin-bottom: 2px;
+    color: var(--spotify-white);
+    font-weight: 500;
 }
 
 .suggested-music-item .artist-name {
-    font-size: 0.9em;
-    color: #666;
+    color: var(--spotify-gray);
+    font-size: 0.9rem;
 }
 
 .suggested-music-item .remove-button {
-    background: none;
+    background: transparent;
     border: none;
-    color: #ff4444;
+    color: var(--spotify-gray);
     cursor: pointer;
-    padding: 5px;
-    font-size: 1.2em;
-    height: auto;
-    width: auto;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
 }
 
 .suggested-music-item .remove-button:hover {
-    color: #cc0000;
-    background: none;
+    color: var(--spotify-white);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .music-description {
+    color: var(--spotify-gray);
     font-size: 0.9rem;
-    color: var(--gray-500);
-    margin-bottom: 0.75rem;
-    line-height: 1.4;
+    margin-bottom: 1rem;
+    line-height: 1.5;
 } 
