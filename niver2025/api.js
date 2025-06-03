@@ -7,8 +7,8 @@ const API_BASE_URL = (() => {
     return "http://localhost:3001/api"; // Local development
   }
 
-  // In production, use the domain with /niver2025/api path
-  return `${window.location.origin}/niver2025/api`;
+  // In production, use just /api
+  return `${window.location.origin}/api`;
 })();
 
 console.log("API Service initialized with base URL:", API_BASE_URL);
