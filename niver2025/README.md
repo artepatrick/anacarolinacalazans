@@ -6,40 +6,40 @@ Este é um projeto web que integra várias funcionalidades, incluindo uma API, s
 
 ```
 niver2025/
-├── admin/              # Área administrativa do projeto
-├── assets/            # Recursos estáticos (imagens, etc)
-├── dist/              # Arquivos de build
-├── public/            # Arquivos públicos estáticos
-├── server/            # Servidor backend
-├── src/               # Código fonte principal
-│   └── services/      # Serviços centralizados
-│       └── api.js     # API service centralizado
-├── UTILS/             # Utilitários e helpers
-├── .netlify/          # Configurações do Netlify
-├── netlify/           # Configurações do Netlify
-│   └── functions/     # Funções serverless
-│       ├── api.js     # API principal
-│       └── spotify/   # Endpoints do Spotify
-│           ├── search.js
-│           └── playlist/
-│               └── add.js
-├── node_modules/      # Dependências do projeto
-├── .gitignore         # Configuração do Git
-├── build-config.js    # Configuração de build
-├── config.js          # Configurações do projeto
+├── config/             # Configuração centralizada
+│   └── index.js       # Configuração principal
+├── admin/             # Área administrativa do projeto
+├── assets/           # Recursos estáticos (imagens, etc)
+├── dist/             # Arquivos de build
+├── public/           # Arquivos públicos estáticos
+├── server/           # Servidor backend
+├── src/              # Código fonte principal
+│   └── services/     # Serviços centralizados
+│       ├── api.js    # API service centralizado
+│       └── config.js # Configuração do frontend
+├── UTILS/            # Utilitários e helpers
+├── .netlify/         # Configurações do Netlify
+├── netlify/          # Configurações do Netlify
+│   └── functions/    # Funções serverless
+│       ├── api.js    # API principal
+│       └── spotify/  # Endpoints do Spotify
+├── node_modules/     # Dependências do projeto
+├── .gitignore        # Configuração do Git
+├── build-config.js   # Configuração de build
+├── config.js         # Configurações do projeto
 ├── config.template.js # Template de configuração
-├── database.sql       # Schema do banco de dados
-├── design.md          # Documentação de design
-├── index.html         # Página principal
-├── music.js           # Lógica de música e integração Spotify (frontend)
-├── netlify.toml       # Configuração do Netlify
-├── package.json       # Dependências e scripts
-├── package-lock.json  # Lock file das dependências
-├── README.md          # Este arquivo
-├── schema.sql         # Schema do banco de dados
-├── script.js          # Scripts principais
-├── styles.css         # Estilos CSS
-└── vite.config.js     # Configuração do Vite
+├── database.sql      # Schema do banco de dados
+├── design.md         # Documentação de design
+├── index.html        # Página principal
+├── music.js          # Lógica de música e integração Spotify (frontend)
+├── netlify.toml      # Configuração do Netlify
+├── package.json      # Dependências e scripts
+├── package-lock.json # Lock file das dependências
+├── README.md         # Este arquivo
+├── schema.sql        # Schema do banco de dados
+├── script.js         # Scripts principais
+├── styles.css        # Estilos CSS
+└── vite.config.js    # Configuração do Vite
 ```
 
 ## 🚀 Funcionalidades Principais
@@ -74,14 +74,12 @@ niver2025/
    ```bash
    npm install
    ```
-3. Configure as variáveis de ambiente no Netlify:
-   ```
-   SPOTIFY_CLIENT_ID=seu_client_id
-   SPOTIFY_CLIENT_SECRET=seu_client_secret
-   SPOTIFY_REDIRECT_URI=https://anacarolinacalazans.com.br/niver2025/callback
-   SPOTIFY_PLAYLIST_ID=id_da_sua_playlist
-   SUPABASE_URL=sua_url_do_supabase
-   SUPABASE_SERVICE_KEY=sua_chave_do_supabase
+3. Configure as variáveis de ambiente:
+   ```bash
+   # Copie o template de configuração
+   cp .env.template .env
+   
+   # Edite o arquivo .env com suas credenciais
    ```
 
 4. Para desenvolvimento local:
@@ -95,22 +93,24 @@ niver2025/
 
 O projeto utiliza uma arquitetura centralizada para gerenciamento de API:
 
-1. **API Service** (`src/services/api.js`):
-   - Serviço centralizado para todas as chamadas de API
-   - Gerenciamento de autenticação
-   - Tratamento de erros
-   - Configuração automática da URL base
-   - Funções para Spotify, participantes e notificações
+1. **Configuração Centralizada** (`config/index.js`):
+   - Configuração única para todo o projeto
+   - Validação de variáveis de ambiente
+   - URLs e endpoints
+   - Configurações do Spotify e Supabase
 
-2. **Netlify Functions** (`netlify/functions/`):
+2. **API Service** (`src/services/api.js`):
+   - Serviço centralizado para todas as chamadas de API
+   - Função helper `apiCall` para chamadas HTTP
+   - Tratamento centralizado de erros
+   - Logs consistentes
+   - Endpoints organizados por domínio
+
+3. **Netlify Functions** (`netlify/functions/`):
    - `api.js`: API principal com endpoints de participantes
    - `spotify/`: Endpoints específicos do Spotify
      - `search.js`: Busca de músicas
      - `playlist/add.js`: Adição de músicas à playlist
-
-3. **Frontend Integration**:
-   - `music.js`: Interface do usuário para busca e seleção de músicas
-   - Utiliza o serviço centralizado `api.js` para todas as chamadas
 
 ## 🔐 Autenticação Spotify
 
@@ -124,7 +124,7 @@ O projeto utiliza autenticação OAuth2 com Spotify. O fluxo de autenticação i
 
 ## 🎵 Funcionalidades do Spotify
 
-- **Serviço Centralizado**: Toda a lógica do Spotify está em `spotify-service.js`
+- **Serviço Centralizado**: Toda a lógica do Spotify está em `src/services/api.js`
 - **Busca de Músicas**: Busca avançada com suporte a filtros e paginação
 - **Detalhes de Artistas**: Informações completas, top tracks e álbuns
 - **Gerenciamento de Álbuns**: Detalhes e faixas de álbuns
@@ -226,7 +226,7 @@ A API principal (`api.js`) gerencia:
 
 ## 📝 Documentação Adicional
 
-- [Documentação da API Spotify](spotify-api-docs.md)
+- [Documentação da Arquitetura](ARCHITECTURE.md)
 - [Documentação de Design](design.md)
 - [Schema do Banco de Dados](schema.sql)
 

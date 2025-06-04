@@ -1,9 +1,4 @@
-import config from "../../config.js";
-
-// API service for frontend-backend communication
-const API_BASE_URL = config.apiBaseUrl;
-
-console.log("API Service initialized with base URL:", API_BASE_URL);
+import config from "../../config/index.js";
 
 // Helper function to handle API responses
 async function handleResponse(response) {
@@ -33,181 +28,90 @@ async function handleAuthError(error) {
   throw error;
 }
 
-// Spotify API endpoints
-export async function searchSpotifyTracks(query, limit = 10) {
+// Helper function to make API calls
+async function apiCall(endpoint, options = {}) {
   try {
-    const url = `${API_BASE_URL}/spotify/search?query=${encodeURIComponent(
-      query
-    )}&limit=${limit}`;
-    console.log("Searching Spotify tracks:", url);
+    const url = `${config.urls.api}${endpoint}`;
+    console.log(`API Call: ${options.method || "GET"} ${url}`);
 
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        ...options.headers,
+      },
+    });
+
     if (!response.ok) {
       const errorData = await response.json();
       if (response.status === 401) {
         return handleAuthError(errorData);
       }
-      throw new Error(
-        `Failed to search tracks: ${errorData.error || response.statusText}`
-      );
+      throw new Error(`API Error: ${errorData.error || response.statusText}`);
     }
 
     return await handleResponse(response);
   } catch (error) {
-    console.error("Error searching Spotify tracks:", error);
+    console.error(`API Error (${endpoint}):`, error);
     throw error;
   }
+}
+
+// Spotify API endpoints
+export async function searchSpotifyTracks(query, limit = 10) {
+  return apiCall(
+    `/spotify/search?query=${encodeURIComponent(query)}&limit=${limit}`
+  );
 }
 
 export async function addTrackToSpotifyPlaylist(trackId) {
-  try {
-    const url = `${API_BASE_URL}/spotify/playlist/add`;
-    console.log("Adding track to Spotify playlist:", url);
-
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ trackId }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      if (response.status === 401) {
-        return handleAuthError(errorData);
-      }
-      throw new Error(
-        `Failed to add track to playlist: ${
-          errorData.error || response.statusText
-        }`
-      );
-    }
-
-    return await handleResponse(response);
-  } catch (error) {
-    console.error("Error adding track to Spotify playlist:", error);
-    throw error;
-  }
+  return apiCall("/spotify/playlist/add", {
+    method: "POST",
+    body: JSON.stringify({ trackId }),
+  });
 }
 
-// Get all participants
+// Participants API endpoints
 export async function getParticipants() {
-  try {
-    const url = `${API_BASE_URL}/participants`;
-    console.log("Fetching participants from:", url);
-
-    const response = await fetch(url);
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to fetch participants: ${errorText}`);
-    }
-
-    return await handleResponse(response);
-  } catch (error) {
-    console.error("Error fetching participants:", error);
-    throw error;
-  }
+  return apiCall("/participants");
 }
 
-// Add new participant
 export async function addParticipant(participant) {
-  try {
-    const url = `${API_BASE_URL}/participants`;
-    console.log("Adding participant to:", url);
+  // Get music suggestions if available
+  const musicSuggestions = window.getSuggestedTracks
+    ? window.getSuggestedTracks()
+    : [];
 
-    // Get music suggestions if available
-    const musicSuggestions = window.getSuggestedTracks
-      ? window.getSuggestedTracks()
-      : [];
-    const participantData = {
+  return apiCall("/participants", {
+    method: "POST",
+    body: JSON.stringify({
       ...participant,
       musicSuggestions,
-    };
-
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(participantData),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to add participant: ${errorText}`);
-    }
-
-    return await handleResponse(response);
-  } catch (error) {
-    console.error("Error adding participant:", error);
-    throw error;
-  }
+    }),
+  });
 }
 
-// Delete participant
 export async function deleteParticipant(id) {
-  try {
-    const url = `${API_BASE_URL}/participants/${id}`;
-    console.log("Deleting participant from:", url);
-
-    const response = await fetch(url, {
-      method: "DELETE",
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to delete participant: ${errorText}`);
-    }
-
-    return await handleResponse(response);
-  } catch (error) {
-    console.error("Error deleting participant:", error);
-    throw error;
-  }
+  return apiCall(`/participants/${id}`, {
+    method: "DELETE",
+  });
 }
 
-// Get participant count
 export async function getParticipantCount() {
-  try {
-    const url = `${API_BASE_URL}/participants/count`;
-    console.log("Getting participant count from:", url);
-
-    const response = await fetch(url);
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to get participant count: ${errorText}`);
-    }
-
-    return await handleResponse(response);
-  } catch (error) {
-    console.error("Error getting participant count:", error);
-    throw error;
-  }
+  return apiCall("/participants/count");
 }
 
-// Send notification through backend
+// Notifications API endpoint
 export async function sendNotification(userData) {
-  try {
-    const url = `${API_BASE_URL}/notifications`;
-    console.log("Sending notification through:", url);
-
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Failed to send notification: ${errorText}`);
-    }
-
-    return await handleResponse(response);
-  } catch (error) {
-    console.error("Error sending notification:", error);
-    throw error;
-  }
+  return apiCall("/notifications", {
+    method: "POST",
+    body: JSON.stringify(userData),
+  });
 }
+
+// Export helper functions for testing/debugging
+export const _internals = {
+  handleResponse,
+  handleAuthError,
+  apiCall,
+};

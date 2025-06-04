@@ -1,46 +1,15 @@
 import SpotifyWebApi from "spotify-web-api-node";
-import { config } from "dotenv";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
-
-// Load environment variables
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-config({ path: join(__dirname, ".env") });
-
-// Determine the redirect URI based on the environment
-const getRedirectUri = () => {
-  if (process.env.NODE_ENV === "production") {
-    return (
-      process.env.SPOTIFY_REDIRECT_URI ||
-      "https://anacarolinacalazans.com.br/niver2025/callback"
-    );
-  }
-  return (
-    process.env.SPOTIFY_REDIRECT_URI ||
-    "http://localhost:3000/niver2025/callback"
-  );
-};
+import config from "../../../config/index.js";
 
 // Create Spotify API instance
 export const spotifyApi = new SpotifyWebApi({
-  clientId: process.env.SPOTIFY_CLIENT_ID,
-  clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-  redirectUri: getRedirectUri(),
+  clientId: config.spotify.clientId,
+  clientSecret: config.spotify.clientSecret,
+  redirectUri: config.urls.callback,
 });
 
 // Function to get authorization URL
 export const getAuthUrl = () => {
-  const scopes = [
-    "user-read-private",
-    "user-read-email",
-    "user-read-playback-state",
-    "user-modify-playback-state",
-    "playlist-read-private",
-    "playlist-modify-public",
-    "playlist-modify-private",
-  ];
-
   // Generate a random state value
   const state = Math.random().toString(36).substring(7);
 
@@ -50,7 +19,7 @@ export const getAuthUrl = () => {
     response_type: "code",
     redirect_uri: spotifyApi.getRedirectURI(),
     state: state,
-    scope: scopes.join(" "),
+    scope: config.spotify.scopes.join(" "),
   });
 
   return `https://accounts.spotify.com/authorize?${params.toString()}`;

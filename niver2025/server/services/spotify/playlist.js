@@ -1,4 +1,5 @@
 import { spotifyApi } from "./spotify-api.js";
+import config from "../../../config/index.js";
 
 export async function addTrackToPlaylist(trackId) {
   try {
@@ -6,7 +7,7 @@ export async function addTrackToPlaylist(trackId) {
       throw new Error("Track ID is required");
     }
 
-    const playlistId = process.env.SPOTIFY_PLAYLIST_ID;
+    const playlistId = config.spotify.playlistId;
     if (!playlistId) {
       throw new Error("Playlist ID is not configured");
     }
