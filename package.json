@@ -1,5 +1,19 @@
 {
+  "name": "niver2025",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "netlify build",
+    "start": "netlify dev"
+  },
   "dependencies": {
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "@netlify/functions": "^2.0.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }
