@@ -38,29 +38,6 @@ export default defineConfig({
       },
     },
   },
-  define: {
-    "import.meta.env.MODE": JSON.stringify(
-      process.env.NODE_ENV || "development"
-    ),
-    "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(
-      process.env.SUPABASE_URL
-    ),
-    "import.meta.env.VITE_SUPABASE_ANON_KEY": JSON.stringify(
-      process.env.SUPABASE_ANON_KEY
-    ),
-    "import.meta.env.VITE_TOLKY_API_BASE_URL": JSON.stringify(
-      process.env.TOLKY_API_BASE_URL
-    ),
-    "import.meta.env.VITE_TOLKY_REASONING_TOKEN": JSON.stringify(
-      process.env.TOLKY_REASONING_TOKEN
-    ),
-    "import.meta.env.VITE_SPOTIFY_CLIENT_ID": JSON.stringify(
-      process.env.SPOTIFY_CLIENT_ID
-    ),
-    "import.meta.env.VITE_SPOTIFY_REDIRECT_URI": JSON.stringify(
-      process.env.SPOTIFY_REDIRECT_URI
-    ),
-  },
   build: {
     outDir: "dist",
     assetsDir: "assets",

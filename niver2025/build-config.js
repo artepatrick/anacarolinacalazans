@@ -13,8 +13,10 @@ const template = fs.readFileSync(
 
 // Replace placeholders with environment variables
 const config = template
-  .replace("{{SUPABASE_URL}}", process.env.SUPABASE_URL)
-  .replace("{{SUPABASE_ANON_KEY}}", process.env.SUPABASE_ANON_KEY);
+  .replace("{{SUPABASE_URL}}", process.env.SUPABASE_URL || "")
+  .replace("{{SUPABASE_ANON_KEY}}", process.env.SUPABASE_ANON_KEY || "")
+  .replace("{{SPOTIFY_CLIENT_ID}}", process.env.SPOTIFY_CLIENT_ID || "")
+  .replace("{{SPOTIFY_REDIRECT_URI}}", process.env.SPOTIFY_REDIRECT_URI || "");
 
 // Write the config file
 fs.writeFileSync(path.join(__dirname, "config.js"), config);
