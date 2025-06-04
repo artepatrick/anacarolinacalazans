@@ -1,6 +1,6 @@
-const { spotifyApi } = require("./config");
+import { spotifyApi } from "./config.js";
 
-async function addTrackToPlaylist(trackId) {
+export async function addTrackToPlaylist(trackId) {
   try {
     const playlistId = process.env.SPOTIFY_PLAYLIST_ID;
 
@@ -21,10 +21,6 @@ async function addTrackToPlaylist(trackId) {
     };
   }
 }
-
-module.exports = {
-  addTrackToPlaylist,
-};
 
 export async function refreshAccessToken() {
   try {
