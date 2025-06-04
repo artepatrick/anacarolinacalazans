@@ -1,11 +1,11 @@
 // Environment configuration
 const config = {
-  isDevelopment: process.env.NODE_ENV === "development",
-  isProduction: process.env.NODE_ENV === "production",
+  isDevelopment: import.meta.env.MODE === "development",
+  isProduction: import.meta.env.MODE === "production",
   apiBaseUrl: (() => {
     const hostname = window.location.hostname;
     const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
-    const isDevelopment = process.env.NODE_ENV === "development";
+    const isDevelopment = import.meta.env.MODE === "development";
 
     if (isLocalhost || isDevelopment) {
       return "http://localhost:3001/api";
@@ -13,9 +13,9 @@ const config = {
     return `${window.location.origin}/niver2025/api`;
   })(),
   spotify: {
-    clientId: process.env.SPOTIFY_CLIENT_ID,
+    clientId: import.meta.env.VITE_SPOTIFY_CLIENT_ID,
     redirectUri:
-      process.env.SPOTIFY_REDIRECT_URI ||
+      import.meta.env.VITE_SPOTIFY_REDIRECT_URI ||
       `${window.location.origin}/niver2025/callback`,
     scopes: [
       "user-read-private",
