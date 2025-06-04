@@ -12,6 +12,8 @@ niver2025/
 ├── public/            # Arquivos públicos estáticos
 ├── server/            # Servidor backend
 ├── src/               # Código fonte principal
+│   └── services/      # Serviços centralizados
+│       └── api.js     # API service centralizado
 ├── UTILS/             # Utilitários e helpers
 ├── .netlify/          # Configurações do Netlify
 ├── netlify/           # Configurações do Netlify
@@ -36,7 +38,6 @@ niver2025/
 ├── README.md          # Este arquivo
 ├── schema.sql         # Schema do banco de dados
 ├── script.js          # Scripts principais
-├── spotify-service.js # Serviço centralizado do Spotify
 ├── styles.css         # Estilos CSS
 └── vite.config.js     # Configuração do Vite
 ```
@@ -46,7 +47,7 @@ niver2025/
 - **API REST**: Implementação de endpoints para gerenciamento de dados
 - **Serverless Functions**: API rodando no Netlify Functions
 - **Integração com Spotify**: 
-  - Serviço centralizado em `spotify-service.js`
+  - Serviço centralizado em `src/services/api.js`
   - Autenticação OAuth2 com gerenciamento automático de tokens
   - Busca avançada de músicas com suporte a paginação
   - Detalhes completos de artistas, álbuns e faixas
@@ -92,22 +93,24 @@ niver2025/
 
 ## 🌐 Estrutura da API
 
-O projeto utiliza Netlify Functions para gerenciar todas as requisições da API. A estrutura é a seguinte:
+O projeto utiliza uma arquitetura centralizada para gerenciamento de API:
 
-1. **API Principal** (`netlify/functions/api.js`):
-   - Configuração do CORS
-   - Conexão com Supabase
-   - Gerenciamento de participantes
-
-2. **API Spotify** (`netlify/functions/spotify/`):
-   - `search.js`: Busca de músicas
-   - `playlist/add.js`: Adição de músicas à playlist
-
-3. **Cliente API** (`src/services/api.js`):
-   - Comunicação entre frontend e backend
-   - Gerenciamento de requisições
+1. **API Service** (`src/services/api.js`):
+   - Serviço centralizado para todas as chamadas de API
+   - Gerenciamento de autenticação
    - Tratamento de erros
-   - Configuração automática da URL base baseada no ambiente
+   - Configuração automática da URL base
+   - Funções para Spotify, participantes e notificações
+
+2. **Netlify Functions** (`netlify/functions/`):
+   - `api.js`: API principal com endpoints de participantes
+   - `spotify/`: Endpoints específicos do Spotify
+     - `search.js`: Busca de músicas
+     - `playlist/add.js`: Adição de músicas à playlist
+
+3. **Frontend Integration**:
+   - `music.js`: Interface do usuário para busca e seleção de músicas
+   - Utiliza o serviço centralizado `api.js` para todas as chamadas
 
 ## 🔐 Autenticação Spotify
 

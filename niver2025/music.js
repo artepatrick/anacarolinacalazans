@@ -1,6 +1,5 @@
 // Music search and suggestions functionality
-// TODO: Refactor to use API endpoints instead of direct server-side imports
-// Removed import of spotify-api.js and related usage
+import { searchSpotifyTracks } from "./src/services/api.js";
 
 const API_BASE_URL =
   window.location.hostname === "localhost" ||
@@ -121,8 +120,13 @@ const handleSearch = debounce(async (event) => {
     return;
   }
 
-  const tracks = await searchSpotifyTracks(query);
-  displaySearchResults(tracks);
+  try {
+    const response = await searchSpotifyTracks(query);
+    displaySearchResults(response);
+  } catch (error) {
+    console.error("Error searching tracks:", error);
+    searchResults.style.display = "none";
+  }
 }, 300);
 
 // Event Listeners
