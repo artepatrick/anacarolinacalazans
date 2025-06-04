@@ -11,6 +11,17 @@ const __dirname = dirname(__filename);
 export default defineConfig({
   root: __dirname,
   base: "/niver2025/", // Add base path for production
+  define: {
+    "import.meta.env.MODE": JSON.stringify(
+      process.env.NODE_ENV || "development"
+    ),
+    "import.meta.env.PROD": JSON.stringify(
+      process.env.NODE_ENV === "production"
+    ),
+    "import.meta.env.DEV": JSON.stringify(
+      process.env.NODE_ENV !== "production"
+    ),
+  },
   server: {
     port: 3000,
     host: true, // Listen on all addresses
