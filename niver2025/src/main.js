@@ -1,5 +1,5 @@
 // Import all necessary modules
-import "./services/config.js";
+import "../config.js";
 import "./services/api.js";
 import "../script.js";
 import "../music.js";
