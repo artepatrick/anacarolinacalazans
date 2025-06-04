@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:prod": "node build-config.js && vite build && cp -r netlify/functions dist/netlify/functions",
+    "build:prod": "node build-config.js && vite build && node -e \"require('fs').cpSync('netlify/functions', 'dist/netlify/functions', { recursive: true })\"",
     "preview": "vite preview",
     "server": "node server/index.js",
     "start": "concurrently \"npm run server\" \"npm run dev\"",
