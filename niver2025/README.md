@@ -7,22 +7,31 @@ Este é um projeto web que integra várias funcionalidades, incluindo uma API, s
 ```
 niver2025/
 ├── admin/              # Área administrativa do projeto
-├── netlify/           # Configurações do Netlify
-│   ├── functions/     # Serverless functions
-│   │   ├── api.js     # API principal
-│   │   └── spotify/   # Serviços do Spotify
-│   └── spotify/       # Configurações do Spotify
+├── assets/            # Recursos estáticos (imagens, etc)
+├── dist/              # Arquivos de build
 ├── public/            # Arquivos públicos estáticos
-├── api.js             # Cliente API para frontend
+├── server/            # Servidor backend
+├── src/               # Código fonte principal
+├── UTILS/             # Utilitários e helpers
+├── .netlify/          # Configurações do Netlify
+├── netlify/           # Configurações do Netlify
+├── node_modules/      # Dependências do projeto
+├── .gitignore         # Configuração do Git
+├── build-config.js    # Configuração de build
 ├── config.js          # Configurações do projeto
+├── config.template.js # Template de configuração
 ├── database.sql       # Schema do banco de dados
 ├── design.md          # Documentação de design
 ├── index.html         # Página principal
 ├── music.js           # Lógica de música e integração Spotify
+├── netlify.toml       # Configuração do Netlify
 ├── package.json       # Dependências e scripts
+├── package-lock.json  # Lock file das dependências
+├── README.md          # Este arquivo
 ├── schema.sql         # Schema do banco de dados
 ├── script.js          # Scripts principais
 ├── spotify-api.js     # Integração com Spotify
+├── spotify-api-docs.md # Documentação da API Spotify
 ├── spotify-service.js # Serviços do Spotify
 ├── styles.css         # Estilos CSS
 └── vite.config.js     # Configuração do Vite
@@ -122,6 +131,85 @@ O projeto está configurado para deploy automático no Netlify:
    - `/niver2025/callback` → Spotify callback
    - `/*` → SPA routes
 
+## 📡 API Serverless no Netlify
+
+O projeto utiliza Netlify Functions para implementar a API serverless, permitindo que backend e frontend coexistam no mesmo repositório. Aqui está como funciona:
+
+### Estrutura da API
+
+```
+netlify/
+└── functions/
+    ├── api.js              # API principal com todos os endpoints
+    ├── spotify/            # Módulos específicos do Spotify
+    │   ├── config.js       # Configuração do Spotify
+    │   └── service.js      # Serviços do Spotify
+    └── spotify-callback.js # Handler do callback OAuth
+```
+
+### Configuração do Netlify
+
+1. **netlify.toml**: Configuração principal do projeto
+   ```toml
+   [build]
+     command = "npm run build"
+     functions = "netlify/functions"
+     publish = "dist"
+
+   [[redirects]]
+     from = "/niver2025/api/*"
+     to = "/.netlify/functions/api/:splat"
+     status = 200
+
+   [[redirects]]
+     from = "/niver2025/callback"
+     to = "/.netlify/functions/spotify-callback"
+     status = 200
+   ```
+
+2. **Variáveis de Ambiente**: Configure no painel do Netlify:
+   - `SPOTIFY_CLIENT_ID`
+   - `SPOTIFY_CLIENT_SECRET`
+   - `SPOTIFY_REDIRECT_URI`
+   - `SUPABASE_URL`
+   - `SUPABASE_SERVICE_KEY`
+
+### Desenvolvimento Local
+
+1. Instale o Netlify CLI:
+   ```bash
+   npm install -g netlify-cli
+   ```
+
+2. Inicie o ambiente de desenvolvimento:
+   ```bash
+   netlify dev
+   ```
+   Isso iniciará tanto o servidor de desenvolvimento do frontend quanto as funções serverless localmente.
+
+### Endpoints da API
+
+A API principal (`api.js`) gerencia os seguintes endpoints:
+
+- `GET /niver2025/api/spotify/search`: Busca de músicas
+- `POST /niver2025/api/spotify/playlist/add`: Adiciona música à playlist
+- `GET /niver2025/api/participants`: Lista participantes
+- `POST /niver2025/api/participants`: Adiciona participante
+- `GET /niver2025/api/participants/count`: Conta total de participantes
+
+### Segurança e CORS
+
+- CORS configurado para permitir requisições do domínio principal
+- Autenticação OAuth2 para endpoints do Spotify
+- Tokens armazenados de forma segura
+- Validação de entrada em todos os endpoints
+
+### Monitoramento
+
+- Logs automáticos no painel do Netlify
+- Métricas de performance disponíveis
+- Alertas configuráveis para erros
+
 ## 📝 Documentação Adicional
 
 - [Documentação da API Spotify](spotify-api-docs.md)
@@ -144,4 +232,4 @@ Este projeto está sob a licença MIT.
 2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
 3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
 4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request 
+5. Abra um Pull Request

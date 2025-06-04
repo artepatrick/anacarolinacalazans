@@ -25,6 +25,11 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+      "/.netlify/functions": {
+        target: "http://localhost:8888",
+        changeOrigin: true,
+        secure: false,
+      },
       "/niver2025/callback": {
         target: "http://localhost:3001",
         changeOrigin: true,

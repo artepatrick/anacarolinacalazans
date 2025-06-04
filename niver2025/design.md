@@ -20,181 +20,129 @@
 
 ## Components
 
-### 1. Page Header
-```tsx
-<PageHeader title="Relatórios" icon={<CircleGauge />} />
+### 1. Profile Section
+```html
+<div class="profile-section">
+    <img src="..." alt="Profile Image" class="profile-image">
+    <h1>Name</h1>
+    <p class="subtitle">Subtitle</p>
+</div>
 ```
-- Uses the common `PageHeader` component
-- Includes an icon from Lucide React
-- Maintains consistent spacing with `py="26px"`
+- Centered profile image with rounded corners
+- Large title text
+- Subtitle with secondary styling
 
-### 2. Card Components
-```tsx
-<Card
-  cursor="pointer"
-  transition="transform 0.3s, box-shadow 0.3s"
-  _hover={{ transform: 'translateY(-5px)', boxShadow: 'lg' }}
->
-  <CardHeader bgColor="purple.50">
-    {/* Header content */}
-  </CardHeader>
-  <Divider m="0" color="gray.200" />
-  <CardBody py="14px">
-    {/* Body content */}
-  </CardBody>
-</Card>
+### 2. Countdown Section
+```html
+<div class="countdown-section">
+    <h2>Faltam</h2>
+    <div class="countdown-container">
+        <div class="countdown-item">
+            <span id="days">00</span>
+            <span class="countdown-label">Dias</span>
+        </div>
+        <!-- Other countdown items -->
+    </div>
+</div>
 ```
-- Interactive cards with hover effects
-- Consistent padding and spacing
-- Subtle background colors for headers
-- Clean dividers between sections
+- Grid layout for countdown items
+- Large numbers for time units
+- Small labels for time units
+- Responsive design
 
-### 3. Grid Layout
-```tsx
-<SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={6}>
-  {/* Grid items */}
-</SimpleGrid>
+### 3. Form Components
+```html
+<div class="form-group">
+    <label for="input">Label</label>
+    <input type="text" id="input" required>
+</div>
 ```
-- Responsive grid system
-- Adapts to different screen sizes
-- Consistent spacing between items
+- Clean input fields with labels
+- Required field indicators
+- Consistent spacing and padding
 
-### 4. Data Visualization
-```tsx
-<Doughnut
-  data={doughnutData}
-  options={{
-    responsive: true,
-    maintainAspectRatio: false,
-    cutout: '70%',
-    plugins: {
-      legend: { display: false },
-      tooltip: { enabled: false }
-    }
-  }}
-/>
+### 4. Music Search Component
+```html
+<div class="music-search-container">
+    <div class="search-input-wrapper">
+        <svg class="search-icon">...</svg>
+        <input type="text" id="musicSearch" placeholder="Busque uma música...">
+    </div>
+    <div id="searchResults" class="search-results"></div>
+</div>
 ```
-- Uses Chart.js for data visualization
-- Custom styling for doughnut charts
-- Consistent color scheme based on data values
-
-### 5. Status Indicators
-```tsx
-<Box
-  position="absolute"
-  top="12px"
-  right="12px"
-  width="12px"
-  height="12px"
-  borderRadius="full"
-  bg="green.500"
-  zIndex="1"
-/>
-```
-- Small circular indicators
-- Positioned absolutely within cards
-- Color-coded for different states
+- Search input with icon
+- Dynamic search results display
+- Suggested music list
 
 ## Layout Patterns
 
 ### 1. Container Structure
-```tsx
-<Container py="26px">
-  <Flex justify="space-between" align="center" mb={4}>
-    {/* Header content */}
-  </Flex>
-  {/* Main content */}
-</Container>
+```html
+<div class="container">
+    <div class="content">
+        <!-- Main content sections -->
+    </div>
+</div>
 ```
+- Centered container layout
 - Consistent padding and margins
-- Flexible layouts using Flex components
 - Clear visual hierarchy
 
 ### 2. Responsive Design
 - Mobile-first approach
-- Breakpoints:
-  - Base: 1 column
-  - SM: 2 columns
-  - MD: 4 columns
+- Flexible layouts
+- Adaptive content sections
 
 ## Interactive Elements
 
-### 1. Hover States
-```tsx
-_hover={{ 
-  transform: 'translateY(-5px)', 
-  boxShadow: 'lg' 
-}}
+### 1. Buttons
+```html
+<button type="submit" class="submit-button">
+    <span class="button-text">Button Text</span>
+    <span class="loading-spinner">Loading...</span>
+</button>
 ```
-- Subtle elevation on hover
-- Smooth transitions
-- Enhanced shadow for depth
+- Primary action buttons
+- Loading states
+- Hover effects
 
-### 2. Clickable Elements
-- Cursor pointer for interactive elements
-- Clear visual feedback
-- Consistent transition effects
+### 2. Form Interactions
+- Dynamic form fields
+- Add/remove name fields
+- Real-time validation
 
 ## Best Practices
 
 1. **Spacing**
-   - Use consistent spacing units
-   - Maintain proper padding in cards and containers
-   - Clear visual separation between elements
+   - Consistent padding and margins
+   - Clear section separation
+   - Proper form field spacing
 
 2. **Typography**
-   - Clear hierarchy with different font sizes
-   - Consistent use of font weights
-   - Proper line heights for readability
+   - Clear hierarchy
+   - Readable font sizes
+   - Consistent font weights
 
 3. **Colors**
-   - Use theme colors for consistency
-   - Semantic color usage (success, warning, error)
-   - Subtle backgrounds for different sections
+   - Brand color consistency
+   - Semantic color usage
+   - Accessible contrast ratios
 
 4. **Responsiveness**
-   - Mobile-first approach
-   - Flexible grid system
-   - Adaptive layouts
+   - Mobile-first design
+   - Flexible layouts
+   - Adaptive components
 
 5. **Accessibility**
-   - Clear contrast ratios
-   - Proper heading hierarchy
-   - Semantic HTML structure
-
-## Component Usage Examples
-
-### Metric Card
-```tsx
-<Flex direction="column">
-  <Text fontSize="2xl" fontWeight="bold">
-    {value}
-  </Text>
-  <Text fontSize="sm" color="gray.500">
-    {label}
-  </Text>
-</Flex>
-```
-
-### Month Selector
-```tsx
-<Flex align="center">
-  <IconButton
-    icon={<ChevronLeft />}
-    onClick={() => handleMonthChange('prev')}
-  />
-  <Text mx={4}>{selectedMonth}</Text>
-  <IconButton
-    icon={<ChevronRight />}
-    onClick={() => handleMonthChange('next')}
-  />
-</Flex>
-```
+   - Semantic HTML
+   - ARIA labels
+   - Keyboard navigation
+   - Screen reader support
 
 ## Notes
-- All components use Chakra UI's built-in styling system
-- Maintain consistent spacing using Chakra's spacing scale
-- Use theme colors for brand consistency
-- Implement responsive design patterns
-- Follow accessibility guidelines
-`
+- Uses Chakra UI for base styling
+- Custom CSS for specific components
+- Responsive design patterns
+- Progressive enhancement
+- Modern web standards
