@@ -1,15 +1,7 @@
+import config from "../config";
+
 // API service for frontend-backend communication
-const API_BASE_URL = (() => {
-  const hostname = window.location.hostname;
-  const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
-
-  if (isLocalhost) {
-    return "http://localhost:3001/api"; // Local development
-  }
-
-  // In production, use the Netlify functions path
-  return `${window.location.origin}/.netlify/functions/api`;
-})();
+const API_BASE_URL = config.apiBaseUrl;
 
 console.log("API Service initialized with base URL:", API_BASE_URL);
 
