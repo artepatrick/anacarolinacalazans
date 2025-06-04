@@ -1,4 +1,4 @@
-import config from "../config";
+import config from "./config";
 
 // API service for frontend-backend communication
 const API_BASE_URL = config.apiBaseUrl;
