@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import cors from "cors";
 import * as spotifyService from "../spotify-service.js";
-import { spotifyApi, getAuthUrl } from "../spotify-api.js";
+import { spotifyApi, getAuthUrl } from "./services/spotify/spotify-api.js";
 import SupabasePhoneMaintenance from "../UTILS/supabasePhoneMaintenance.js";
 import routes from "./routes.js";
 

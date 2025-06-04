@@ -1,8 +1,6 @@
 // Music search and suggestions functionality
-import {
-  searchSpotifyTracks,
-  addTrackToSpotifyPlaylist,
-} from "./spotify-api.js";
+// TODO: Refactor to use API endpoints instead of direct server-side imports
+// Removed import of spotify-api.js and related usage
 
 const API_BASE_URL =
   window.location.hostname === "localhost" ||

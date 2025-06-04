@@ -1,4 +1,4 @@
-import { spotifyApi } from "../../../spotify-api.js";
+import { spotifyApi } from "./spotify-api.js";
 
 export async function addTrackToPlaylist(trackId) {
   try {
