@@ -15,6 +15,12 @@ niver2025/
 ├── UTILS/             # Utilitários e helpers
 ├── .netlify/          # Configurações do Netlify
 ├── netlify/           # Configurações do Netlify
+│   └── functions/     # Funções serverless
+│       ├── api.js     # API principal
+│       └── spotify/   # Endpoints do Spotify
+│           ├── search.js
+│           └── playlist/
+│               └── add.js
 ├── node_modules/      # Dependências do projeto
 ├── .gitignore         # Configuração do Git
 ├── build-config.js    # Configuração de build
@@ -23,16 +29,14 @@ niver2025/
 ├── database.sql       # Schema do banco de dados
 ├── design.md          # Documentação de design
 ├── index.html         # Página principal
-├── music.js           # Lógica de música e integração Spotify
+├── music.js           # Lógica de música e integração Spotify (frontend)
 ├── netlify.toml       # Configuração do Netlify
 ├── package.json       # Dependências e scripts
 ├── package-lock.json  # Lock file das dependências
 ├── README.md          # Este arquivo
 ├── schema.sql         # Schema do banco de dados
 ├── script.js          # Scripts principais
-├── spotify-api.js     # Integração com Spotify
-├── spotify-api-docs.md # Documentação da API Spotify
-├── spotify-service.js # Serviços do Spotify
+├── spotify-service.js # Serviço centralizado do Spotify
 ├── styles.css         # Estilos CSS
 └── vite.config.js     # Configuração do Vite
 ```
@@ -42,6 +46,7 @@ niver2025/
 - **API REST**: Implementação de endpoints para gerenciamento de dados
 - **Serverless Functions**: API rodando no Netlify Functions
 - **Integração com Spotify**: 
+  - Serviço centralizado em `spotify-service.js`
   - Autenticação OAuth2 com gerenciamento automático de tokens
   - Busca avançada de músicas com suporte a paginação
   - Detalhes completos de artistas, álbuns e faixas
@@ -92,10 +97,13 @@ O projeto utiliza Netlify Functions para gerenciar todas as requisições da API
 1. **API Principal** (`netlify/functions/api.js`):
    - Configuração do CORS
    - Conexão com Supabase
-   - Endpoints do Spotify
    - Gerenciamento de participantes
 
-2. **Cliente API** (`api.js`):
+2. **API Spotify** (`netlify/functions/spotify/`):
+   - `search.js`: Busca de músicas
+   - `playlist/add.js`: Adição de músicas à playlist
+
+3. **Cliente API** (`src/services/api.js`):
    - Comunicação entre frontend e backend
    - Gerenciamento de requisições
    - Tratamento de erros
@@ -113,6 +121,7 @@ O projeto utiliza autenticação OAuth2 com Spotify. O fluxo de autenticação i
 
 ## 🎵 Funcionalidades do Spotify
 
+- **Serviço Centralizado**: Toda a lógica do Spotify está em `spotify-service.js`
 - **Busca de Músicas**: Busca avançada com suporte a filtros e paginação
 - **Detalhes de Artistas**: Informações completas, top tracks e álbuns
 - **Gerenciamento de Álbuns**: Detalhes e faixas de álbuns
@@ -141,10 +150,10 @@ O projeto utiliza Netlify Functions para implementar a API serverless, permitind
 netlify/
 └── functions/
     ├── api.js              # API principal com todos os endpoints
-    ├── spotify/            # Módulos específicos do Spotify
-    │   ├── config.js       # Configuração do Spotify
-    │   └── service.js      # Serviços do Spotify
-    └── spotify-callback.js # Handler do callback OAuth
+    └── spotify/            # Endpoints do Spotify
+        ├── search.js       # Busca de músicas
+        └── playlist/
+            └── add.js      # Adiciona música à playlist
 ```
 
 ### Configuração do Netlify
@@ -189,10 +198,12 @@ netlify/
 
 ### Endpoints da API
 
-A API principal (`api.js`) gerencia os seguintes endpoints:
+A API do Spotify (`netlify/functions/spotify/`) gerencia os seguintes endpoints:
 
 - `GET /niver2025/api/spotify/search`: Busca de músicas
 - `POST /niver2025/api/spotify/playlist/add`: Adiciona música à playlist
+
+A API principal (`api.js`) gerencia:
 - `GET /niver2025/api/participants`: Lista participantes
 - `POST /niver2025/api/participants`: Adiciona participante
 - `GET /niver2025/api/participants/count`: Conta total de participantes
@@ -220,7 +231,10 @@ A API principal (`api.js`) gerencia os seguintes endpoints:
 
 - `npm run dev`: Inicia o servidor de desenvolvimento
 - `npm run build`: Gera build de produção
+- `npm run build:prod`: Gera build de produção com funções serverless
 - `npm start`: Inicia o servidor em modo produção
+- `npm run netlify:dev`: Inicia o ambiente Netlify localmente
+- `npm run netlify:deploy`: Faz deploy para produção
 
 ## 📄 Licença
 

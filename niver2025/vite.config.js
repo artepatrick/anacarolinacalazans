@@ -10,6 +10,7 @@ const __dirname = dirname(__filename);
 
 export default defineConfig({
   root: __dirname,
+  base: "/niver2025/", // Add base path for production
   server: {
     port: 3000,
     host: true, // Listen on all addresses
@@ -57,6 +58,11 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, "index.html"),
+      },
+      output: {
+        manualChunks: {
+          vendor: ["@chakra-ui/css"],
+        },
       },
     },
   },

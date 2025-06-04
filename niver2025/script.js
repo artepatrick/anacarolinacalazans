@@ -26,7 +26,11 @@ setInterval(updateCountdown, 1000);
 updateCountdown(); // Initial update
 
 // Import API service
-import { addParticipant, getParticipants, sendNotification } from "./api.js";
+import {
+  addParticipant,
+  getParticipants,
+  sendNotification,
+} from "./src/services/api.js";
 import { getSuggestedTracks } from "./music.js";
 
 // Add name input field

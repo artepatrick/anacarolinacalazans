@@ -1,5 +1,8 @@
 // Music search and suggestions functionality
-import { searchSpotifyTracks, addTrackToSpotifyPlaylist } from "./api.js";
+import {
+  searchSpotifyTracks,
+  addTrackToSpotifyPlaylist,
+} from "./spotify-api.js";
 
 const API_BASE_URL =
   window.location.hostname === "localhost" ||
