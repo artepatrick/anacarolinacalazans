@@ -1,24 +1,48 @@
 // Configuração do frontend
-import config from "../../config/index.js";
+const config = {
+  // Ambiente
+  env: import.meta.env.MODE || "development",
+  isDevelopment: import.meta.env.MODE !== "production",
+  isProduction: import.meta.env.MODE === "production",
 
-// Configuração específica do frontend
-const frontendConfig = {
-  ...config,
-  // Sobrescreve URLs para usar window.location em ambiente de browser
+  // URLs e Endpoints
   urls: {
-    ...config.urls,
-    base: window.location.origin + "/niver2025",
+    base:
+      import.meta.env.MODE === "production"
+        ? "https://anacarolinacalazans.com.br/niver2025"
+        : "http://localhost:3000/niver2025",
     api:
-      window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1"
-        ? "http://localhost:3001/api"
-        : window.location.origin + "/niver2025/api",
+      import.meta.env.MODE === "production"
+        ? "https://anacarolinacalazans.com.br/niver2025/api"
+        : "http://localhost:3001/api",
     callback:
-      window.location.hostname === "localhost" ||
-      window.location.hostname === "127.0.0.1"
-        ? "http://localhost:3000/niver2025/callback"
-        : window.location.origin + "/niver2025/callback",
+      import.meta.env.MODE === "production"
+        ? "https://anacarolinacalazans.com.br/niver2025/callback"
+        : "http://localhost:3000/niver2025/callback",
+  },
+
+  // Spotify
+  spotify: {
+    clientId: import.meta.env.VITE_SPOTIFY_CLIENT_ID,
+    clientSecret: import.meta.env.VITE_SPOTIFY_CLIENT_SECRET,
+    redirectUri: import.meta.env.VITE_SPOTIFY_REDIRECT_URI,
+    playlistId: import.meta.env.VITE_SPOTIFY_PLAYLIST_ID,
+    scopes: [
+      "user-read-private",
+      "user-read-email",
+      "user-read-playback-state",
+      "user-modify-playback-state",
+      "playlist-read-private",
+      "playlist-modify-public",
+      "playlist-modify-private",
+    ],
+  },
+
+  // Supabase
+  supabase: {
+    url: import.meta.env.VITE_SUPABASE_URL,
+    serviceKey: import.meta.env.VITE_SUPABASE_SERVICE_KEY,
   },
 };
 
-export default frontendConfig;
+export default config;
