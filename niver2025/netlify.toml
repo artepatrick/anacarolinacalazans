@@ -23,6 +23,13 @@
 [build.processing.images]
   compress = true
 
+# Assets do niver2025
+[[redirects]]
+  from = "/niver2025/assets/*"
+  to = "/assets/:splat"
+  status = 200
+  force = true
+
 # API Routes - These must come BEFORE the SPA route
 [[redirects]]
   from = "/niver2025/api/*"
@@ -52,8 +59,8 @@
 
 # SPA Routes - This must come LAST
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/niver2025/*"
+  to = "/niver2025/index.html"
   status = 200
 
 [dev]

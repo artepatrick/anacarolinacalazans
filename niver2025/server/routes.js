@@ -21,7 +21,7 @@ router.get("/spotify/search", async (req, res) => {
     if (error.statusCode === 401) {
       res.status(401).json({
         error: "Authentication required",
-        authUrl: "/api/spotify/auth",
+        authUrl: "/niver2025/api/spotify/auth",
       });
     } else {
       res.status(500).json({ error: "Failed to search tracks" });

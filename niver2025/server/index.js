@@ -69,7 +69,7 @@ app.use(
 app.use(express.json());
 
 // Register routes
-app.use("/api", routes);
+app.use("/niver2025/api", routes);
 
 // Store tokens in memory (in production, you should use a database)
 let spotifyTokens = {
@@ -115,18 +115,19 @@ app.get("/niver2025/callback", async (req, res) => {
     spotifyApi.setRefreshToken(refresh_token);
 
     // Redirect back to the main page with success
-    res.redirect("/?spotify_auth=success");
+    res.redirect("/niver2025/?spotify_auth=success");
   } catch (error) {
     console.error("Spotify Callback Error:", error);
     // Redirect back to the main page with error
     res.redirect(
-      "/?spotify_auth=error&message=" + encodeURIComponent(error.message)
+      "/niver2025/?spotify_auth=error&message=" +
+        encodeURIComponent(error.message)
     );
   }
 });
 
 // Get participants
-app.get("/api/participants", async (req, res) => {
+app.get("/niver2025/api/participants", async (req, res) => {
   try {
     console.log("Fetching participants from Supabase...");
 
@@ -152,7 +153,7 @@ app.get("/api/participants", async (req, res) => {
 });
 
 // Add new participant
-app.post("/api/participants", async (req, res) => {
+app.post("/niver2025/api/participants", async (req, res) => {
   try {
     const {
       names,
