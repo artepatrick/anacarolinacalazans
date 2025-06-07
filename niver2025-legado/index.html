@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ana Carolina Calazans - Confirmação de Presença</title>
+    <link rel="icon" type="image/svg+xml" href="./public/favicon.svg" />
+    <link rel="stylesheet" href="https://unpkg.com/@chakra-ui/css@2.0.0/dist/chakra-ui.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <div class="profile-section">
+                <img src="https://tolky.to/_next/image?url=https%3A%2F%2Fi.postimg.cc%2FT2tQppZB%2Fcarol-comprimida.jpg&w=1920&q=75" 
+                     alt="Ana Carolina Calazans" 
+                     class="profile-image">
+                <h1>Ana Carolina Calazans</h1>
+                <p class="subtitle">Confirme sua presença</p>
+            </div>
+
+            <div class="countdown-section">
+                <h2>Faltam</h2>
+                <div class="countdown-container">
+                    <div class="countdown-item">
+                        <span id="days">00</span>
+                        <span class="countdown-label">Dias</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="hours">00</span>
+                        <span class="countdown-label">Horas</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="minutes">00</span>
+                        <span class="countdown-label">Minutos</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="seconds">00</span>
+                        <span class="countdown-label">Segundos</span>
+                    </div>
+                </div>
+                <p class="countdown-message">para o grande dia!</p>
+            </div>
+
+            <form id="confirmationForm" class="form-container">
+                <div id="namesContainer">
+                    <div class="form-group">
+                        <label for="name1">Nome Completo</label>
+                        <input type="text" class="name-input" id="name1" name="name" required>
+                    </div>
+                </div>
+
+                <button type="button" id="addNameButton" class="add-name-button">+ Adicionar mais um nome</button>
+
+                <div class="form-group">
+                    <label for="phone">Telefone</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="musicSearch">Sugerir Músicas</label>
+                    <p class="music-description">Escolha suas músicas favoritas e ajude a festa a ser diversa e criativa! Basta digitar o nome da música, banda ou autor!</p>
+                    <div class="music-search-container">
+                        <div class="search-input-wrapper">
+                            <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <input type="text" id="musicSearch" placeholder="Busque uma música...">
+                        </div>
+                        <div id="searchResults" class="search-results"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Músicas Sugeridas</label>
+                    <div id="suggestedMusic" class="suggested-music-list"></div>
+                </div>
+
+                <button type="submit" class="submit-button" id="submitButton">
+                    <span class="button-text">Confirmar Presença</span>
+                    <span class="loading-spinner">Processando...</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/@chakra-ui/css@2.0.0/dist/chakra-ui.min.js"></script>
+    <script type="module" src="./src/main.js"></script>
+</body>
+</html>
