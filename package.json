@@ -7,8 +7,7 @@
     "start": "netlify dev"
   },
   "dependencies": {
-    "cors": "^2.8.5",
-    "@netlify/functions": "^2.0.0"
+    "cors": "^2.8.5"
   },
   "devDependencies": {
     "netlify-cli": "^17.0.0"
