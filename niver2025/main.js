@@ -1,6 +1,9 @@
 // API Configuration
-const API_BASE_URL = "/niver2025/api";
-const WS_BASE_URL = "ws://localhost:5050/ws";
+const API_BASE_URL = "http://localhost:8080/api/niver2025"; // "https://omnicast-backend.fly.dev/api/niver2025";
+const WS_BASE_URL = "ws://localhost:5050";
+
+console.log("Initializing with API URL:", API_BASE_URL);
+console.log("Initializing with WebSocket URL:", WS_BASE_URL);
 
 // WebSocket Configuration
 let ws = null;
@@ -10,7 +13,7 @@ const MAX_RECONNECT_ATTEMPTS = 5;
 const RECONNECT_DELAY = 1000;
 
 // Countdown Configuration
-const EVENT_DATE = new Date("2025-01-01T00:00:00").getTime();
+const EVENT_DATE = new Date("2025-06-28T16:00:00").getTime();
 
 // Form Elements
 const confirmationForm = document.getElementById("confirmationForm");
@@ -26,55 +29,63 @@ const secondsElement = document.getElementById("seconds");
 
 // WebSocket Connection Management
 const setupWebSocket = () => {
-  ws = new WebSocket(`${WS_BASE_URL}/participants`);
+  console.log("Attempting to establish WebSocket connection...");
+  ws = new WebSocket(`${WS_BASE_URL}/ws/participants`);
 
   ws.onopen = () => {
-    console.log("Connected to WebSocket server");
+    console.log("WebSocket connection established successfully");
     reconnectAttempts = 0;
 
     if (sessionId) {
-      // Attempt to restore previous session
+      console.log("Attempting to restore previous session:", sessionId);
       ws.send(
         JSON.stringify({
           type: "session_restore",
           sessionId: sessionId,
         })
       );
+    } else {
+      console.log("No previous session found");
     }
   };
 
   ws.onmessage = (event) => {
+    console.log("WebSocket message received:", event.data);
     const data = JSON.parse(event.data);
 
     switch (data.type) {
       case "session":
-        // Store new session ID
+        console.log("New session established:", data.sessionId);
         sessionId = data.sessionId;
         localStorage.setItem("wsSessionId", sessionId);
         break;
 
       case "session_restored":
-        console.log("Session restored successfully");
+        console.log("Previous session restored successfully");
         break;
 
       case "participant_update":
-        // Handle real-time participant updates
+        console.log("Participant update received:", data.content);
         handleParticipantUpdate(data.content);
         break;
 
       case "error":
-        console.error("WebSocket error:", data.content);
+        console.error("WebSocket error received:", data.content);
         break;
     }
   };
 
-  ws.onclose = () => {
-    console.log("WebSocket connection closed");
+  ws.onclose = (event) => {
+    console.log("WebSocket connection closed", {
+      code: event.code,
+      reason: event.reason,
+      wasClean: event.wasClean,
+    });
     handleReconnect();
   };
 
   ws.onerror = (error) => {
-    console.error("WebSocket error:", error);
+    console.error("WebSocket error occurred:", error);
   };
 };
 
@@ -170,6 +181,8 @@ const collectFormData = () => {
 
 // API Calls
 const apiCall = async (endpoint, method = "GET", data = null) => {
+  console.log(`Making ${method} request to ${endpoint}`, data ? { data } : "");
+
   try {
     const options = {
       method,
@@ -182,13 +195,19 @@ const apiCall = async (endpoint, method = "GET", data = null) => {
       options.body = JSON.stringify(data);
     }
 
+    console.log("Request options:", options);
     const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+    console.log("Response status:", response.status);
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error("API Error Response:", errorText);
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    return await response.json();
+    const responseData = await response.json();
+    console.log("API Response:", responseData);
+    return responseData;
   } catch (error) {
     console.error("API Error:", error);
     throw error;
@@ -198,10 +217,12 @@ const apiCall = async (endpoint, method = "GET", data = null) => {
 // Form Submission Handler
 const handleSubmit = async (e) => {
   e.preventDefault();
+  console.log("Form submission started");
   setLoading(true);
 
   try {
     const formData = collectFormData();
+    console.log("Collected form data:", formData);
 
     // Validate form data
     if (formData.names.length === 0) {
@@ -212,9 +233,11 @@ const handleSubmit = async (e) => {
       throw new Error("Por favor, preencha todos os campos obrigatórios.");
     }
 
+    console.log("Making API call to submit form data");
     // Simulate API call (replace with actual API endpoint)
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
+    console.log("Form submission successful");
     // Show success message
     alert("Presença confirmada com sucesso!");
 
@@ -227,6 +250,7 @@ const handleSubmit = async (e) => {
             </div>
         `;
   } catch (error) {
+    console.error("Form submission error:", error);
     alert(
       error.message || "Erro ao confirmar presença. Por favor, tente novamente."
     );

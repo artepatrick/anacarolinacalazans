@@ -1,0 +1,594 @@
+header {
+    background-color: #0E0423;
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 15;
+}
+
+.menu {
+    font-family: 'Righteous', cursive;
+    font-size: small;
+    padding: 0 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    color: white;
+    transition: 0.3s all;
+}
+
+.itemSelecionado {
+    color: #F2C94C;
+    text-decoration: underline;
+}
+
+/* .itemSelecionado::before {
+    content: "[  ";
+}
+
+.itemSelecionado::after {
+    content: "  ]";
+} */
+
+.menu li {
+    padding-left: 15px;
+}
+
+.menu li:hover {
+    color: #F2C94C;
+}
+
+.menu a {
+    text-decoration: none;
+    color: white;
+}
+
+/* body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+} */
+
+.headerContainer {
+    padding: 30px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.faixaBanner {
+    padding-top: 5px;
+    background-color: #BB6BD9;
+    z-index: 10;
+    position: relative;
+}
+
+.logo {
+    width: 200px;
+}
+
+.divFoto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.fotoPerfil {
+    max-width: 100px;
+    border-radius: 150px;
+    border: solid 3px #F2C94C;
+}
+
+.containerGeral {
+    max-width: 500px;
+    margin: 0px auto;
+    /* box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.15); */
+    border-radius: 8px;
+    padding: 20px 30px;
+    align-items: center;
+    min-width: 250px;
+    /* height: calc(100vh - 345px); */
+    z-index: 2;
+    position: relative;
+}
+
+.containerSimples {
+    font-family: 'Roboto', sans-serif;
+    padding-bottom: 5px;
+    font-size: small;
+}
+.linkClaro {
+    margin: 0 15px;
+}
+
+.box p {
+    max-width: 500px;
+    color: #3a3a3a;
+    padding-top: 10px;
+    padding-top: 10px;
+}
+
+.box strong {
+    color: #BB6BD9;
+    cursor: default;
+    transition: 0.3s all;
+}
+
+.box strong:hover {
+    color: #e8aaff;
+}
+
+
+h1 {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    padding-top: 10px;
+    cursor: pointer;
+    color: #BB6BD9;
+}
+
+h2 {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    padding-top: 10px;
+    cursor: pointer;
+    color: #BB6BD9;
+}
+
+p {
+    font-family: 'Roboto', sans-serif;
+}
+
+footer {
+    background-color: #0E0423;
+    padding: 20px 0;
+    flex-shrink: 0;
+    z-index: 10;
+    position: relative;
+}
+
+.linkClaro {
+    color: white;
+    font-family: 'Roboto', sans-serif;
+}
+
+.footerContainer {
+    margin: 0 auto;
+    max-width: 500px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    font-family: 'Roboto', sans-serif;
+    padding-top: 10px;
+    color: white;
+    padding: 0 30px;
+}
+
+a {
+    transition: 0.3s all;
+}
+
+a:hover {
+    color: #F2C94C;
+}
+
+.footerSide {
+    margin: 10px 0;
+    max-width: 400px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+}
+
+.iconeFooter {
+    /* background-color: #BB6BD9; */
+    width: 40px;
+    padding: 5px;
+}
+
+.footerText {
+    font-size: small;
+    padding: 5px;
+}
+
+/* footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+} */
+
+.floatingWhats {
+    width: 50px;
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    opacity: 100%;
+    transition: 0.3s all;
+    z-index: 12;
+}
+
+.floatingWhats:hover {
+    opacity: 100%;
+}
+
+.iconeWhats {
+    width: 60px;
+}
+
+/* MAPAS */
+
+.mapouter {
+    margin: 0 auto;
+    height: 500px;
+    max-width: 500px;
+}
+
+.gmap_canvas {
+    overflow: hidden;
+    background: none !important;
+    height: 500px;
+}
+
+/* @media (max-width: 550px) {
+
+    .containerGeral {
+        height: calc(100vh - 305px);
+    }
+
+} */
+
+
+/* TÓPICOS PALESTRA */
+
+.iconeTopico {
+    width: 20px;
+    padding-top: 16px;
+    padding-right: 10px;
+}
+
+.tituloTopico {
+    display: flex;
+    flex-direction: row;
+}
+
+.topico {
+    background-color: rgb(243 243 243);
+    padding: 15px;
+    border-radius: 5px;
+    margin: 10px 0;
+    font-family: 'Roboto', sans-serif;
+    transition: 0.3s all;
+}
+
+.topico:hover {
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.15);
+    cursor: default;
+}
+
+.topico h2 {
+    margin-bottom: 10px;
+    text-align: left;
+    cursor: default;
+}
+
+/* .topico h2::before {
+    content: "\066D    ";
+} */
+
+.powered {
+    font-family: 'Cabin', sans-serif;
+    font-size: 0.8em;
+    color: #ffffff;
+    text-align: center;
+    margin: 10px 0;
+    margin-bottom: 0px;
+    width: 100%;
+  }
+
+  .artepatrick, a {
+    font-family: righteous, sans-serif;
+    font-weight:lighter;
+    text-decoration: none;
+    color: #27AE60;
+  }
+
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --chakra-colors-gray-800: #1A202C;
+    --chakra-colors-gray-700: #2D3748;
+    --chakra-colors-gray-600: #4A5568;
+    --chakra-colors-purple-500: #805AD5;
+    --chakra-colors-purple-600: #6B46C1;
+    --chakra-colors-white: #FFFFFF;
+    --chakra-colors-gray-100: #F7FAFC;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--chakra-colors-gray-800);
+    color: var(--chakra-colors-white);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.content {
+    background-color: var(--chakra-colors-gray-700);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+}
+
+/* Profile section */
+.profile-section {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.profile-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--chakra-colors-purple-500);
+    margin-bottom: 20px;
+}
+
+.profile-section h1 {
+    color: var(--chakra-colors-purple-500);
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: var(--chakra-colors-gray-100);
+    font-size: 1.2em;
+}
+
+/* Countdown section */
+.countdown-section {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.countdown-section h2 {
+    color: var(--chakra-colors-purple-500);
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+.countdown-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 0 auto 15px;
+    background-color: rgba(128, 90, 213, 0.1);
+    padding: 20px;
+    border-radius: 16px;
+    max-width: 500px;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(128, 90, 213, 0.2);
+}
+
+.countdown-value {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 80px;
+}
+
+.countdown-value span:first-child {
+    font-size: 2.5em;
+    font-weight: 700;
+    color: var(--chakra-colors-purple-500);
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.countdown-label {
+    font-size: 0.8em;
+    color: var(--chakra-colors-gray-100);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.countdown-separator {
+    color: var(--chakra-colors-purple-500);
+    font-size: 2em;
+    font-weight: 300;
+    margin-top: -15px;
+    opacity: 0.5;
+}
+
+.countdown-message {
+    color: var(--chakra-colors-gray-100);
+    font-style: italic;
+    margin-top: 15px;
+}
+
+/* Form styles */
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--chakra-colors-white);
+    font-weight: 500;
+    font-size: 0.95em;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    background-color: rgba(26, 32, 44, 0.6);
+    border: 1px solid rgba(74, 85, 104, 0.3);
+    border-radius: 12px;
+    font-size: 1em;
+    color: var(--chakra-colors-white);
+    transition: all 0.2s ease-in-out;
+    backdrop-filter: blur(8px);
+}
+
+.form-group input:hover {
+    border-color: rgba(128, 90, 213, 0.4);
+}
+
+.form-group input:focus {
+    border-color: var(--chakra-colors-purple-500);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(128, 90, 213, 0.2);
+    background-color: rgba(26, 32, 44, 0.8);
+}
+
+.form-group input::placeholder {
+    color: rgba(247, 250, 252, 0.4);
+}
+
+.add-name-button {
+    background: none;
+    border: none;
+    color: var(--chakra-colors-purple-500);
+    cursor: pointer;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+    padding: 8px 0;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.add-name-button:hover {
+    color: var(--chakra-colors-purple-600);
+}
+
+.music-description {
+    font-size: 0.9em;
+    color: var(--chakra-colors-gray-100);
+    margin-bottom: 10px;
+}
+
+.music-search-container {
+    position: relative;
+}
+
+.search-input-wrapper {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    color: var(--chakra-colors-gray-100);
+}
+
+.search-input-wrapper input {
+    padding-left: 40px;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--chakra-colors-gray-700);
+    border: 1px solid var(--chakra-colors-gray-600);
+    border-radius: 8px;
+    margin-top: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+.suggested-music-list {
+    min-height: 50px;
+    border: 1px solid var(--chakra-colors-gray-600);
+    border-radius: 8px;
+    padding: 10px;
+    background-color: var(--chakra-colors-gray-800);
+}
+
+.submit-button {
+    background-color: var(--chakra-colors-purple-500);
+    color: var(--chakra-colors-white);
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s ease-in-out;
+}
+
+.submit-button:hover {
+    background-color: var(--chakra-colors-purple-600);
+    transform: translateY(-2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .content {
+        padding: 20px;
+    }
+    
+    .countdown-container {
+        padding: 15px;
+        gap: 4px;
+    }
+    
+    .countdown-value {
+        min-width: 60px;
+    }
+    
+    .countdown-value span:first-child {
+        font-size: 2em;
+    }
+    
+    .countdown-label {
+        font-size: 0.7em;
+    }
+    
+    .countdown-separator {
+        font-size: 1.8em;
+        margin-top: -12px;
+    }
+    
+    .form-group input {
+        padding: 10px 14px;
+    }
+    
+    .profile-image {
+        width: 150px;
+        height: 150px;
+    }
+}

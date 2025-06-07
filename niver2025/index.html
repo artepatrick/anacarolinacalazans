@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1A202C">
+    <meta name="description" content="Confirme sua presença para o aniversário de Ana Carolina Calazans">
     <title>Ana Carolina Calazans - Confirmação de Presença</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -12,7 +17,8 @@
             <div class="profile-section">
                 <img src="https://tolky.to/_next/image?url=https%3A%2F%2Fi.postimg.cc%2FT2tQppZB%2Fcarol-comprimida.jpg&w=1920&q=75" 
                      alt="Ana Carolina Calazans" 
-                     class="profile-image">
+                     class="profile-image"
+                     loading="lazy">
                 <h1>Ana Carolina Calazans</h1>
                 <p class="subtitle">Confirme sua presença</p>
             </div>
@@ -20,19 +26,22 @@
             <div class="countdown-section">
                 <h2>Faltam</h2>
                 <div class="countdown-container">
-                    <div class="countdown-item">
+                    <div class="countdown-value">
                         <span id="days">00</span>
                         <span class="countdown-label">Dias</span>
                     </div>
-                    <div class="countdown-item">
+                    <div class="countdown-separator">:</div>
+                    <div class="countdown-value">
                         <span id="hours">00</span>
                         <span class="countdown-label">Horas</span>
                     </div>
-                    <div class="countdown-item">
+                    <div class="countdown-separator">:</div>
+                    <div class="countdown-value">
                         <span id="minutes">00</span>
                         <span class="countdown-label">Minutos</span>
                     </div>
-                    <div class="countdown-item">
+                    <div class="countdown-separator">:</div>
+                    <div class="countdown-value">
                         <span id="seconds">00</span>
                         <span class="countdown-label">Segundos</span>
                     </div>
@@ -44,7 +53,7 @@
                 <div id="namesContainer">
                     <div class="form-group">
                         <label for="name1">Nome Completo</label>
-                        <input type="text" class="name-input" id="name1" name="name" required>
+                        <input type="text" class="name-input" id="name1" name="name" required placeholder="Digite seu nome completo">
                     </div>
                 </div>
 
@@ -52,18 +61,18 @@
 
                 <div class="form-group">
                     <label for="phone">Telefone</label>
-                    <input type="tel" id="phone" name="phone" required>
+                    <input type="tel" id="phone" name="phone" required placeholder="(00) 00000-0000">
                 </div>
 
                 <div class="form-group">
                     <label for="email">E-mail</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="email" name="email" required placeholder="seu@email.com">
                 </div>
 
                 <div class="form-group">
                     <label for="musicSearch">Sugerir Músicas</label>
                     <p class="music-description">Escolha suas músicas favoritas e ajude a festa a ser diversa e criativa! Basta digitar o nome da música, banda ou autor!</p>
-                    <p class="music-description" style="color: #666; font-style: italic;">Funcionalidade temporariamente indisponível</p>
+                    <p class="music-description" style="color: var(--chakra-colors-gray-100); font-style: italic;">Funcionalidade temporariamente indisponível</p>
                     <div class="music-search-container">
                         <div class="search-input-wrapper">
                             <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
