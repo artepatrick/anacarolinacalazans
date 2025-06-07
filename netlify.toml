@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build"
+  command = "cp -r niver2025 dist"
   publish = "dist"
   node_version = "20"
   functions = "netlify/functions"
