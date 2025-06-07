@@ -1,28 +1,5 @@
 [build]
-  command = "cp -r niver2025 dist"
   publish = "dist"
-  node_version = "20"
-  functions = "netlify/functions"
-
-[build.environment]
-  NODE_VERSION = "20"
-  NODE_OPTIONS = "--experimental-modules"
-
-[[plugins]]
-  package = "@netlify/plugin-lighthouse"
-
-[build.processing]
-  skip_processing = false
-[build.processing.html]
-  pretty_urls = true
-[build.processing.css]
-  bundle = true
-  minify = true
-[build.processing.js]
-  bundle = true
-  minify = true
-[build.processing.images]
-  compress = true
 
 # Redirects for main site and niver2025 section
 [[redirects]]
@@ -33,9 +10,4 @@
 [[redirects]]
   from = "/niver2025/*"
   to = "/niver2025/index.html"
-  status = 200
-
-[dev]
-  command = "npm run dev"
-  port = 8888
-  targetPort = 3001 
+  status = 200 
