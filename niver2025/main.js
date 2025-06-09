@@ -141,6 +141,8 @@ const setLoading = (isLoading) => {
 };
 
 // Countdown Timer
+let countdownInterval; // Declare the variable in the global scope
+
 const updateCountdown = () => {
   const now = new Date().getTime();
   const distance = EVENT_DATE - now;
@@ -283,5 +285,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Initialize countdown
   updateCountdown();
-  const countdownInterval = setInterval(updateCountdown, 1000);
+  countdownInterval = setInterval(updateCountdown, 1000);
 });
