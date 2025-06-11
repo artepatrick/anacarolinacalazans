@@ -1,8 +1,9 @@
 // API Configuration
-const API_BASE_URL = "http://localhost:8080/api/niver2025"; // "https://omnicast-backend.fly.dev/api/niver2025";
+const BASE_URL = process.env.BASE_URL || "http://localhost:8080";
+const API_BASE_URL = `${BASE_URL}/api/niver2025`;
 const WS_BASE_URL = "ws://localhost:5050";
-const NOTIFICATION_API_URL =
-  "https://api.tolky.to/api/externalAPIs/public/externalNotificationAI";
+const TOLKY_API_BASE_URL = process.env.TOLKY_API_BASE_URL;
+const NOTIFICATION_API_URL = `${TOLKY_API_BASE_URL}/api/v1/notifications`;
 
 console.log("Initializing with API URL:", API_BASE_URL);
 console.log("Initializing with WebSocket URL:", WS_BASE_URL);
