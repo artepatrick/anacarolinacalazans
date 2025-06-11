@@ -1,7 +1,8 @@
 // API Configuration
-const BASE_URL = window.__ENV__?.BASE_URL || "http://localhost:8080";
+const BASE_URL = window.__ENV__?.BASE_URL || "https://omnicast-backend.fly.dev";
 const API_BASE_URL = `${BASE_URL}/api/niver2025`;
-const WS_BASE_URL = window.__ENV__?.WS_BASE_URL || "ws://localhost:5050";
+const WS_BASE_URL =
+  window.__ENV__?.WS_BASE_URL || "wss://omnicast-backend.fly.dev";
 const TOLKY_API_BASE_URL = window.__ENV__?.TOLKY_API_BASE_URL;
 const NOTIFICATION_API_URL = TOLKY_API_BASE_URL
   ? `${TOLKY_API_BASE_URL}/api/v1/notifications`
@@ -55,28 +56,36 @@ const setupWebSocket = () => {
   };
 
   ws.onmessage = (event) => {
-    console.log("WebSocket message received:", event.data);
-    const data = JSON.parse(event.data);
+    try {
+      console.log("WebSocket message received:", event.data);
+      const data = JSON.parse(event.data);
 
-    switch (data.type) {
-      case "session":
-        console.log("New session established:", data.sessionId);
-        sessionId = data.sessionId;
-        localStorage.setItem("wsSessionId", sessionId);
-        break;
+      switch (data.type) {
+        case "session":
+          console.log("New session established:", data.sessionId);
+          sessionId = data.sessionId;
+          localStorage.setItem("wsSessionId", sessionId);
+          break;
 
-      case "session_restored":
-        console.log("Previous session restored successfully");
-        break;
+        case "session_restored":
+          console.log("Previous session restored successfully");
+          break;
 
-      case "participant_update":
-        console.log("Participant update received:", data.content);
-        handleParticipantUpdate(data.content);
-        break;
+        case "participant_update":
+          console.log("Participant update received:", data.content);
+          handleParticipantUpdate(data.content);
+          break;
 
-      case "error":
-        console.error("WebSocket error received:", data.content);
-        break;
+        case "error":
+          console.error("WebSocket error received:", data.content);
+          showNotification("Erro na conexão: " + data.content);
+          break;
+
+        default:
+          console.warn("Unknown message type received:", data.type);
+      }
+    } catch (error) {
+      console.error("Error processing WebSocket message:", error);
     }
   };
 
@@ -86,11 +95,17 @@ const setupWebSocket = () => {
       reason: event.reason,
       wasClean: event.wasClean,
     });
+
+    if (!event.wasClean) {
+      showNotification("Conexão perdida. Tentando reconectar...");
+    }
+
     handleReconnect();
   };
 
   ws.onerror = (error) => {
     console.error("WebSocket error occurred:", error);
+    showNotification("Erro na conexão. Tentando reconectar...");
   };
 };
 
@@ -336,17 +351,25 @@ const sendNotifications = async (formData) => {
         "Enviar mensagem de confirmação de presença para o aniversário, agradecendo a confirmação e fornecendo detalhes do evento.",
     };
 
-    const response = await fetch(NOTIFICATION_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer YOUR_TOKEN_HERE", // Replace with actual token
-      },
-      body: JSON.stringify(notificationData),
-    });
+    const response = await fetch(
+      `${BASE_URL}/api/externalAPIs/public/externalNotificationAI`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer YOUR_TOKEN_HERE", // Replace with actual token
+        },
+        body: JSON.stringify(notificationData),
+      }
+    );
 
     if (!response.ok) {
       console.error("Failed to send notification");
+      const errorData = await response.json();
+      console.error("Notification error details:", errorData);
+    } else {
+      const responseData = await response.json();
+      console.log("Notification sent successfully:", responseData);
     }
   } catch (error) {
     console.error("Error sending notification:", error);
