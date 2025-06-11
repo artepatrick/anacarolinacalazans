@@ -1,9 +1,11 @@
 // API Configuration
-const BASE_URL = process.env.BASE_URL || "http://localhost:8080";
+const BASE_URL = window.__ENV__?.BASE_URL || "http://localhost:8080";
 const API_BASE_URL = `${BASE_URL}/api/niver2025`;
-const WS_BASE_URL = "ws://localhost:5050";
-const TOLKY_API_BASE_URL = process.env.TOLKY_API_BASE_URL;
-const NOTIFICATION_API_URL = `${TOLKY_API_BASE_URL}/api/v1/notifications`;
+const WS_BASE_URL = window.__ENV__?.WS_BASE_URL || "ws://localhost:5050";
+const TOLKY_API_BASE_URL = window.__ENV__?.TOLKY_API_BASE_URL;
+const NOTIFICATION_API_URL = TOLKY_API_BASE_URL
+  ? `${TOLKY_API_BASE_URL}/api/v1/notifications`
+  : null;
 
 console.log("Initializing with API URL:", API_BASE_URL);
 console.log("Initializing with WebSocket URL:", WS_BASE_URL);
