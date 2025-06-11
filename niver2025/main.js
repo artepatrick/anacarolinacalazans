@@ -1,6 +1,8 @@
 // API Configuration
 const API_BASE_URL = "http://localhost:8080/api/niver2025"; // "https://omnicast-backend.fly.dev/api/niver2025";
 const WS_BASE_URL = "ws://localhost:5050";
+const NOTIFICATION_API_URL =
+  "https://api.tolky.to/api/externalAPIs/public/externalNotificationAI";
 
 console.log("Initializing with API URL:", API_BASE_URL);
 console.log("Initializing with WebSocket URL:", WS_BASE_URL);
@@ -231,33 +233,120 @@ const handleSubmit = async (e) => {
       throw new Error("Por favor, adicione pelo menos um nome.");
     }
 
-    if (!formData.phone || !formData.email) {
-      throw new Error("Por favor, preencha todos os campos obrigatórios.");
+    if (!formData.email) {
+      throw new Error("Por favor, preencha o campo de email.");
     }
 
-    console.log("Making API call to submit form data");
-    // Simulate API call (replace with actual API endpoint)
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    // Check if email exists
+    const checkResponse = await apiCall(
+      `/check-email/${encodeURIComponent(formData.email)}`
+    );
 
-    console.log("Form submission successful");
-    // Show success message
-    alert("Presença confirmada com sucesso!");
+    if (checkResponse.exists) {
+      // Show confirmation dialog with existing data
+      const confirmed = await showConfirmationDialog(checkResponse.data);
+      if (!confirmed) {
+        setLoading(false);
+        return;
+      }
+    }
 
-    // Reset form
-    confirmationForm.reset();
-    namesContainer.innerHTML = `
-            <div class="form-group">
-                <label for="name1">Nome Completo</label>
-                <input type="text" class="name-input" id="name1" name="name" required>
-            </div>
-        `;
+    // Submit confirmation
+    const submitResponse = await apiCall("/confirm", "POST", formData);
+
+    if (submitResponse.success) {
+      // Send notifications
+      await sendNotifications(formData);
+
+      // Show success message
+      showNotification("Presença confirmada com sucesso!");
+
+      // Reset form
+      confirmationForm.reset();
+      namesContainer.innerHTML = `
+        <div class="form-group">
+          <label for="name1">Nome Completo</label>
+          <input type="text" class="name-input" id="name1" name="name" required>
+        </div>
+      `;
+    } else {
+      throw new Error(submitResponse.message || "Erro ao confirmar presença.");
+    }
   } catch (error) {
     console.error("Form submission error:", error);
-    alert(
+    showNotification(
       error.message || "Erro ao confirmar presença. Por favor, tente novamente."
     );
   } finally {
     setLoading(false);
+  }
+};
+
+// Confirmation Dialog
+const showConfirmationDialog = (existingData) => {
+  return new Promise((resolve) => {
+    const dialog = document.createElement("div");
+    dialog.className = "confirmation-dialog";
+
+    const content = `
+      <div class="dialog-content">
+        <h3>Email já cadastrado</h3>
+        <p>Encontramos um cadastro existente com este email. Deseja confirmar a presença para todos os convidados listados abaixo?</p>
+        <ul>
+          ${existingData.names.map((name) => `<li>${name}</li>`).join("")}
+        </ul>
+        <div class="dialog-buttons">
+          <button class="cancel-button">Editar</button>
+          <button class="confirm-button">Confirmar Todos</button>
+        </div>
+      </div>
+    `;
+
+    dialog.innerHTML = content;
+    document.body.appendChild(dialog);
+
+    dialog.querySelector(".cancel-button").addEventListener("click", () => {
+      dialog.remove();
+      resolve(false);
+    });
+
+    dialog.querySelector(".confirm-button").addEventListener("click", () => {
+      dialog.remove();
+      resolve(true);
+    });
+  });
+};
+
+// Send Notifications
+const sendNotifications = async (formData) => {
+  try {
+    const notificationData = {
+      data: [
+        {
+          phone: formData.phone,
+          userName: formData.names[0],
+          eventType: "aniversario",
+          eventDate: "28/06/2025",
+        },
+      ],
+      generalInstructions:
+        "Enviar mensagem de confirmação de presença para o aniversário, agradecendo a confirmação e fornecendo detalhes do evento.",
+    };
+
+    const response = await fetch(NOTIFICATION_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer YOUR_TOKEN_HERE", // Replace with actual token
+      },
+      body: JSON.stringify(notificationData),
+    });
+
+    if (!response.ok) {
+      console.error("Failed to send notification");
+    }
+  } catch (error) {
+    console.error("Error sending notification:", error);
   }
 };
 
