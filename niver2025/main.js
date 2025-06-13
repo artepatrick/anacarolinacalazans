@@ -1,6 +1,6 @@
 // Configuration
-const BASE_URL = "https://omnicast-backend.fly.dev";
-const EXTERNAL_API_BASE_URL = "https://omnicast-backend.fly.dev";
+const BASE_URL = "http://localhost:8080";
+const EXTERNAL_API_BASE_URL = "http://localhost:8080";
 const EVENT_DATE = new Date("2025-06-28T16:00:00"); // Adjust this to the actual event date
 const TOLKY_APY_TOKEN = "S30LusdLYOEjsFe2DNa4CVI9ny4Yi8N2YAX7gw9Yapg";
 
@@ -82,33 +82,37 @@ form.addEventListener("submit", async (e) => {
   console.log("Checking if email exists:", {
     request: { email },
     expectedResponse: {
-      code: 200,
+      exists: true,
       data: {
-        exists: true / false,
-        existingGuests: [], // If exists: true, this will contain the list of existing guests
+        id: "string",
+        email: "string",
+        phone: "string",
+        names: ["string"],
       },
     },
   });
 
   try {
-    const checkResponse = await fetch(`${BASE_URL}/api/check-email`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email }),
-    });
+    const checkResponse = await fetch(
+      `${BASE_URL}/api/niver2025/checkEmail/${encodeURIComponent(email)}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     const checkData = await checkResponse.json();
 
-    if (checkData.code !== 200) {
+    if (!checkResponse.ok) {
       throw new Error("Failed to check email");
     }
 
-    if (checkData.data.exists) {
+    if (checkData.exists) {
       // Show confirmation modal with existing guests
       const confirmed = await showConfirmationModal(
-        checkData.data.existingGuests,
+        checkData.data.names,
         names
       );
       if (!confirmed) {
@@ -121,31 +125,31 @@ form.addEventListener("submit", async (e) => {
     const formData = {
       email,
       phone,
-      guests: names,
+      names,
     };
 
     console.log("Submitting form data:", {
       request: formData,
       expectedResponse: {
-        code: 200,
-        message: "OK",
-        data: {
-          success: true,
-        },
+        success: true,
+        id: "string",
       },
     });
 
-    const submitResponse = await fetch(`${BASE_URL}/api/confirm-presence`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    const submitResponse = await fetch(
+      `${BASE_URL}/api/niver2025/confirmPresence`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
 
     const submitData = await submitResponse.json();
 
-    if (submitData.code !== 200 || !submitData.data.success) {
+    if (!submitResponse.ok || !submitData.success) {
       throw new Error("Failed to submit form");
     }
 
@@ -156,29 +160,12 @@ form.addEventListener("submit", async (e) => {
           {
             phone,
             userName: names[0],
-            eventType: "birthday",
-            hostName: "Ana Carolina Calazans",
+            eventType: "aniversario",
+            eventDate: EVENT_DATE.toISOString(),
           },
         ],
         generalInstructions:
-          "Send a thank you message for confirming presence to the birthday party",
-      },
-      expectedResponse: {
-        code: 200,
-        message: "OK",
-        data: {
-          results: [
-            {
-              status: "fulfilled",
-              value: { phone, whatsappStatus: "success" },
-            },
-          ],
-          summary: {
-            totalItems: 1,
-            sentItems: 1,
-            failedItems: 0,
-          },
-        },
+          "Enviar mensagem de agradecimento pela confirmação de presença no aniversário",
       },
     });
 
@@ -195,12 +182,12 @@ form.addEventListener("submit", async (e) => {
             {
               phone,
               userName: names[0],
-              eventType: "birthday",
-              hostName: "Ana Carolina Calazans",
+              eventType: "aniversario",
+              eventDate: EVENT_DATE.toISOString(),
             },
           ],
           generalInstructions:
-            "Send a thank you message for confirming presence to the birthday party",
+            "Enviar mensagem de agradecimento pela confirmação de presença no aniversário",
         }),
       }
     );
