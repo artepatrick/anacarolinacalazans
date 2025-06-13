@@ -131,13 +131,16 @@ form.addEventListener("submit", async (e) => {
       },
     });
 
-    const submitResponse = await fetch(`${BASE_URL}/api/confirm-presence`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    const submitResponse = await fetch(
+      `${BASE_URL}/api/niver2025/confirmPresence`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
 
     const submitData = await submitResponse.json();
 
