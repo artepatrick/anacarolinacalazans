@@ -180,6 +180,12 @@ form.addEventListener("submit", async (e) => {
       request: {
         data: [
           {
+            phone: "5531991391722",
+            userName: "Ana Carolina",
+            eventType: "aniversario",
+            eventDate: EVENT_DATE.toISOString(),
+          },
+          {
             phone,
             userName: names[0],
             eventType: "aniversario",
@@ -187,7 +193,7 @@ form.addEventListener("submit", async (e) => {
           },
         ],
         generalInstructions:
-          "Enviar mensagem de agradecimento pela confirmação de presença no aniversário",
+          "Enviar mensagens de notificação para a aniversariante e para o convidado",
       },
     });
 
@@ -202,14 +208,28 @@ form.addEventListener("submit", async (e) => {
         body: JSON.stringify({
           data: [
             {
+              phone: "5531991391722",
+              userName: "Ana Carolina",
+              eventType: "aniversario",
+              eventDate: EVENT_DATE.toISOString(),
+              customInstructions: `Notificar Ana Carolina sobre nova confirmação de presença. Incluir: Nome dos convidados: ${names.join(
+                ", "
+              )}, Email: ${email}, Telefone: ${phone}, Lista completa de convidados: ${names.join(
+                ", "
+              )}. Data do evento: ${EVENT_DATE.toLocaleDateString()} às ${EVENT_DATE.toLocaleTimeString()}.`,
+            },
+            {
               phone,
               userName: names[0],
               eventType: "aniversario",
               eventDate: EVENT_DATE.toISOString(),
+              customInstructions: `Enviar mensagem de agradecimento pela confirmação de presença. Confirmar que os seguintes convidados foram registrados: ${names.join(
+                ", "
+              )}. Reforçar que o aniversário será no dia ${EVENT_DATE.toLocaleDateString()} às ${EVENT_DATE.toLocaleTimeString()}. Expressar gratidão pela presença e desejar boas-vindas ao evento.`,
             },
           ],
           generalInstructions:
-            "Enviar mensagem de agradecimento pela confirmação de presença no aniversário",
+            "Enviar mensagens personalizadas para a aniversariante e para o convidado",
         }),
       }
     );
