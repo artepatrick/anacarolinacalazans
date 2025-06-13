@@ -107,6 +107,7 @@ form.addEventListener("submit", async (e) => {
       throw new Error("Failed to check email");
     }
 
+    let formData;
     if (checkData.exists) {
       // Show confirmation modal with existing guests
       const confirmed = await showConfirmationModal(
@@ -123,14 +124,14 @@ form.addEventListener("submit", async (e) => {
       const allNames = [...new Set([...checkData.data.names, ...names])];
 
       // Submit the form data with merged names
-      const formData = {
+      formData = {
         email,
         phone,
         names: allNames,
       };
     } else {
       // Submit the form data with original names
-      const formData = {
+      formData = {
         email,
         phone,
         names,
