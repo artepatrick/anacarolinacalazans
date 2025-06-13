@@ -600,25 +600,27 @@ body {
     }
     
     .countdown-container {
-        padding: 1.5rem;
-        gap: 0.5rem;
+        padding: 1rem;
+        gap: 0.25rem;
+        max-width: 100%;
+        overflow: hidden;
     }
     
     .countdown-value {
-        min-width: 70px;
+        min-width: 60px;
     }
     
     .countdown-value span:first-child {
-        font-size: 2.25rem;
+        font-size: 1.75rem;
     }
     
     .countdown-label {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
     }
     
     .countdown-separator {
-        font-size: 2rem;
-        margin-top: -0.75rem;
+        font-size: 1.5rem;
+        margin-top: -0.5rem;
     }
     
     .form-group input {
