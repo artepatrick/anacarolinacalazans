@@ -109,19 +109,33 @@ form.addEventListener("submit", async (e) => {
 
     if (checkData.exists) {
       // Show confirmation modal with existing guests
-      const confirmed = await showConfirmationModal(checkData.names, names);
+      const confirmed = await showConfirmationModal(
+        checkData.data.names,
+        names,
+        checkData.data.status
+      );
       if (!confirmed) {
         submitButton.disabled = false;
         return;
       }
-    }
 
-    // Submit the form data
-    const formData = {
-      email,
-      phone,
-      names,
-    };
+      // Merge existing names with new names, avoiding duplicates
+      const allNames = [...new Set([...checkData.data.names, ...names])];
+
+      // Submit the form data with merged names
+      const formData = {
+        email,
+        phone,
+        names: allNames,
+      };
+    } else {
+      // Submit the form data with original names
+      const formData = {
+        email,
+        phone,
+        names,
+      };
+    }
 
     console.log("Submitting form data:", {
       request: formData,
@@ -209,23 +223,25 @@ form.addEventListener("submit", async (e) => {
 });
 
 // Modal functions
-function showConfirmationModal(existingGuests, newGuests) {
+function showConfirmationModal(existingGuests, newGuests, status) {
   return new Promise((resolve) => {
     const modal = document.createElement("div");
     modal.className = "modal";
     modal.innerHTML = `
             <div class="modal-content">
                 <h3>Confirmação de Presença</h3>
-                <p>Já existem os seguintes convidados confirmados para este email:</p>
+                <p>Já existe um registro para este email com status: <strong>${status}</strong></p>
+                <p>Convidados já registrados:</p>
                 <ul>
                     ${existingGuests
                       .map((guest) => `<li>${guest}</li>`)
                       .join("")}
                 </ul>
-                <p>Deseja adicionar os novos convidados?</p>
+                <p>Novos convidados a serem adicionados:</p>
                 <ul>
                     ${newGuests.map((guest) => `<li>${guest}</li>`).join("")}
                 </ul>
+                <p>Deseja adicionar os novos convidados ao registro existente?</p>
                 <div class="modal-buttons">
                     <button id="confirmYes">Sim, confirmar todos</button>
                     <button id="confirmNo">Não, editar</button>
