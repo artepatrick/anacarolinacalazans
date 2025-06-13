@@ -93,15 +93,13 @@ form.addEventListener("submit", async (e) => {
   });
 
   try {
-    const checkResponse = await fetch(
-      `${BASE_URL}/api/niver2025/checkEmail/${encodeURIComponent(email)}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const checkResponse = await fetch(`${BASE_URL}/api/niver2025/checkEmail`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    });
 
     const checkData = await checkResponse.json();
 
@@ -111,10 +109,7 @@ form.addEventListener("submit", async (e) => {
 
     if (checkData.exists) {
       // Show confirmation modal with existing guests
-      const confirmed = await showConfirmationModal(
-        checkData.data.names,
-        names
-      );
+      const confirmed = await showConfirmationModal(checkData.names, names);
       if (!confirmed) {
         submitButton.disabled = false;
         return;
@@ -136,21 +131,18 @@ form.addEventListener("submit", async (e) => {
       },
     });
 
-    const submitResponse = await fetch(
-      `${BASE_URL}/api/niver2025/confirmPresence`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      }
-    );
+    const submitResponse = await fetch(`${BASE_URL}/api/confirm-presence`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
     const submitData = await submitResponse.json();
 
-    if (!submitResponse.ok || !submitData.success) {
-      throw new Error("Failed to submit form");
+    if (!submitResponse.ok || submitData.code !== 200) {
+      throw new Error(submitData.message || "Failed to submit form");
     }
 
     // Send notifications
