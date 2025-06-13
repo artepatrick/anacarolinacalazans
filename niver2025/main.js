@@ -1,6 +1,6 @@
 // Configuration
-const BASE_URL = "http://localhost:8080";
-const EXTERNAL_API_BASE_URL = "http://localhost:8080";
+const BASE_URL = "https://omnicast-backend.fly.dev";
+const EXTERNAL_API_BASE_URL = "https://api.tolky.to";
 const EVENT_DATE = new Date("2025-06-28T16:00:00"); // Adjust this to the actual event date
 const TOLKY_APY_TOKEN = "S30LusdLYOEjsFe2DNa4CVI9ny4Yi8N2YAX7gw9Yapg";
 
