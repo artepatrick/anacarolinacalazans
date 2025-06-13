@@ -112,10 +112,11 @@ Vamos construir as APIs de uma aplicação de aniversário.
 - A sugestão de música está temporariamente indisponível.
 - O email é chave primária para confirmar a presença.
 - Quando o usuário clicar no botão de confirmar, vamos seguir os seguintes critérios:
+-- Consultamos a tabela de confirmação de presença para ver se o email já existe (backend).
 -- Se o email não existe na tabela de confirmação de presença, vamos criar uma nova entrada com os dados do usuário e em seguida fornecer uma modal que confirme ao usuário que a confirmação foi salva
 -- Se o email já existe, vamos adicionar à lista de convidados os convidados que já estavam na base, pedindo ao usuário para confirmar se deseja confirmar a presença de todos os convidados da lista ou se deseja fazer alguma edição.
 -- Após a confirmação do usuário, chamamos a rota de gravação, que vai sobrescrever o que estiver na base para aquele usuário tomando como verdade o que está chegando na requisição que o usuário aprovou.
-- Após a confirmação do usuário, vamos utilizar o **tolkyReasoning** da documentação a seguir para enviar uma mensagem para o usuário e outra para o dono do avatar.
+- Após a confirmação do usuário, vamos utilizar o **tolkyReasoning** da documentação a seguir para enviar uma mensagem para o usuário e outra para o dono do avatar (backend).
 
 
 ## Documentação da API de disparo

@@ -1,401 +1,284 @@
-// API Configuration
+// Configuration
 const BASE_URL = "https://omnicast-backend.fly.dev";
-const API_BASE_URL = `${BASE_URL}/api/niver2025`;
-const WS_BASE_URL = "wss://omnicast-backend.fly.dev";
-const TOLKY_API_BASE_URL = null;
-const NOTIFICATION_API_URL = null;
+const EXTERNAL_API_BASE_URL = "https://omnicast-backend.fly.dev";
+const EVENT_DATE = new Date("2025-03-15T00:00:00"); // Adjust this to the actual event date
+const TOLKY_APY_TOKEN = "S30LusdLYOEjsFe2DNa4CVI9ny4Yi8N2YAX7gw9Yapg";
 
-console.log("Initializing with API URL:", API_BASE_URL);
-console.log("Initializing with WebSocket URL:", WS_BASE_URL);
-
-// WebSocket Configuration
-let ws = null;
-let sessionId = localStorage.getItem("wsSessionId");
-let reconnectAttempts = 0;
-const MAX_RECONNECT_ATTEMPTS = 5;
-const RECONNECT_DELAY = 1000;
-
-// Countdown Configuration
-const EVENT_DATE = new Date("2025-06-28T16:00:00").getTime();
-
-// Form Elements
-const confirmationForm = document.getElementById("confirmationForm");
-const namesContainer = document.getElementById("namesContainer");
+// DOM Elements
+const form = document.getElementById("confirmationForm");
 const addNameButton = document.getElementById("addNameButton");
+const namesContainer = document.getElementById("namesContainer");
 const submitButton = document.getElementById("submitButton");
 
-// Countdown Elements
-const daysElement = document.getElementById("days");
-const hoursElement = document.getElementById("hours");
-const minutesElement = document.getElementById("minutes");
-const secondsElement = document.getElementById("seconds");
-
-// WebSocket Connection Management
-const setupWebSocket = () => {
-  console.log("Attempting to establish WebSocket connection...");
-  ws = new WebSocket(`${WS_BASE_URL}/ws/participants`);
-
-  ws.onopen = () => {
-    console.log("WebSocket connection established successfully");
-    reconnectAttempts = 0;
-
-    if (sessionId) {
-      console.log("Attempting to restore previous session:", sessionId);
-      ws.send(
-        JSON.stringify({
-          type: "session_restore",
-          sessionId: sessionId,
-        })
-      );
-    } else {
-      console.log("No previous session found");
-    }
-  };
-
-  ws.onmessage = (event) => {
-    try {
-      console.log("WebSocket message received:", event.data);
-      const data = JSON.parse(event.data);
-
-      switch (data.type) {
-        case "session":
-          console.log("New session established:", data.sessionId);
-          sessionId = data.sessionId;
-          localStorage.setItem("wsSessionId", sessionId);
-          break;
-
-        case "session_restored":
-          console.log("Previous session restored successfully");
-          break;
-
-        case "participant_update":
-          console.log("Participant update received:", data.content);
-          handleParticipantUpdate(data.content);
-          break;
-
-        case "error":
-          console.error("WebSocket error received:", data.content);
-          showNotification("Erro na conexão: " + data.content);
-          break;
-
-        default:
-          console.warn("Unknown message type received:", data.type);
-      }
-    } catch (error) {
-      console.error("Error processing WebSocket message:", error);
-    }
-  };
-
-  ws.onclose = (event) => {
-    console.log("WebSocket connection closed", {
-      code: event.code,
-      reason: event.reason,
-      wasClean: event.wasClean,
-    });
-
-    if (!event.wasClean) {
-      showNotification("Conexão perdida. Tentando reconectar...");
-    }
-
-    handleReconnect();
-  };
-
-  ws.onerror = (error) => {
-    console.error("WebSocket error occurred:", error);
-    showNotification("Erro na conexão. Tentando reconectar...");
-  };
-};
-
-// Reconnection Handler
-const handleReconnect = () => {
-  if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
-    reconnectAttempts++;
-    const delay = RECONNECT_DELAY * Math.pow(2, reconnectAttempts - 1);
-
-    console.log(`Attempting to reconnect in ${delay}ms...`);
-    setTimeout(setupWebSocket, delay);
-  } else {
-    console.error("Max reconnection attempts reached");
-  }
-};
-
-// Participant Update Handler
-const handleParticipantUpdate = (update) => {
-  // Handle different types of participant updates
-  switch (update.type) {
-    case "new_participant":
-      // Show notification for new participant
-      showNotification(`${update.name} confirmou presença!`);
-      break;
-
-    case "participant_count":
-      // Update participant count if needed
-      updateParticipantCount(update.count);
-      break;
-  }
-};
-
-// Notification System
-const showNotification = (message) => {
-  // Create notification element
-  const notification = document.createElement("div");
-  notification.className = "notification";
-  notification.textContent = message;
-
-  // Add to document
-  document.body.appendChild(notification);
-
-  // Remove after 5 seconds
-  setTimeout(() => {
-    notification.remove();
-  }, 5000);
-};
-
-// Loading State Management
-const setLoading = (isLoading) => {
-  submitButton.disabled = isLoading;
-  submitButton.textContent = isLoading ? "Enviando..." : "Confirmar Presença";
-};
-
 // Countdown Timer
-let countdownInterval; // Declare the variable in the global scope
+function updateCountdown() {
+  const now = new Date();
+  const difference = EVENT_DATE - now;
 
-const updateCountdown = () => {
-  const now = new Date().getTime();
-  const distance = EVENT_DATE - now;
-
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const days = Math.floor(difference / (1000 * 60 * 60 * 24));
   const hours = Math.floor(
-    (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
   );
-  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
-  daysElement.textContent = String(days).padStart(2, "0");
-  hoursElement.textContent = String(hours).padStart(2, "0");
-  minutesElement.textContent = String(minutes).padStart(2, "0");
-  secondsElement.textContent = String(seconds).padStart(2, "0");
+  document.getElementById("days").textContent = String(days).padStart(2, "0");
+  document.getElementById("hours").textContent = String(hours).padStart(2, "0");
+  document.getElementById("minutes").textContent = String(minutes).padStart(
+    2,
+    "0"
+  );
+  document.getElementById("seconds").textContent = String(seconds).padStart(
+    2,
+    "0"
+  );
+}
 
-  if (distance < 0) {
-    clearInterval(countdownInterval);
-    daysElement.textContent = "00";
-    hoursElement.textContent = "00";
-    minutesElement.textContent = "00";
-    secondsElement.textContent = "00";
+// Update countdown every second
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// Add name field
+let nameFieldCount = 1;
+addNameButton.addEventListener("click", () => {
+  nameFieldCount++;
+  const newNameField = document.createElement("div");
+  newNameField.className = "form-group";
+  newNameField.innerHTML = `
+        <label for="name${nameFieldCount}">Nome Completo</label>
+        <input type="text" class="name-input" id="name${nameFieldCount}" name="name" required placeholder="Digite seu nome completo">
+    `;
+  namesContainer.appendChild(newNameField);
+});
+
+// Phone number mask
+const phoneInput = document.getElementById("phone");
+phoneInput.addEventListener("input", (e) => {
+  let value = e.target.value.replace(/\D/g, "");
+  if (value.length > 11) value = value.slice(0, 11);
+
+  if (value.length > 2) {
+    value = `(${value.slice(0, 2)}) ${value.slice(2)}`;
   }
-};
+  if (value.length > 9) {
+    value = `${value.slice(0, 9)}-${value.slice(9)}`;
+  }
 
-// Form Data Collection
-const collectFormData = () => {
+  e.target.value = value;
+});
+
+// Form submission
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  submitButton.disabled = true;
+
+  const email = document.getElementById("email").value;
+  const phone = document.getElementById("phone").value.replace(/\D/g, "");
   const names = Array.from(document.querySelectorAll(".name-input"))
     .map((input) => input.value.trim())
     .filter((name) => name !== "");
 
-  return {
-    names,
-    phone: document.getElementById("phone").value.trim(),
-    email: document.getElementById("email").value.trim(),
-  };
-};
-
-// API Calls
-const apiCall = async (endpoint, method = "GET", data = null) => {
-  console.log(`Making ${method} request to ${endpoint}`, data ? { data } : "");
+  // First, check if email exists
+  console.log("Checking if email exists:", {
+    request: { email },
+    expectedResponse: {
+      code: 200,
+      data: {
+        exists: true / false,
+        existingGuests: [], // If exists: true, this will contain the list of existing guests
+      },
+    },
+  });
 
   try {
-    const options = {
-      method,
+    const checkResponse = await fetch(`${BASE_URL}/api/check-email`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-    };
+      body: JSON.stringify({ email }),
+    });
 
-    if (data) {
-      options.body = JSON.stringify(data);
+    const checkData = await checkResponse.json();
+
+    if (checkData.code !== 200) {
+      throw new Error("Failed to check email");
     }
 
-    console.log("Request options:", options);
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
-    console.log("Response status:", response.status);
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("API Error Response:", errorText);
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const responseData = await response.json();
-    console.log("API Response:", responseData);
-    return responseData;
-  } catch (error) {
-    console.error("API Error:", error);
-    throw error;
-  }
-};
-
-// Form Submission Handler
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  console.log("Form submission started");
-  setLoading(true);
-
-  try {
-    const formData = collectFormData();
-    console.log("Collected form data:", formData);
-
-    // Validate form data
-    if (formData.names.length === 0) {
-      throw new Error("Por favor, adicione pelo menos um nome.");
-    }
-
-    if (!formData.email) {
-      throw new Error("Por favor, preencha o campo de email.");
-    }
-
-    // Check if email exists
-    const checkResponse = await apiCall(
-      `/check-email/${encodeURIComponent(formData.email)}`
-    );
-
-    if (checkResponse.exists) {
-      // Show confirmation dialog with existing data
-      const confirmed = await showConfirmationDialog(checkResponse.data);
+    if (checkData.data.exists) {
+      // Show confirmation modal with existing guests
+      const confirmed = await showConfirmationModal(
+        checkData.data.existingGuests,
+        names
+      );
       if (!confirmed) {
-        setLoading(false);
+        submitButton.disabled = false;
         return;
       }
     }
 
-    // Submit confirmation
-    const submitResponse = await apiCall("/confirm", "POST", formData);
-
-    if (submitResponse.success) {
-      // Send notifications
-      await sendNotifications(formData);
-
-      // Show success message
-      showNotification("Presença confirmada com sucesso!");
-
-      // Reset form
-      confirmationForm.reset();
-      namesContainer.innerHTML = `
-        <div class="form-group">
-          <label for="name1">Nome Completo</label>
-          <input type="text" class="name-input" id="name1" name="name" required>
-        </div>
-      `;
-    } else {
-      throw new Error(submitResponse.message || "Erro ao confirmar presença.");
-    }
-  } catch (error) {
-    console.error("Form submission error:", error);
-    showNotification(
-      error.message || "Erro ao confirmar presença. Por favor, tente novamente."
-    );
-  } finally {
-    setLoading(false);
-  }
-};
-
-// Confirmation Dialog
-const showConfirmationDialog = (existingData) => {
-  return new Promise((resolve) => {
-    const dialog = document.createElement("div");
-    dialog.className = "confirmation-dialog";
-
-    const content = `
-      <div class="dialog-content">
-        <h3>Email já cadastrado</h3>
-        <p>Encontramos um cadastro existente com este email. Deseja confirmar a presença para todos os convidados listados abaixo?</p>
-        <ul>
-          ${existingData.names.map((name) => `<li>${name}</li>`).join("")}
-        </ul>
-        <div class="dialog-buttons">
-          <button class="cancel-button">Editar</button>
-          <button class="confirm-button">Confirmar Todos</button>
-        </div>
-      </div>
-    `;
-
-    dialog.innerHTML = content;
-    document.body.appendChild(dialog);
-
-    dialog.querySelector(".cancel-button").addEventListener("click", () => {
-      dialog.remove();
-      resolve(false);
-    });
-
-    dialog.querySelector(".confirm-button").addEventListener("click", () => {
-      dialog.remove();
-      resolve(true);
-    });
-  });
-};
-
-// Send Notifications
-const sendNotifications = async (formData) => {
-  try {
-    const notificationData = {
-      data: [
-        {
-          phone: formData.phone,
-          userName: formData.names[0],
-          eventType: "aniversario",
-          eventDate: "28/06/2025",
-        },
-      ],
-      generalInstructions:
-        "Enviar mensagem de confirmação de presença para o aniversário, agradecendo a confirmação e fornecendo detalhes do evento.",
+    // Submit the form data
+    const formData = {
+      email,
+      phone,
+      guests: names,
     };
 
-    const response = await fetch(
-      `${BASE_URL}/api/externalAPIs/public/externalNotificationAI`,
+    console.log("Submitting form data:", {
+      request: formData,
+      expectedResponse: {
+        code: 200,
+        message: "OK",
+        data: {
+          success: true,
+        },
+      },
+    });
+
+    const submitResponse = await fetch(`${BASE_URL}/api/confirm-presence`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const submitData = await submitResponse.json();
+
+    if (submitData.code !== 200 || !submitData.data.success) {
+      throw new Error("Failed to submit form");
+    }
+
+    // Send notifications
+    console.log("Sending notifications:", {
+      request: {
+        data: [
+          {
+            phone,
+            userName: names[0],
+            eventType: "birthday",
+            hostName: "Ana Carolina Calazans",
+          },
+        ],
+        generalInstructions:
+          "Send a thank you message for confirming presence to the birthday party",
+      },
+      expectedResponse: {
+        code: 200,
+        message: "OK",
+        data: {
+          results: [
+            {
+              status: "fulfilled",
+              value: { phone, whatsappStatus: "success" },
+            },
+          ],
+          summary: {
+            totalItems: 1,
+            sentItems: 1,
+            failedItems: 0,
+          },
+        },
+      },
+    });
+
+    const notificationResponse = await fetch(
+      `${EXTERNAL_API_BASE_URL}/api/externalAPIs/public/externalNotificationAI`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer YOUR_TOKEN_HERE", // Replace with actual token
+          Authorization: `Bearer ${TOLKY_APY_TOKEN}`,
         },
-        body: JSON.stringify(notificationData),
+        body: JSON.stringify({
+          data: [
+            {
+              phone,
+              userName: names[0],
+              eventType: "birthday",
+              hostName: "Ana Carolina Calazans",
+            },
+          ],
+          generalInstructions:
+            "Send a thank you message for confirming presence to the birthday party",
+        }),
       }
     );
 
-    if (!response.ok) {
-      console.error("Failed to send notification");
-      const errorData = await response.json();
-      console.error("Notification error details:", errorData);
-    } else {
-      const responseData = await response.json();
-      console.log("Notification sent successfully:", responseData);
+    const notificationData = await notificationResponse.json();
+
+    if (
+      notificationData.code !== 200 ||
+      notificationData.data.summary.failedItems > 0
+    ) {
+      console.warn("Some notifications failed to send:", notificationData);
     }
+
+    showSuccessModal();
+    form.reset();
   } catch (error) {
-    console.error("Error sending notification:", error);
+    console.error("Error:", error);
+    alert(
+      "Ocorreu um erro ao confirmar sua presença. Por favor, tente novamente."
+    );
+  } finally {
+    submitButton.disabled = false;
   }
-};
+});
 
-// Add Name Field Handler
-const handleAddName = () => {
-  const newIndex = namesContainer.children.length + 1;
+// Modal functions
+function showConfirmationModal(existingGuests, newGuests) {
+  return new Promise((resolve) => {
+    const modal = document.createElement("div");
+    modal.className = "modal";
+    modal.innerHTML = `
+            <div class="modal-content">
+                <h3>Confirmação de Presença</h3>
+                <p>Já existem os seguintes convidados confirmados para este email:</p>
+                <ul>
+                    ${existingGuests
+                      .map((guest) => `<li>${guest}</li>`)
+                      .join("")}
+                </ul>
+                <p>Deseja adicionar os novos convidados?</p>
+                <ul>
+                    ${newGuests.map((guest) => `<li>${guest}</li>`).join("")}
+                </ul>
+                <div class="modal-buttons">
+                    <button id="confirmYes">Sim, confirmar todos</button>
+                    <button id="confirmNo">Não, editar</button>
+                </div>
+            </div>
+        `;
 
-  const newFormGroup = document.createElement("div");
-  newFormGroup.className = "form-group";
-  newFormGroup.innerHTML = `
-        <label for="name${newIndex}">Nome Completo</label>
-        <input type="text" class="name-input" id="name${newIndex}" name="name" required>
+    document.body.appendChild(modal);
+
+    document.getElementById("confirmYes").addEventListener("click", () => {
+      modal.remove();
+      resolve(true);
+    });
+
+    document.getElementById("confirmNo").addEventListener("click", () => {
+      modal.remove();
+      resolve(false);
+    });
+  });
+}
+
+function showSuccessModal() {
+  const modal = document.createElement("div");
+  modal.className = "modal";
+  modal.innerHTML = `
+        <div class="modal-content">
+            <h3>Presença Confirmada!</h3>
+            <p>Obrigada por confirmar sua presença! Em breve você receberá mais informações sobre o evento.</p>
+            <button id="closeModal">Fechar</button>
+        </div>
     `;
 
-  namesContainer.appendChild(newFormGroup);
-};
+  document.body.appendChild(modal);
 
-// Event Listeners
-document.addEventListener("DOMContentLoaded", () => {
-  confirmationForm.addEventListener("submit", handleSubmit);
-  addNameButton.addEventListener("click", handleAddName);
-
-  // Initialize WebSocket connection
-  setupWebSocket();
-
-  // Initialize countdown
-  updateCountdown();
-  countdownInterval = setInterval(updateCountdown, 1000);
-});
+  document.getElementById("closeModal").addEventListener("click", () => {
+    modal.remove();
+  });
+}
