@@ -10,6 +10,14 @@ const addNameButton = document.getElementById("addNameButton");
 const namesContainer = document.getElementById("namesContainer");
 const submitButton = document.getElementById("submitButton");
 
+// Add loading state management
+function setLoading(isLoading) {
+  submitButton.disabled = isLoading;
+  submitButton.innerHTML = isLoading
+    ? '<span class="loading-spinner"></span> Confirmando...'
+    : "Confirmar Presença";
+}
+
 // Countdown Timer
 function updateCountdown() {
   const now = new Date();
@@ -70,7 +78,11 @@ phoneInput.addEventListener("input", (e) => {
 // Form submission
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  submitButton.disabled = true;
+
+  // Prevent multiple submissions
+  if (submitButton.disabled) return;
+
+  setLoading(true);
 
   const email = document.getElementById("email").value;
   const phone = document.getElementById("phone").value.replace(/\D/g, "");
@@ -116,7 +128,7 @@ form.addEventListener("submit", async (e) => {
         checkData.data.status
       );
       if (!confirmed) {
-        submitButton.disabled = false;
+        setLoading(false);
         return;
       }
 
@@ -159,7 +171,7 @@ form.addEventListener("submit", async (e) => {
 
     const submitData = await submitResponse.json();
 
-    if (!submitResponse.ok || submitData.code !== 200) {
+    if (!submitResponse.ok || !submitData.data?.data?.success) {
       throw new Error(submitData.message || "Failed to submit form");
     }
 
@@ -219,7 +231,7 @@ form.addEventListener("submit", async (e) => {
       "Ocorreu um erro ao confirmar sua presença. Por favor, tente novamente."
     );
   } finally {
-    submitButton.disabled = false;
+    setLoading(false);
   }
 });
 
