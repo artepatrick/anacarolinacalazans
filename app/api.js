@@ -4,7 +4,7 @@ const API_BASE_URL = (() => {
   const isLocalhost = hostname === "localhost" || hostname === "127.0.0.1";
 
   if (isLocalhost) {
-    return "http://localhost:3001"; // Local development
+    return "http://localhost:3000"; // Local development
   }
 
   // In production, use Netlify Functions URL
